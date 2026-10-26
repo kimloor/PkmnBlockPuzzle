@@ -1,0 +1,45 @@
+name: Deploy Web Game to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'TetrisApp/www/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify web entry and assets
+        run: |
+          test -f TetrisApp/www/index.html
+          test -d TetrisApp/www/js
+          test -d TetrisApp/www/css
+          if grep -RInE 'https?://' TetrisApp/www/index.html TetrisApp/www/js TetrisApp/www/css | grep -v 'xmlns='; then
+            echo 'Review remote references above before assuming full offline support'
+          fi
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: TetrisApp/www
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
