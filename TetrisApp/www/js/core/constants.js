@@ -4,7 +4,7 @@ const ROWS = 20;
 const BLOCK_SIZE = 30;
 
 // --- Language Settings ---
-const DEFAULT_LANGUAGE = 'es';
+const DEFAULT_LANGUAGE = 'th';
 const LANGUAGE_STORAGE_KEY = 'tetrisJSLanguage';
 
 // --- Audio Mute Settings Storage Keys ---
