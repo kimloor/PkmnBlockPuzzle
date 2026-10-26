@@ -7,6 +7,11 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.8] — Game icon integration (2026-10-26)
+- Added user-provided Pikachu-with-block artwork as a compact local PNG icon, referenced for web favicon and iOS Home Screen.
+- Declared icon resource in Cordova config for a future Android build; no APK build triggered.
+- Original full-resolution artwork retained in conversation, not committed; visual verification and Android packaging remain pending.
+
 ## [0.1.7] — Mobile portrait Auto-Fit (2026-10-26)
 - Fit board to the lesser of screen width and available dynamic viewport height; reserve 185px for HUD, level header and spacing.
 - Compact portrait HUD and align its width with the 10×20 board; prevent gameplay viewport vertical overflow on typical mobile screens.
