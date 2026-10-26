@@ -1,10 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.iDerra.tetris" version="1.4.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Tetris</name>
-    <description>Tetris Game</description>
-    <author email="x">
-        iDerra
-    </author>
+<widget id="com.kimloor.pkmnblockpuzzle" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PkmnBlockPuzzle</name>
+    <description>Offline falling-block puzzle game</description>
+    <author>kimloor</author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
