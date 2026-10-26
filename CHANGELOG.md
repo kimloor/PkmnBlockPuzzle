@@ -7,6 +7,11 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.7] — Mobile portrait Auto-Fit (2026-10-26)
+- Fit board to the lesser of screen width and available dynamic viewport height; reserve 185px for HUD, level header and spacing.
+- Compact portrait HUD and align its width with the 10×20 board; prevent gameplay viewport vertical overflow on typical mobile screens.
+- Keep a short-screen scroll fallback, no gameplay or APK changes. Static source checks pass; real-device layout remains NOT TESTED.
+
 ## [0.1.6] — Wider mobile portrait game board (2026-10-26)
 - Override the older portrait 65vw canvas cap and 300px mobile cap; enlarge board and level header to use available phone width up to 390px.
 - Keep 10:20 board aspect ratio, fit within viewport, and preserve vertical scrolling on short mobile screens.

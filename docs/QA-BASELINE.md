@@ -140,3 +140,9 @@ The **frozen v0.1.3 audit above is preserved**. The owner subsequently authorize
 **Correction:** The last-loaded `mobile-fix.css` now overrides that maximum explicitly, caps the portrait board at the lesser of available container width, viewport minus 24px, and 390px, matches the level header and aligns the score/next strip. Native canvas dimensions remain 300x600 so gameplay coordinates and 10:20 aspect are unchanged.
 
 **Static verification: PASS** — stylesheet order has mobile-fix last; portrait rule explicitly sets `max-width:100%`; both board and level display use the same cap; native canvas and JS untouched. **Visual regression: NOT TESTED** — open iOS Safari at 375/390px and Android at 360px, verify no x-overflow or clipping; rotate to landscape and check fit; verify tap/drag/swipe correctness; test short viewport vertical scroll. No APK build triggered.
+
+## Portrait Auto-Fit refinement — v0.1.7 (2026-10-26)
+
+Owner reports v0.1.6 board requires vertical scrolling on iPhone Safari. Revised portrait CSS computes canvas width as `min(100vw - 24px, (100dvh - 185px)/2, 390px)`, reserving space for compact HUD, header and gaps. `100dvh` follows the browser's visible viewport. Width/height remain 1:2 and canvas intrinsic dimensions are untouched. For viewports at or below 390px tall, scrolling remains available rather than clipping.
+
+**Static assertions: PASS** for viewport-height bound, dimension pairing, version sync and unchanged gameplay JS. **Browser / iOS Safari / Android display: NOT TESTED**, must verify actual visible area and dynamic toolbar collapse, rotations and no clipping on device. No APK build triggered.

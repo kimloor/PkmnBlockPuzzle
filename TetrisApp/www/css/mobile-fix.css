@@ -31,29 +31,71 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
   #tetris-canvas { width: min(420px, calc((100dvh - 120px) / 2)); max-width: min(100%, 420px); }
   #level-header-display { width: min(420px, calc((100dvh - 120px) / 2)); max-width: 100%; }
 }
+/* Mobile Auto-Fit: reserve space for the score/next strip, level header,
+   gaps and safe breathing room before sizing the 2:1 board. */
 @media (max-width: 768px) and (orientation: portrait) {
-  /* Override the older responsive.css 65vw cap and previous 300px limit.
-     The visible board uses nearly all available phone width; the 10x20 aspect stays fixed. */
-  #main-container { width: 100%; max-width: 420px; padding: 4px; }
-  #game-area { width: 100%; max-width: 100%; min-width: 0; }
+  #game-content.active {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding: 6px 6px 8px;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  #main-container {
+    --board-fit-width: min(calc(100vw - 24px), calc((100dvh - 185px) / 2), 390px);
+    width: 100%;
+    max-width: 420px;
+    min-height: 0;
+    padding: 0;
+    gap: 6px;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  #game-area {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex: 0 0 auto;
+  }
   #tetris-canvas {
-    width: min(100%, calc(100vw - 24px), 390px);
+    width: max(0px, var(--board-fit-width));
     max-width: 100%;
     height: auto;
     aspect-ratio: 1 / 2;
-  }
-  #level-header-display {
-    width: min(100%, calc(100vw - 24px), 390px);
-    max-width: 100%;
-  }
-  #side-panel {
-    width: min(100%, calc(100vw - 24px), 390px);
-    max-width: 100%;
-    margin: 0 0 8px;
-    gap: 8px;
-    flex-direction: row;
-    flex-wrap: nowrap;
     box-sizing: border-box;
   }
-  #score-container, #next-piece-preview { min-width: 0; width: auto; flex: 1 1 0; }
+  #level-header-display {
+    width: max(0px, var(--board-fit-width));
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 4px 8px;
+  }
+  #side-panel {
+    order: 1;
+    width: max(0px, var(--board-fit-width));
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    gap: 6px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  #score-container, #next-piece-preview {
+    min-width: 0;
+    width: auto;
+    height: 96px;
+    min-height: 0;
+    flex: 1 1 0;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  #score-value { font-size: 1.5rem; margin: 2px 0; }
+  #next-piece-canvas { width: 54px; height: 54px; margin: 2px auto; }
+}
+/* On unusually short viewports, allow access to controls rather than clipping. */
+@media (max-width: 768px) and (orientation: portrait) and (max-height: 390px) {
+  #game-content.active { height: auto; min-height: 100dvh; overflow-y: auto; }
 }
