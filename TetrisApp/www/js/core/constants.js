@@ -439,7 +439,51 @@ const THEMES = {
  * and their values are the translated strings.
  */
 const TRANSLATIONS = {
+    th: {
+        tetrisTitle: "เกมเรียงบล็อก",
+        languageLabel: "ภาษา:",
+        themeLabel: "ธีม:",
+        dynamicDescentLabel: "เพิ่มความเร็วตามเลเวล",
+        startGameButton: "เริ่มเกม",
+        highScoresButton: "คะแนนสูงสุด",
+        musicLabel: "เพลง",
+        sfxLabel: "เสียง",
+        pauseTitle: "หยุดชั่วคราว",
+        resumeButton: "เล่นต่อ",
+        restartButton: "เริ่มใหม่",
+        mainMenuButton: "เมนูหลัก",
+        gameOverTitle: "จบเกม",
+        yourScoreLabel: "คะแนนของคุณ:",
+        globalMaxScoreLabel: "คะแนนสูงสุด:",
+        newHighScoreMsg: "ติดอันดับ 5 คะแนนสูงสุด!",
+        continueGameOverButton: "เล่นต่อ",
+        highScoresTitle: "คะแนนสูงสุด",
+        noScoresMsg: "ยังไม่มีคะแนน",
+        backToMenuButton: "กลับเมนูหลัก",
+        scoreLabelCaps: "คะแนน",
+        nextPieceLabelCaps: "บล็อกถัดไป",
+        instructionsTitle: "วิธีควบคุม:",
+        instructionsText: "P: หยุดชั่วคราว<br>↑ / W / X: หมุน<br>← / A: ซ้าย<br>→ / D: ขวา<br>↓ / S: ลง<br>SPACE: ลงสุด",
+        levelLabelCaps: "เลเวล",
+        tutorialTitle: "วิธีเล่น",
+        tutorialMove: "👆 ลากซ้าย–ขวาบนกระดาน เพื่อเลื่อนบล็อก",
+        tutorialRotate: "🔄 แตะกระดานหนึ่งครั้ง เพื่อหมุนบล็อก",
+        tutorialDrop: "⬇️ ปัดลง เพื่อปล่อยบล็อกลงสุด",
+        tutorialPause: "⬆️ ปัดขึ้น เพื่อหยุดเกมชั่วคราว",
+        tutorialSwap: "🔁 แตะช่องบล็อกถัดไป เพื่อสลับบล็อก",
+        tutorialGoal: "เรียงบล็อกให้เต็มแถวเพื่อรับคะแนน",
+        tutorialDismiss: "แตะหนึ่งครั้งเพื่อเริ่มเล่น"
+    },
     es: {
+        tutorialTitle: "Cómo jugar",
+        tutorialMove: "👆 Desliza a izquierda o derecha para mover",
+        tutorialRotate: "🔄 Toca el tablero para girar",
+        tutorialDrop: "⬇️ Desliza hacia abajo para soltar",
+        tutorialPause: "⬆️ Desliza hacia arriba para pausar",
+        tutorialSwap: "🔁 Toca SIGUIENTE para intercambiar",
+        tutorialGoal: "Completa una fila para sumar puntos",
+        tutorialDismiss: "Toca una vez para comenzar",
+
         // General Titles and Labels
         tetrisTitle: "TETRIS",
         languageLabel: "Idioma:",
@@ -473,6 +517,15 @@ const TRANSLATIONS = {
         levelLabelCaps: "NIVEL",
     },
     en: {
+        tutorialTitle: "How to play",
+        tutorialMove: "👆 Drag left or right to move blocks",
+        tutorialRotate: "🔄 Tap the board to rotate",
+        tutorialDrop: "⬇️ Swipe down to drop the block",
+        tutorialPause: "⬆️ Swipe up to pause",
+        tutorialSwap: "🔁 Tap NEXT to swap blocks",
+        tutorialGoal: "Complete a full row to score points",
+        tutorialDismiss: "Tap once to start playing",
+
         // General Titles and Labels
         tetrisTitle: "TETRIS",
         languageLabel: "Language:",

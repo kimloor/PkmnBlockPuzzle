@@ -11,8 +11,21 @@
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/mobile-fix.css">
+    <link rel="stylesheet" href="css/tutorial.css">
 </head>
 <body>
+    <div id="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" tabindex="0" hidden>
+        <div class="tutorial-card">
+            <h2 id="tutorial-title" data-i18n-key="tutorialTitle">How to play</h2>
+            <p data-i18n-key="tutorialMove">👆 Drag left or right to move</p>
+            <p data-i18n-key="tutorialRotate">🔄 Tap to rotate</p>
+            <p data-i18n-key="tutorialDrop">⬇️ Swipe down to drop</p>
+            <p data-i18n-key="tutorialPause">⬆️ Swipe up to pause</p>
+            <p data-i18n-key="tutorialSwap">🔁 Tap NEXT to swap</p>
+            <p data-i18n-key="tutorialGoal">Fill a row to score points</p>
+            <strong id="tutorial-dismiss" data-i18n-key="tutorialDismiss">Tap once to start</strong>
+        </div>
+    </div>
     <div id="start-menu" class="menu-overlay active">
         <div class="menu-content-wrapper">
             <h1 data-i18n-key="tetrisTitle">TETRIS</h1>
@@ -31,6 +44,7 @@
                 <select id="language-selector" name="language-selector">
                     <option value="es">Español</option>
                     <option value="en">English</option>
+                    <option value="th">ไทย</option>
                 </select>
             </div>
 

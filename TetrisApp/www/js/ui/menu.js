@@ -212,7 +212,7 @@ function initializeMenuEventListeners(gameActions) {
     }
 
     // Listeners for existing menu buttons
-    addButtonListenerWithSound(startGameButton, gameActions.onStartGame);
+    addButtonListenerWithSound(startGameButton, () => showTutorialBeforeFirstGame(gameActions.onStartGame));
     addButtonListenerWithSound(highScoresButton, gameActions.onShowHighScores);
     addButtonListenerWithSound(resumeGameButton, gameActions.onResumeGame);
     addButtonListenerWithSound(restartPauseButton, gameActions.onRestartGame);
@@ -257,3 +257,32 @@ function initializeMenuEventListeners(gameActions) {
     }
     updateMuteButtonIcons();
 }
+// One-time tutorial gate: dismiss by one tap, click, Enter or Space.
+// Stores completion locally so returning players can start immediately.
+let tutorialPendingAction = null;
+function showTutorialBeforeFirstGame(startAction) {
+    const overlay = document.getElementById('tutorial-overlay');
+    if (!overlay) { startAction(); return; }
+    let viewed = false;
+    try { viewed = localStorage.getItem('pkmnTutorialSeen_v1') === 'true'; } catch (_) {}
+    if (viewed) { startAction(); return; }
+    tutorialPendingAction = startAction;
+    overlay.hidden = false;
+    overlay.focus();
+}
+function dismissTutorial() {
+    const overlay = document.getElementById('tutorial-overlay');
+    if (!overlay || overlay.hidden || !tutorialPendingAction) return;
+    const action = tutorialPendingAction;
+    tutorialPendingAction = null;
+    overlay.hidden = true;
+    try { localStorage.setItem('pkmnTutorialSeen_v1', 'true'); } catch (_) {}
+    action();
+}
+document.getElementById('tutorial-overlay')?.addEventListener('click', dismissTutorial);
+document.getElementById('tutorial-overlay')?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        dismissTutorial();
+    }
+});
