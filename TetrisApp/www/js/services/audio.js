@@ -148,13 +148,6 @@ function playSound(soundElement) {
         soundElement.play().catch(error => {
             console.warn("Error during play() for " + (soundElement.id || 'unknown element') + ":", error, "Current ReadyState:", soundElement.readyState);
         });
-    } else {
-        console.warn("playSound: Cannot play. Element:", soundElement ? soundElement.id : 'null',
-                    soundElement ? "currentSrc: " + soundElement.currentSrc : "",
-                    soundElement ? "readyState: " + soundElement.readyState : "",
-                    soundElement ? "networkState: " + soundElement.networkState : "",
-                    soundElement && soundElement.error ? "error: " + JSON.stringify(soundElement.error) : "error: null"
-        );
     }
 }
 
