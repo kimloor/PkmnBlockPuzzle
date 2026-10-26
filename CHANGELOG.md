@@ -7,6 +7,11 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.9] — Home Screen app name (2026-10-26)
+- Changed HTML document title and Apple Home Screen application title to PkmnBlockPuzzle, aligning with the Cordova app name.
+- Added standard application-name metadata. No BGM or gameplay changes; no APK build.
+- Source verification only; re-add to iOS Home Screen to confirm displayed default name.
+
 ## [0.1.8] — Game icon integration (2026-10-26)
 - Added user-provided Pikachu-with-block artwork as a compact local PNG icon, referenced for web favicon and iOS Home Screen.
 - Declared icon resource in Cordova config for a future Android build; no APK build triggered.
