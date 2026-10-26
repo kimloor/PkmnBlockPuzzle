@@ -9,7 +9,7 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
   #main-container { width: 100%; max-width: 420px; box-sizing: border-box; padding: 4px; gap: 8px; }
   #game-area { width: 100%; max-width: 100%; flex-direction: column; order: 2; }
   #level-header-display { width: min(100%, 304px); max-width: 100%; }
-  #tetris-canvas { width: min(100%, 300px, calc((100dvh - 200px) / 2)); max-width: 100%; height: auto; aspect-ratio: 1 / 2; }
+  #tetris-canvas { width: min(100%, 300px); max-width: 100%; height: auto; aspect-ratio: 1 / 2; }
   #side-panel { order: 1; width: 100%; max-width: 320px; margin: 0; padding: 0; flex-direction: row; flex-wrap: nowrap; gap: 8px; justify-content: space-between; }
   #score-container, #next-piece-preview { min-width: 0; flex: 1 1 0; padding: 6px; box-sizing: border-box; }
   #score-value { font-size: 1.5rem; margin: 4px 0; }
@@ -22,4 +22,16 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
   #game-area { order: 1; width: auto; }
   #side-panel { order: 2; width: 145px; flex-direction: column; }
   #tetris-canvas { width: min(300px, calc((100dvh - 75px) / 2)); }
+}
+
+/* Allow the board to occupy more of the available display while retaining scrolling on short viewports. */
+@media (min-width: 769px) {
+  #game-content.active { min-height: 100dvh; height: auto; padding: 18px; box-sizing: border-box; }
+  #main-container { max-width: 100%; }
+  #tetris-canvas { width: min(420px, calc((100dvh - 120px) / 2)); max-width: min(100%, 420px); }
+  #level-header-display { width: min(420px, calc((100dvh - 120px) / 2)); max-width: 100%; }
+}
+@media (max-width: 768px) and (orientation: portrait) {
+  #tetris-canvas { width: min(100%, 300px); }
+  #level-header-display { width: min(100%, 304px); }
 }
