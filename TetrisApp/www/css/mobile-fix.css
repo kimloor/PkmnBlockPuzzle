@@ -1,0 +1,25 @@
+/* Responsive playable viewport: fit game width without clipping or disabling scroll. */
+html { min-height: 100%; }
+body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
+#game-content.active { height: auto; min-height: 100dvh; max-width: 100%; }
+#tetris-canvas { box-sizing: border-box; max-width: 100%; height: auto; touch-action: none; }
+@media (max-width: 768px) {
+  body { align-items: flex-start; justify-content: center; width: 100%; min-height: 100dvh; padding: 0; }
+  #game-content.active { justify-content: flex-start; padding: 8px 6px 24px; box-sizing: border-box; }
+  #main-container { width: 100%; max-width: 420px; box-sizing: border-box; padding: 4px; gap: 8px; }
+  #game-area { width: 100%; max-width: 100%; flex-direction: column; order: 2; }
+  #level-header-display { width: min(100%, 304px); max-width: 100%; }
+  #tetris-canvas { width: min(100%, 300px, calc((100dvh - 200px) / 2)); max-width: 100%; height: auto; aspect-ratio: 1 / 2; }
+  #side-panel { order: 1; width: 100%; max-width: 320px; margin: 0; padding: 0; flex-direction: row; flex-wrap: nowrap; gap: 8px; justify-content: space-between; }
+  #score-container, #next-piece-preview { min-width: 0; flex: 1 1 0; padding: 6px; box-sizing: border-box; }
+  #score-value { font-size: 1.5rem; margin: 4px 0; }
+  #next-piece-canvas { width: 66px; height: 66px; margin: 2px auto; }
+  .instructions { display: none; }
+  .menu-overlay { min-height: 100dvh; overflow-y: auto; }
+}
+@media (max-width: 768px) and (orientation: landscape) {
+  #main-container { max-width: 720px; flex-direction: row; align-items: flex-start; justify-content: center; }
+  #game-area { order: 1; width: auto; }
+  #side-panel { order: 2; width: 145px; flex-direction: column; }
+  #tetris-canvas { width: min(300px, calc((100dvh - 75px) / 2)); }
+}

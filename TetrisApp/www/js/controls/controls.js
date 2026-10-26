@@ -75,7 +75,8 @@ function _setupTouchControls() {
             if (isDraggingHorizontally) {
                 const pixelMoved = currentX - touchStartX;
                 // How many full columns we have moved with respect to the START of the current crawl for this part
-                const columnsToMove = Math.floor(pixelMoved / (BLOCK_SIZE * HORIZONTAL_DRAG_SENSITIVITY_FACTOR));
+                const displayedCellWidth = gameCanvas.getBoundingClientRect().width / COLS;
+                const columnsToMove = Math.trunc(pixelMoved / (displayedCellWidth * HORIZONTAL_DRAG_SENSITIVITY_FACTOR));
                 
                 let targetX = pieceInitialX + columnsToMove;
                 let movedThisFrame = false;
@@ -90,7 +91,7 @@ function _setupTouchControls() {
                         // Cannot move further in that direction, update pieceInitialX to reflect the limit.
                         pieceInitialX = _controlsInternalGameInstance.currentPiece.x;
                         // And reset touchStartX so that the next columnsToMove calculation is from the current position.
-                        touchStartX = currentX - (_controlsInternalGameInstance.currentPiece.x - pieceInitialX) * (BLOCK_SIZE * HORIZONTAL_DRAG_SENSITIVITY_FACTOR);
+                        touchStartX = currentX;
                         break; // Exit while if unable to move
                     }
                 }
