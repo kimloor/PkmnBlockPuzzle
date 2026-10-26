@@ -38,7 +38,13 @@ let lockDelayTimerId = null;
 const gameInstance = {
     get currentPiece() { return currentPiece; },
     get gameState() { return gameState; },
-    setGameState: (newState) => { gameState = newState; },
+    setGameState: (newState) => {
+        if (newState === 'PAUSED') {
+            clearTimeout(lockDelayTimerId);
+            lockDelayTimerId = null;
+        }
+        gameState = newState;
+    },
     get gameOver() { return gameOver; },
     drawGame: () => drawGame(),
     handleLineClears: (info) => handleLineClears(info),
@@ -211,7 +217,7 @@ function performPieceSwap() {
  * @returns None.
  */
 function pieceHasLanded() {
-    if (gameOver || !currentPiece) return;
+    if (gameOver || !currentPiece || gameState !== 'PLAYING' || isPieceLanded) return;
 
     isPieceLanded = true;
     clearTimeout(lockDelayTimerId); 
@@ -261,7 +267,7 @@ function pieceDroppedToBottom() {
  * @returns None.
  */
 function lockPieceAndContinue() {
-    if (!currentPiece) return;
+    if (!currentPiece || gameState !== 'PLAYING' || !isPieceLanded || gameOver) return;
 
     fixPieceOnBoard(currentPiece); 
     const linesClearedInfo = checkAndClearLines(); 
@@ -420,6 +426,11 @@ const gameControlActions = {
         playButtonClickSound();
         if (gameState !== 'PAUSED') return;
         gameState = 'PLAYING';
+        if (isPieceLanded) {
+            // Pause cancels the pending lock; resume starts a fresh full delay.
+            isPieceLanded = false;
+            pieceHasLanded();
+        }
         playBackgroundMusic();
         if (typeof showScreen === 'function') showScreen('PLAYING');
         lastTime = performance.now();
@@ -442,6 +453,9 @@ const gameControlActions = {
     onGoToMainMenu: () => {
         playButtonClickSound();
         gameState = 'MENU';
+        clearTimeout(lockDelayTimerId);
+        lockDelayTimerId = null;
+        isPieceLanded = false;
         stopBackgroundMusic();
         if (typeof showScreen === 'function') showScreen('MENU');
         if (animationFrameId) { cancelAnimationFrame(animationFrameId); animationFrameId = null; }

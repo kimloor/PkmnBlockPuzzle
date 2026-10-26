@@ -6,7 +6,7 @@ Status: planning document; items are proposals until confirmed by the owner.
 ## Current verified baseline (26 October 2026)
 - A playable Tetris-style falling-block game is described in `README.md`.
 - Web source is stored in `TetrisApp/www/`, with Cordova configuration at `TetrisApp/config.xml`.
-- Current version prior to this documentation PR: 0.1.2.
+- Audit baseline: 0.1.3; current version after authorized P1 fixes: 0.1.5.
 - Android APK build is manual (`workflow_dispatch` only), subject to owner approval.
 
 ## Phase 1 — Baseline audit
@@ -17,7 +17,7 @@ Status: planning document; items are proposals until confirmed by the owner.
 - [x] Document source-review defects with reproduction steps and priorities (see [QA baseline](docs/QA-BASELINE.md); browser/device reproduction remains pending).
 
 ## Phase 2 — Quality and reliability
-- [ ] Add automated regression tests for gameplay rules and edge cases.
+- [ ] Add automated regression tests for gameplay rules and edge cases (still pending).
 - [ ] Establish consistent lint/test checks and a lightweight manual QA checklist.
 - [ ] Validate behavior on common Android screen sizes and browsers.
 - [ ] Review offline functionality and asset-loading errors.
@@ -35,4 +35,4 @@ Status: planning document; items are proposals until confirmed by the owner.
 - [ ] Update changelog, test report and release notes before release.
 
 ## Working agreement
-Use small reviewable PRs, preserve existing working gameplay, report test evidence and obey `AGENTS.md`. Roadmap checkboxes are not completion claims.
+Authorized changes may go straight to master without PR; request owner approval before fixing *newly discovered* issues, preserve gameplay, report real test evidence and obey `AGENTS.md`. Roadmap checkboxes are not completion claims.

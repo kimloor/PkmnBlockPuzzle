@@ -117,3 +117,18 @@
 **CONDITIONAL / not release-ready:** Code ownership and baseline are identified, but gameplay regressions (QA-001/002) and lack of runtime/device evidence block a readiness claim. Start Phase 2 with automated tests and P1 fixes, then complete browser/mobile smoke tests. The audited baseline remains v0.1.3.
 
 **Counts:** Automated test cases executed: **0**; automated pass: **0**; automated failed: **0**; static defects: **2 P1 + 1 P2**; risk item: **1 P2 WARNING**; **0 P0**, **0 P3**. Checklist classifications describe review outcomes, not separate executed test cases.
+
+## Post-audit corrective update — 2026-10-26 (v0.1.5)
+
+The **frozen v0.1.3 audit above is preserved**. The owner subsequently authorized direct-master work and remediation of the identified P1 issues.
+
+| Item | Change | Verification | Outcome |
+|---|---|---|---|
+| QA-001 | Keyboard Down/Space route landed pieces through `pieceDroppedToBottom()`; left/right/rotation of landed pieces invokes landing-state recalculation | Source-diff assertions: direct keyboard `fixPieceOnBoard` and `spawnNewPieceInternalLogic` calls removed, both controls share landing path | **PASS — static verification only**; **NOT TESTED — runtime** |
+| QA-002 | Pause cancels lock timeout, resume rearms it, menu cancels it, lock callback guards `PLAYING` and landed state | Source-diff assertions: timeout cancellation and guards present in `main.js` | **PASS — static verification only**; **NOT TESTED — runtime** |
+| QA-003 | No music-source change (owner deliberately removed BGM previously) | HTML still has no BGM source | **WARNING — awaiting explicit owner decision before UI change** |
+| QA-004 | AGENTS.md documents direct-master version validation expectation | config.xml 0.1.5 and visible menu v0.1.5 checked before commit | **PASS — version consistency**; automated direct-push gate not yet implemented |
+
+**Test execution:** 0 browser gameplay runs; 0 Android/device tests; 0 unit suites. Git clone attempt could not resolve `github.com` in the available execution environment. Static verification does **not** establish real-game PASS. Required manual regression cases: land/press Down/Space, move/rotate during 200ms delay, rapid key repeat, pause within 200ms of landing and wait, resume and verify rearmed timeout, exit to menu during delay, restart during delay, drag/swipe parity, game-over/high score.
+
+**Residual risks:** P1 code patches require actual browser and device smoke tests before marking functional fixes fully verified. No new gameplay defects were authorized for speculative remediation. No APK build was triggered.

@@ -166,39 +166,35 @@ function _setupKeyboardControls() {
             if (!_controlsInternalGameInstance.currentPiece) return;
 
             switch (event.key.toLowerCase()) {
-                case 'arrowleft': case 'a': 
-                    _controlsInternalGameInstance.currentPiece.moveLeft(); 
+                case 'arrowleft': case 'a':
+                    _controlsInternalGameInstance.currentPiece.moveLeft();
+                    if (_controlsInternalGameInstance.isPieceLandedState()) _controlsInternalGameInstance.handleLandedPieceHorizontalMove();
                     handled = true; break;
 
-                case 'arrowright': case 'd': 
-                    _controlsInternalGameInstance.currentPiece.moveRight(); 
+                case 'arrowright': case 'd':
+                    _controlsInternalGameInstance.currentPiece.moveRight();
+                    if (_controlsInternalGameInstance.isPieceLandedState()) _controlsInternalGameInstance.handleLandedPieceHorizontalMove();
                     handled = true; break;
 
                 case 'arrowdown': case 's':
-                    const landed = _controlsInternalGameInstance.currentPiece.moveDown();
-                    if (landed) {
-                        fixPieceOnBoard(_controlsInternalGameInstance.currentPiece);
-                        const linesClearedInfo = checkAndClearLines();
-                        _controlsInternalGameInstance.handleLineClears(linesClearedInfo);
-                        _controlsInternalGameInstance.spawnNewPieceInternalLogic();
-                        if (_controlsInternalGameInstance.gameOver) { _controlsInternalGameInstance.drawGame(); _controlsInternalGameInstance.handleGameOver(); return; }
+                    if (!_controlsInternalGameInstance.isPieceLandedState()) {
+                        const landed = _controlsInternalGameInstance.currentPiece.moveDown();
+                        if (landed) _controlsInternalGameInstance.pieceDroppedToBottom();
                     }
                     _controlsInternalGameInstance.resetDropCounter();
                     handled = true;
                     break;
 
-                case 'arrowup': case 'w': case 'x': 
-                    _controlsInternalGameInstance.currentPiece.rotate(); 
+                case 'arrowup': case 'w': case 'x':
+                    _controlsInternalGameInstance.currentPiece.rotate();
+                    if (_controlsInternalGameInstance.isPieceLandedState()) _controlsInternalGameInstance.handleLandedPieceHorizontalMove();
                     handled = true; break;
 
-                case ' ': // Space for Hard Drop
-                    while (!_controlsInternalGameInstance.currentPiece.moveDown()) { /* Keep falling */ }
-                    fixPieceOnBoard(_controlsInternalGameInstance.currentPiece);
-                    const linesClearedInfoHardDrop = checkAndClearLines();
-                    _controlsInternalGameInstance.handleLineClears(linesClearedInfoHardDrop);
-                    _controlsInternalGameInstance.spawnNewPieceInternalLogic();
-
-                    if (_controlsInternalGameInstance.gameOver) { _controlsInternalGameInstance.drawGame(); _controlsInternalGameInstance.handleGameOver(); return; }
+                case ' ': // Hard drop shares the touch lock-delay lifecycle.
+                    if (!_controlsInternalGameInstance.isPieceLandedState()) {
+                        while (!_controlsInternalGameInstance.currentPiece.moveDown()) { /* Keep falling */ }
+                        _controlsInternalGameInstance.pieceDroppedToBottom();
+                    }
                     _controlsInternalGameInstance.resetDropCounter();
                     handled = true;
                     break;

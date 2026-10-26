@@ -7,6 +7,13 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.5] — Authorized P1 lock-delay fixes and workflow policy (2026-10-26)
+- Updated AGENTS.md: direct master commits allowed; ask owner before fixing any newly found future issues.
+- Unified keyboard soft/hard-drop landing with the touch lock-delay lifecycle.
+- Cancel pending piece-lock timeout on pause/menu; rearm on resume and protect timeout callbacks from inactive states.
+- Added static QA verification notes in docs/QA-BASELINE.md; browser/Android smoke tests remain NOT TESTED.
+- Music controls unchanged pending owner decision; no APK build.
+
 ## [0.1.4] — Phase 1 source audit documentation (2026-10-26)
 - Added `docs/QA-BASELINE.md` with frozen v0.1.3 audit evidence, identified defects, risks, and Phase 2 readiness.
 - Updated roadmap only for documented source-review findings; gameplay smoke and regression tests remain outstanding.
