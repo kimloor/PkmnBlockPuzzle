@@ -1,0 +1,32 @@
+name: Version Bump Check
+on:
+  pull_request:
+    branches: [master]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require version bump and consistency
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          python3 - <<'PY'
+          import pathlib,re,subprocess,os,sys
+          base=os.environ['BASE_REF']
+          old=subprocess.check_output(['git','show',f'origin/{base}:TetrisApp/config.xml'],text=True)
+          new=pathlib.Path('TetrisApp/config.xml').read_text()
+          html=pathlib.Path('TetrisApp/www/index.html').read_text()
+          pat=r'<widget[^>]*\bversion="(\d+\.\d+\.\d+)"'
+          before=re.search(pat,old).group(1)
+          after=re.search(pat,new).group(1)
+          if tuple(map(int,after.split('.'))) <= tuple(map(int,before.split('.'))):
+              sys.exit(f'ERROR: bump app version on every PR: {before} -> {after}')
+          if f'v{after}</div>' not in html:
+              sys.exit('ERROR: menu version and config.xml version mismatch')
+          print(f'PASS: {before} -> {after}, menu matches')
+          PY
