@@ -7,6 +7,12 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.6] — Wider mobile portrait game board (2026-10-26)
+- Override the older portrait 65vw canvas cap and 300px mobile cap; enlarge board and level header to use available phone width up to 390px.
+- Keep 10:20 board aspect ratio, fit within viewport, and preserve vertical scrolling on short mobile screens.
+- Align score/next-piece strip with board width; no gameplay/audio/APK changes.
+- Static CSS checks completed; live iOS Safari, Android and landscape visual checks remain NOT TESTED.
+
 ## [0.1.5] — Authorized P1 lock-delay fixes and workflow policy (2026-10-26)
 - Updated AGENTS.md: direct master commits allowed; ask owner before fixing any newly found future issues.
 - Unified keyboard soft/hard-drop landing with the touch lock-delay lifecycle.

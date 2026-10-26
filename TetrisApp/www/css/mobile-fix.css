@@ -32,6 +32,28 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
   #level-header-display { width: min(420px, calc((100dvh - 120px) / 2)); max-width: 100%; }
 }
 @media (max-width: 768px) and (orientation: portrait) {
-  #tetris-canvas { width: min(100%, 300px); }
-  #level-header-display { width: min(100%, 304px); }
+  /* Override the older responsive.css 65vw cap and previous 300px limit.
+     The visible board uses nearly all available phone width; the 10x20 aspect stays fixed. */
+  #main-container { width: 100%; max-width: 420px; padding: 4px; }
+  #game-area { width: 100%; max-width: 100%; min-width: 0; }
+  #tetris-canvas {
+    width: min(100%, calc(100vw - 24px), 390px);
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 2;
+  }
+  #level-header-display {
+    width: min(100%, calc(100vw - 24px), 390px);
+    max-width: 100%;
+  }
+  #side-panel {
+    width: min(100%, calc(100vw - 24px), 390px);
+    max-width: 100%;
+    margin: 0 0 8px;
+    gap: 8px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+  }
+  #score-container, #next-piece-preview { min-width: 0; width: auto; flex: 1 1 0; }
 }

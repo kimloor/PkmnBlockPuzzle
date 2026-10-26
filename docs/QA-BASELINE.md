@@ -132,3 +132,11 @@ The **frozen v0.1.3 audit above is preserved**. The owner subsequently authorize
 **Test execution:** 0 browser gameplay runs; 0 Android/device tests; 0 unit suites. Git clone attempt could not resolve `github.com` in the available execution environment. Static verification does **not** establish real-game PASS. Required manual regression cases: land/press Down/Space, move/rotate during 200ms delay, rapid key repeat, pause within 200ms of landing and wait, resume and verify rearmed timeout, exit to menu during delay, restart during delay, drag/swipe parity, game-over/high score.
 
 **Residual risks:** P1 code patches require actual browser and device smoke tests before marking functional fixes fully verified. No new gameplay defects were authorized for speculative remediation. No APK build was triggered.
+
+## Mobile width improvement — v0.1.6 (2026-10-26)
+
+**Owner-reported evidence:** iPhone Safari screenshot showed narrow playable board despite free horizontal space. Root cause from static cascade: `responsive.css` imposed `max-width: 65vw` for portrait canvas, while later `mobile-fix.css` only declared `width: min(100%, 300px)`; the earlier maximum remained effective.
+
+**Correction:** The last-loaded `mobile-fix.css` now overrides that maximum explicitly, caps the portrait board at the lesser of available container width, viewport minus 24px, and 390px, matches the level header and aligns the score/next strip. Native canvas dimensions remain 300x600 so gameplay coordinates and 10:20 aspect are unchanged.
+
+**Static verification: PASS** — stylesheet order has mobile-fix last; portrait rule explicitly sets `max-width:100%`; both board and level display use the same cap; native canvas and JS untouched. **Visual regression: NOT TESTED** — open iOS Safari at 375/390px and Android at 360px, verify no x-overflow or clipping; rotate to landscape and check fit; verify tap/drag/swipe correctness; test short viewport vertical scroll. No APK build triggered.
