@@ -14,7 +14,7 @@ Status: planning document; items are proposals until confirmed by the owner.
 - [ ] Check scoring, level advancement, difficulty scaling and persistence against actual source.
 - [ ] Check touch controls, responsive portrait/landscape layouts and accessibility.
 - [ ] Check themes, language switching, music/SFX controls.
-- [ ] Document defects with reproducible steps and priorities.
+- [x] Document source-review defects with reproduction steps and priorities (see [QA baseline](docs/QA-BASELINE.md); browser/device reproduction remains pending).
 
 ## Phase 2 — Quality and reliability
 - [ ] Add automated regression tests for gameplay rules and edge cases.
