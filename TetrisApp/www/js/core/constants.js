@@ -285,7 +285,7 @@ const THEMES = {
     },
 
     sanrio: {
-        name: "Sanrio",
+        name: "Pastel",
         '--body-bg': '#fff0f5',
         '--menu-overlay-bg': 'rgba(255, 240, 245, 0.85)',
         '--menu-card-bg': 'rgba(255, 250, 250, 0.92)',
@@ -312,7 +312,7 @@ const THEMES = {
             L: '#ffd1dc' 
         },
         ghostFillColor: 'rgba(187, 187, 205, 0.3)',
-        '--body-background-image': 'url("../images/themes/sanrio-bg.webp")',
+        '--body-background-image': 'none',
         '--body-background-size': 'cover',
         '--body-background-position': 'center center',
         '--body-background-repeat': 'no-repeat',
@@ -321,7 +321,7 @@ const THEMES = {
     },
 
     kafkaHSR: {
-        name: "Kafka", 
+        name: "Magenta Night", 
         '--body-bg': '#1a141f',
         '--menu-overlay-bg': 'rgba(26, 20, 31, 0.88)', 
         '--menu-card-bg': 'rgba(38, 31, 45, 0.92)',
@@ -348,7 +348,7 @@ const THEMES = {
             L: '#dcb4ea'
         },
         ghostFillColor: 'rgba(230, 200, 255, 0.25)',
-        '--body-background-image': 'url("../images/themes/kafka-hsr-bg.webp")',
+        '--body-background-image': 'none',
         '--body-background-size': 'cover',
         '--body-background-position': 'center center',
         '--body-background-repeat': 'no-repeat',
@@ -357,7 +357,7 @@ const THEMES = {
     },
 
     topazHSR: {
-        name: "Topaz & Numby",
+        name: "Golden Light",
         '--body-bg': '#fdfbf5',
         '--menu-overlay-bg': 'rgba(253, 251, 245, 0.88)',
         '--menu-card-bg': 'rgba(250, 245, 239, 0.95)',
@@ -384,7 +384,7 @@ const THEMES = {
             L: '#fffacd'
         },
         ghostFillColor: 'rgba(218, 165, 32, 0.25)',
-        '--body-background-image': 'url("../images/themes/topaz-hsr-bg.webp")',
+        '--body-background-image': 'none',
         '--body-background-size': 'cover',
         '--body-background-position': 'center center',
         '--body-background-repeat': 'no-repeat',
@@ -393,7 +393,7 @@ const THEMES = {
     },
 
     march7thHSR: {
-        name: "March 7th",
+        name: "Sky Blue",
         '--body-bg': '#e0f2f7',
         '--menu-overlay-bg': 'rgba(224, 242, 247, 0.85)',
         '--menu-card-bg': 'rgba(255, 255, 255, 0.92)',
@@ -420,7 +420,7 @@ const THEMES = {
             L: '#ffffff'
         },
         ghostFillColor: 'rgba(173, 216, 230, 0.3)',
-        '--body-background-image': 'url("../images/themes/7march-hsr-bg.webp")',
+        '--body-background-image': 'none',
         '--body-background-size': 'cover',
         '--body-background-position': 'center center',
         '--body-background-repeat': 'no-repeat',

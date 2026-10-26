@@ -22,13 +22,6 @@ A classic Tetris game built with HTML, CSS, and vanilla JavaScript, featuring mu
     * Sound effects for game events.
     * Separate mute options for music and SFX.
 
-## Screenshots
-
-<div>
-   <img src="TetrisApp/www/images/screenshots/main-menu.png" alt="Main menu" width="300"/>
-   <img src="TetrisApp/www/images/screenshots/board.png" alt="Board" width="300"/>
-</div>
-
 ## Technologies Used
 
 * **HTML5:** For the basic structure of the game.

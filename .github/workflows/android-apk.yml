@@ -1,0 +1,45 @@
+name: Android Debug APK
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android-debug-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: TetrisApp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: TetrisApp/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Cordova
+        run: npm install --global cordova@12
+      - name: Add Android platform
+        run: cordova platform add android@14.0.1
+      - name: Build Android debug APK
+        run: cordova build android --debug -- --packageType=apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PkmnBlockPuzzle-debug-apk
+          path: TetrisApp/platforms/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
