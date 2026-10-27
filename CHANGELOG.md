@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.0] — Pokémon landscape theme and side companion slot (2026-10-27)
+- Added landscape/mobile background asset paths for the Pokémon theme with a subtle contrast overlay and fallback color.
+- Added an inactive companion illustration slot next to the desktop board; hidden on compact screens to preserve gameplay space and reserved for a later approved transparent sprite.
+- Asset backgrounds remain pending binary publication to GitHub; prepared WebP files delivered separately for upload. Static source QA only; browser screenshot/device QA not run and APK not triggered.
+
+
 ## [0.3.1] — Bomb Gravity & Explosion FX (2026-10-27)
 - Apply per-column gravity to fixed board cells after any bomb/chain explosion and the originally complete row clear, preventing suspended cells from remaining after blasts.
 - Add a lightweight 300ms Canvas explosion flash, expanding ring and spark particles at each bomb position, including chain blasts.
