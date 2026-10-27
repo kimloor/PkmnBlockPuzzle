@@ -48,7 +48,7 @@ const HIGHLIGHT_PERCENT = 25;
 const SHADOW_PERCENT = 25;
 
 // --- Theme Management ---
-const DEFAULT_THEME_NAME = 'classicDark';
+const DEFAULT_THEME_NAME = 'pokemonTheme';
 const THEME_STORAGE_KEY = 'tetrisJSTSelectedTheme';
 
 // --- High Score Management ---
@@ -70,6 +70,39 @@ const MAX_HIGH_SCORES = 5;
  * - Background image properties.
  */
 const THEMES = {
+    // Placeholder palette: Pokemon-themed UI, no copyrighted background artwork.
+    // Dedicated Pokemon artwork/assets can be integrated in a later approved task.
+    pokemonTheme: {
+        name: "Pokemon Theme",
+        '--body-bg': '#12264e',
+        '--menu-overlay-bg': 'rgba(12, 31, 67, 0.9)',
+        '--menu-card-bg': 'rgba(25, 60, 110, 0.95)',
+        '--text-color-light': '#fff8dc',
+        '--text-color-medium': '#d6e6f8',
+        '--text-color-dark': '#152746',
+        '--accent-color-primary': '#ffdb38',
+        '--accent-color-primary-hover': '#f2c818',
+        '--accent-color-secondary-border': '#2e9cff',
+        '--accent-color-secondary-hover-bg': 'rgba(46, 156, 255, 0.14)',
+        '--board-bg': '#111e3b',
+        '--board-border': '#54b5ff',
+        '--grid-color': '#2b4573',
+        '--side-panel-card-bg': 'rgba(34, 78, 132, 0.92)',
+        '--side-panel-card-border': 'rgba(101, 180, 255, 0.65)',
+        '--checkbox-accent': '#ffdb38',
+        pieceColors: {
+            I: '#44d8ff', O: '#ffdb38', T: '#af83ff',
+            S: '#50d477', Z: '#ff6472', J: '#418cff', L: '#ffab3a'
+        },
+        ghostFillColor: 'rgba(255, 240, 150, 0.24)',
+        '--body-background-image': 'none',
+        '--body-background-size': 'cover',
+        '--body-background-position': 'center',
+        '--body-background-repeat': 'no-repeat',
+        '--body-background-attachment': 'fixed',
+        '--body-background-overlay-color': 'transparent'
+    },
+
     classicDark: {
         name: "Classic Dark",
         '--body-bg': '#1e293b',
@@ -444,7 +477,7 @@ const TRANSLATIONS = {
     th: {
         settingsTitle: "ตั้งค่า",
         muteLabel: "ปิดเสียง",
-        tetrisTitle: "เกมเรียงบล็อก",
+        tetrisTitle: "PkmnBlockPuzzle",
         languageLabel: "ภาษา:",
         themeLabel: "ธีม:",
         dynamicDescentLabel: "เพิ่มความเร็วตามเลเวล",
@@ -491,7 +524,7 @@ const TRANSLATIONS = {
         tutorialDismiss: "Toca una vez para comenzar",
 
         // General Titles and Labels
-        tetrisTitle: "TETRIS",
+        tetrisTitle: "PkmnBlockPuzzle",
         languageLabel: "Idioma:",
         themeLabel: "Tema:",
         // Main Menu
@@ -535,7 +568,7 @@ const TRANSLATIONS = {
         tutorialDismiss: "Tap once to start playing",
 
         // General Titles and Labels
-        tetrisTitle: "TETRIS",
+        tetrisTitle: "PkmnBlockPuzzle",
         languageLabel: "Language:",
         themeLabel: "Theme:",
         // Main Menu

@@ -7,6 +7,12 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.13] — Main hub polish and Pokemon theme placeholder (2026-10-27)
+- Standardized localized title to PkmnBlockPuzzle and styled brand text with offline-safe font fallbacks.
+- Restored compact main menu button sizes; moved version to the bottom as a small badge.
+- Added Pokemon Theme as default for new visitors (saved user theme preference remains respected), with a self-contained blue/yellow placeholder palette until theme assets are approved.
+- Static source validation only; visual/mobile smoke test pending. No APK build.
+
 ## [0.1.12] — Settings navigation hardening and Main Menu ordering (2026-10-27)
 - Ordered main menu: Start, Settings, High Scores, Theme, Language, Dynamic Speed.
 - Open settings panel before synchronizing audio controls; guard missing DOM components and report initialization errors to console.
