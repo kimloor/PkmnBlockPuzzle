@@ -69,3 +69,13 @@ function addScoreToHighScoresList(scoreToAdd) {
     const newHighScoresString = JSON.stringify(highScores);
     return (newHighScoresString !== oldHighScoresString) && highScores.includes(scoreToAdd);
 }
+/** Update a game's previously saved snapshot rather than add duplicate scores on resume. */
+function updateSessionHighScore(previousScore, updatedScore) {
+    const index = highScores.indexOf(previousScore);
+    if (index !== -1) highScores.splice(index, 1);
+    highScores.push(updatedScore);
+    highScores.sort((a, b) => b - a);
+    highScores = highScores.slice(0, MAX_HIGH_SCORES);
+    saveHighScoresToStorage();
+    return highScores.includes(updatedScore);
+}
