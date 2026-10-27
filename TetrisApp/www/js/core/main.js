@@ -26,6 +26,7 @@ let animationFrameId = null;
 let dynamicSpeedEnabled = true;
 let currentDropInterval = ORIGINAL_DROP_INTERVAL; // From constants.js
 let lineClearAnimations = [];
+let bombExplosionEffects = [];
 let gameLevel = 0;
 let scoreNeededToReachNextLevel = 0;
 let canSwapPiece = true;
@@ -75,6 +76,7 @@ function initializeNewGame(keepScore = false) {
     initGameBoard();
     gameOver = false;
     isPieceLanded = false;
+    bombExplosionEffects = [];
 
     clearTimeout(lockDelayTimerId);
     lockDelayTimerId = null;
@@ -280,7 +282,11 @@ function lockPieceAndContinue() {
     fixPieceOnBoard(currentPiece); 
     const linesClearedInfo = checkAndClearLines(); 
     handleLineClears(linesClearedInfo);
-    if (linesClearedInfo.explosions?.length) showBombFeedback(linesClearedInfo.explosions.length);
+    if (linesClearedInfo.explosions?.length) {
+        showBombFeedback(linesClearedInfo.explosions.length);
+        const startTime = performance.now();
+        bombExplosionEffects.push(...linesClearedInfo.explosions.map(bomb => ({ ...bomb, startTime })));
+    }
     
     spawnNewPieceInternalLogic();
 
@@ -394,6 +400,7 @@ function drawGame() {
     }
     
     lineClearAnimations = drawLineClearAnimationsFrame(context, lineClearAnimations, canvas.width);
+    bombExplosionEffects = drawExplosionEffectsFrame(context, bombExplosionEffects, performance.now());
     drawNextPiecePreview(nextPiece, contextNextPiece, currentActiveThemeName, NEXT_CANVAS_SIZE_BLOCKS);
 }
 
