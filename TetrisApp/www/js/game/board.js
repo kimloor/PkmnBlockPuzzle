@@ -153,6 +153,22 @@ function isRowFull(rowIndex) {
  * - `count`: {number} The number of lines cleared in this turn.
  * - `indices`: {Array<number>} An array of the original row indices that were cleared.
  */
+/** Pack each board column downward after a bomb removed cells. */
+function applyColumnGravity() {
+    for (let col = 0; col < COLS; col++) {
+        let writeRow = ROWS - 1;
+        for (let row = ROWS - 1; row >= 0; row--) {
+            const cell = gameBoard[row][col];
+            if (cell !== 0) {
+                gameBoard[writeRow][col] = cell;
+                if (writeRow !== row) gameBoard[row][col] = 0;
+                writeRow--;
+            }
+        }
+        for (let row = writeRow; row >= 0; row--) gameBoard[row][col] = 0;
+    }
+}
+
 function checkAndClearLines() {
     const fullRows = [];
     for (let r = 0; r < ROWS; r++) if (isRowFull(r)) fullRows.push(r);
@@ -187,6 +203,7 @@ function checkAndClearLines() {
         gameBoard.splice(r, 1);
         gameBoard.unshift(Array(COLS).fill(0));
     }
+    if (explosions.length) applyColumnGravity();
     return { count: fullRows.length, indices: fullRows, goldenCellsCleared, explosions };
 }
 
