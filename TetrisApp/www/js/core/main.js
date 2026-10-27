@@ -88,6 +88,9 @@ function initializeNewGame(keepScore = false) {
     clearTimeout(showBonusScoreFeedback.timeoutId);
     const bonusFeedback = document.getElementById('bonus-score-feedback');
     if (bonusFeedback) bonusFeedback.hidden = true;
+    clearTimeout(showBombFeedback.timeoutId);
+    const bombFeedback = document.getElementById('bomb-feedback');
+    if (bombFeedback) bombFeedback.hidden = true;
     updateScoreDisplay();
 
     if (dynamicSpeedToggle) dynamicSpeedEnabled = dynamicSpeedToggle.checked;
@@ -197,15 +200,15 @@ function spawnNewPieceInternalLogic() {
 function performPieceSwap() {
     if (!currentPiece || !nextPiece || !canSwapPiece || gameState !== 'PLAYING') { return; }
 
-    const originalCurrentPieceType = currentPiece.type;
-    currentPiece = new Piece(nextPiece.type); 
+    const originalCurrentPiece = currentPiece;
+    currentPiece = new Piece(nextPiece.type, nextPiece.bombCell); 
 
     if (!isPositionValid(currentPiece, currentPiece.x, currentPiece.y)) {
         gameOver = true; 
         handleGameOver();
         return;
     }
-    nextPiece = new Piece(originalCurrentPieceType);
+    nextPiece = new Piece(originalCurrentPiece.type, originalCurrentPiece.bombCell);
 
     canSwapPiece = false; 
     dropCounter = 0;
@@ -277,6 +280,7 @@ function lockPieceAndContinue() {
     fixPieceOnBoard(currentPiece); 
     const linesClearedInfo = checkAndClearLines(); 
     handleLineClears(linesClearedInfo);
+    if (linesClearedInfo.explosions?.length) showBombFeedback(linesClearedInfo.explosions.length);
     
     spawnNewPieceInternalLogic();
 
@@ -327,6 +331,15 @@ function handleLineClears(linesClearedInfo) {
     }
 }
 
+
+function showBombFeedback(count) {
+    const badge = document.getElementById('bomb-feedback');
+    if (!badge) return;
+    badge.textContent = count > 1 ? 'CHAIN EXPLOSION ×' + count + '!' : 'BOOM!';
+    badge.hidden = false;
+    clearTimeout(showBombFeedback.timeoutId);
+    showBombFeedback.timeoutId = setTimeout(() => { badge.hidden = true; }, 1200);
+}
 
 function showBonusScoreFeedback(multiplier) {
     const badge = document.getElementById('bonus-score-feedback');
