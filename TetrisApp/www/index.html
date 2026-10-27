@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/highscores.css">
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/mobile-fix.css?v=0.1.14">
+    <link rel="stylesheet" href="css/mobile-fix.css?v=0.4.0">
     <link rel="stylesheet" href="css/tutorial.css">
         <link rel="icon" type="image/png" sizes="128x128" href="icons/app-icon.png">
     <link rel="apple-touch-icon" href="icons/app-icon.png">
@@ -54,7 +54,7 @@
                 <input type="checkbox" id="dynamic-speed-toggle" name="dynamic-speed-toggle" checked>
                 <label for="dynamic-speed-toggle" data-i18n-key="dynamicDescentLabel">Velocidad dinámica</label>
             </div>
-            <div class="game-version" aria-label="Game version">v0.3.1</div>
+            <div class="game-version" aria-label="Game version">v0.4.0</div>
         </div>
     </div>
 
@@ -107,6 +107,7 @@
 
     <div id="game-content">
         <div id="main-container">
+            <aside id="pokemon-side-slot" aria-label="Pokémon companion area" aria-hidden="true"><span class="pokemon-side-placeholder"></span></aside>
             <div id="game-area">
                 <div id="level-header-display"> 
                     <h4 data-i18n-key="levelLabelCaps">NIVEL</h4>
@@ -173,7 +174,7 @@
     <script src="js/services/audio.js?v=0.1.12"></script>
     <script src="js/services/storage.js"></script>
     <script src="js/services/localization.js"></script>
-    <script src="js/services/theme.js"></script>
+    <script src="js/services/theme.js?v=0.4.0"></script>
     <script src="js/services/scoreLevelManager.js?v=0.2.1"></script>
     <script src="js/ui/drawingUtils.js?v=0.3.1"></script>
     <script src="js/controls/controls.js"></script>
