@@ -37,9 +37,16 @@ jobs:
         run: cordova platform add android@14.0.1
       - name: Build Android debug APK
         run: cordova build android --debug -- --packageType=apk
+      - name: Rename debug APK
+        run: |
+          set -euo pipefail
+          apk_dir="platforms/android/app/build/outputs/apk/debug"
+          test -f "$apk_dir/app-debug.apk"
+          mv "$apk_dir/app-debug.apk" "$apk_dir/PkmnBlockPuzzle.apk"
+          test -s "$apk_dir/PkmnBlockPuzzle.apk"
       - uses: actions/upload-artifact@v4
         with:
-          name: PkmnBlockPuzzle-debug-apk
-          path: TetrisApp/platforms/android/app/build/outputs/apk/debug/*.apk
+          name: PkmnBlockPuzzle-apk
+          path: TetrisApp/platforms/android/app/build/outputs/apk/debug/PkmnBlockPuzzle.apk
           if-no-files-found: error
           retention-days: 14

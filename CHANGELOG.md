@@ -7,6 +7,11 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.15] — Android APK artifact filename (2026-10-27)
+- Rename the generated Android debug APK to `PkmnBlockPuzzle.apk` before uploading the artifact.
+- Set the Actions artifact bundle name to `PkmnBlockPuzzle-apk`, keeping the debug signing/build behavior and manual-only dispatch unchanged.
+- Source-level workflow and version checks PASS; actual GitHub Actions APK build NOT TESTED (not triggered).
+
 ## [0.1.14] — Main Menu alignment and icon branding (2026-10-27)
 - Reused the existing local app icon above the PkmnBlockPuzzle title without changing the source asset.
 - Unified Start/Settings/High Scores button width and Theme/Language/Speed control alignment with a shared 260px column and fixed label grid.
