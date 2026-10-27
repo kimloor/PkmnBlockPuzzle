@@ -76,6 +76,7 @@ function drawFixedPieces(context, themeNameToUse) {
                 
                 context.fillStyle = baseColor;
                 context.fillRect(x + bs, y + bs, BLOCK_SIZE - 2 * bs, BLOCK_SIZE - 2 * bs);
+                if (isBonusPieceType(pieceTypeKey)) drawGoldenGlow(context, x, y);
             }
         });
     });
@@ -153,9 +154,11 @@ function isRowFull(rowIndex) {
 function checkAndClearLines() {
     let linesClearedThisTurn = 0;
     let clearedRowIndicesThisTurn = [];
+    let goldenCellsCleared = 0;
 
     for (let r = ROWS - 1; r >= 0; r--) {
         if (isRowFull(r)) {
+            goldenCellsCleared += gameBoard[r].filter(isBonusPieceType).length;
             clearedRowIndicesThisTurn.push(r); // Save the index BEFORE deleting
             gameBoard.splice(r, 1); // Delete the entire row
             gameBoard.unshift(Array(COLS).fill(0)); // Add new empty row at the top
@@ -163,7 +166,7 @@ function checkAndClearLines() {
             r++; // Re-evaluate the row that has just moved down to this position
         }
     }
-    return { count: linesClearedThisTurn, indices: clearedRowIndicesThisTurn };
+    return { count: linesClearedThisTurn, indices: clearedRowIndicesThisTurn, goldenCellsCleared };
 }
 
 
