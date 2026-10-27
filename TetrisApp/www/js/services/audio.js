@@ -1,5 +1,7 @@
 // --- Module-scoped variables for HTMLAudioElements ---
 let backgroundMusicElement;
+let openingMusicElement;
+let activeMusicScreen = "MENU";
 let lineClearSoundElement, tetrisClearSoundElement;
 let newHighScoreSoundElement, gameOverSoundElement, buttonClickSoundElement;
 
@@ -16,6 +18,7 @@ let areSfxMuted = false;
  */
 function initAudioElements() {
     backgroundMusicElement = document.getElementById('backgroundMusicPlayer');
+    openingMusicElement = document.getElementById('openingMusicPlayer');
     lineClearSoundElement = document.getElementById('lineClearSound');
     tetrisClearSoundElement = document.getElementById('tetrisClearSound');
     newHighScoreSoundElement = document.getElementById('newHighScoreSound');
@@ -26,6 +29,7 @@ function initAudioElements() {
     if (backgroundMusicElement) {
         backgroundMusicElement.muted = isMusicMuted;
     }
+    if (openingMusicElement) openingMusicElement.muted = isMusicMuted;
 }
 
 
@@ -41,9 +45,8 @@ function loadMuteSettings() {
             isMusicMuted = savedMusicMute === 'true';
         }
     }
-    if (backgroundMusicElement) {
-        backgroundMusicElement.muted = isMusicMuted;
-    }
+    if (backgroundMusicElement) backgroundMusicElement.muted = isMusicMuted;
+    if (openingMusicElement) openingMusicElement.muted = isMusicMuted;
 
     if (typeof SFX_MUTE_STORAGE_KEY !== 'undefined') {
         const savedSfxMute = localStorage.getItem(SFX_MUTE_STORAGE_KEY);
@@ -94,8 +97,12 @@ function saveSfxMuteSetting() {
  */
 function toggleMusicMute() {
     isMusicMuted = !isMusicMuted;
-    if (backgroundMusicElement) {
-        backgroundMusicElement.muted = isMusicMuted;
+    if (backgroundMusicElement) backgroundMusicElement.muted = isMusicMuted;
+    if (openingMusicElement) openingMusicElement.muted = isMusicMuted;
+    if (isMusicMuted) {
+        pauseAllMusic();
+    } else {
+        syncMusicForScreen(activeMusicScreen);
     }
     saveMusicMuteSetting();
     return isMusicMuted;
@@ -180,6 +187,29 @@ function playButtonClickSound() {
 }
 
 
+// --- Screen-dependent music routing ---
+// Called on screen transitions and when the music preference changes.
+// Mobile browsers can block playback before a user gesture; do not retry in a timer.
+function pauseAllMusic() {
+    for (const element of [backgroundMusicElement, openingMusicElement]) {
+        if (element && !element.paused) element.pause();
+    }
+}
+function syncMusicForScreen(screenName) {
+    activeMusicScreen = screenName;
+    const target = (screenName === 'MENU' || screenName === 'HIGH_SCORES')
+        ? openingMusicElement
+        : screenName === 'PLAYING' ? backgroundMusicElement : null;
+    for (const element of [backgroundMusicElement, openingMusicElement]) {
+        if (element && element !== target && !element.paused) element.pause();
+    }
+    if (target && !isMusicMuted && target.paused) {
+        target.play().catch(error => {
+            console.warn('Music playback blocked or unavailable:', error);
+        });
+    }
+}
+
 // --- Background Music Controls ---
 
 /**
@@ -188,14 +218,7 @@ function playButtonClickSound() {
  * @returns None.
  */
 function playBackgroundMusic() {
-    if (backgroundMusicElement) {
-        backgroundMusicElement.muted = isMusicMuted;
-        if (!isMusicMuted && backgroundMusicElement.paused) {
-            backgroundMusicElement.play().catch(error => {
-                console.warn("The music could not be played automatically:", error);
-            });
-        }
-    }
+    syncMusicForScreen('PLAYING');
 }
 
 
@@ -205,9 +228,7 @@ function playBackgroundMusic() {
  * @returns None.
  */
 function pauseBackgroundMusic() {
-    if (backgroundMusicElement && !backgroundMusicElement.paused) {
-        backgroundMusicElement.pause();
-    }
+    pauseAllMusic();
 }
 
 
@@ -217,8 +238,6 @@ function pauseBackgroundMusic() {
  * @returns None.
  */
 function stopBackgroundMusic() {
-    if (backgroundMusicElement) {
-        backgroundMusicElement.pause();
-        backgroundMusicElement.currentTime = 0;
-    }
+    pauseAllMusic();
+    if (backgroundMusicElement) backgroundMusicElement.currentTime = 0;
 }

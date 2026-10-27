@@ -7,6 +7,12 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.10] — Offline menu/game music routing (2026-10-27)
+- Connect existing `audio/Opening.mp3` to MENU/HIGH_SCORES and `audio/BGM.mp3` to PLAYING; both loop locally.
+- Stop music on PAUSED/GAMEOVER and switch tracks without overlap; preserve a shared persistent Music mute toggle and independent SFX.
+- Browser autoplay may require an initial user gesture; playback errors are handled without crashing.
+- Static source checks only; iOS Safari/Android audio smoke test pending. No APK build.
+
 ## [0.1.9] — Home Screen app name (2026-10-26)
 - Changed HTML document title and Apple Home Screen application title to PkmnBlockPuzzle, aligning with the Cordova app name.
 - Added standard application-name metadata. No BGM or gameplay changes; no APK build.

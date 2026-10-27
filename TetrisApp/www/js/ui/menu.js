@@ -77,6 +77,7 @@ function showScreen(screenName) {
     else if (screenName === 'PAUSED') pauseMenu.classList.add('active');
     else if (screenName === 'GAMEOVER') gameOverMenu.classList.add('active');
     else if (screenName === 'HIGH_SCORES') highScoresScreen.classList.add('active');
+    if (typeof syncMusicForScreen === 'function') syncMusicForScreen(screenName);
 }
 
 
