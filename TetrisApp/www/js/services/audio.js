@@ -8,6 +8,20 @@ let newHighScoreSoundElement, gameOverSoundElement, buttonClickSoundElement;
 // --- Module-scoped variables for mute states ---
 let isMusicMuted = false;
 let areSfxMuted = false;
+let musicVolume = 1;
+let sfxVolume = 1;
+const allSfxElements = () => [lineClearSoundElement, tetrisClearSoundElement, newHighScoreSoundElement, gameOverSoundElement, buttonClickSoundElement];
+function applyAudioVolumes() {
+    for (const element of [backgroundMusicElement, openingMusicElement]) if (element) element.volume = musicVolume;
+    for (const element of allSfxElements()) if (element) element.volume = sfxVolume;
+}
+function clampVolume(value) { return Math.max(0, Math.min(1, Number(value) || 0)); }
+function getMusicVolume() { return Math.round(musicVolume * 100); }
+function getSfxVolume() { return Math.round(sfxVolume * 100); }
+function setMusicVolume(value) { musicVolume = clampVolume(value / 100); applyAudioVolumes(); try { localStorage.setItem(MUSIC_VOLUME_STORAGE_KEY, String(getMusicVolume())); } catch (e) { console.warn('Cannot persist music volume', e); } }
+function setSfxVolume(value) { sfxVolume = clampVolume(value / 100); applyAudioVolumes(); try { localStorage.setItem(SFX_VOLUME_STORAGE_KEY, String(getSfxVolume())); } catch (e) { console.warn('Cannot persist SFX volume', e); } }
+function setMusicMuted(value) { if (isMusicMuted !== Boolean(value)) toggleMusicMute(); }
+function setSfxMuted(value) { if (areSfxMuted !== Boolean(value)) toggleSfxMute(); }
 
 
 /**
@@ -30,6 +44,7 @@ function initAudioElements() {
         backgroundMusicElement.muted = isMusicMuted;
     }
     if (openingMusicElement) openingMusicElement.muted = isMusicMuted;
+    applyAudioVolumes();
 }
 
 
@@ -39,8 +54,16 @@ function initAudioElements() {
  * @returns None.
  */
 function loadMuteSettings() {
+    try {
+        const musicSaved = localStorage.getItem(MUSIC_VOLUME_STORAGE_KEY);
+        const sfxSaved = localStorage.getItem(SFX_VOLUME_STORAGE_KEY);
+        if (musicSaved !== null && Number.isFinite(Number(musicSaved))) musicVolume = clampVolume(Number(musicSaved) / 100);
+        if (sfxSaved !== null && Number.isFinite(Number(sfxSaved))) sfxVolume = clampVolume(Number(sfxSaved) / 100);
+    } catch (e) { console.warn("Audio volume settings unavailable", e); }
+    applyAudioVolumes();
     if (typeof MUSIC_MUTE_STORAGE_KEY !== 'undefined') {
-        const savedMusicMute = localStorage.getItem(MUSIC_MUTE_STORAGE_KEY);
+        let savedMusicMute = null;
+        try { savedMusicMute = localStorage.getItem(MUSIC_MUTE_STORAGE_KEY); } catch (e) { console.warn('Music mute storage unavailable', e); }
         if (savedMusicMute !== null) {
             isMusicMuted = savedMusicMute === 'true';
         }
@@ -49,7 +72,8 @@ function loadMuteSettings() {
     if (openingMusicElement) openingMusicElement.muted = isMusicMuted;
 
     if (typeof SFX_MUTE_STORAGE_KEY !== 'undefined') {
-        const savedSfxMute = localStorage.getItem(SFX_MUTE_STORAGE_KEY);
+        let savedSfxMute = null;
+        try { savedSfxMute = localStorage.getItem(SFX_MUTE_STORAGE_KEY); } catch (e) { console.warn('SFX mute storage unavailable', e); }
         if (savedSfxMute !== null) {
             areSfxMuted = savedSfxMute === 'true';
         }

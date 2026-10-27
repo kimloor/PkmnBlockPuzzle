@@ -3,6 +3,8 @@ const startMenu = document.getElementById('start-menu');
 const pauseMenu = document.getElementById('pause-menu');
 const gameOverMenu = document.getElementById('game-over-menu');
 const highScoresScreen = document.getElementById('high-scores-screen');
+const settingsScreen = document.getElementById('settings-screen');
+let settingsReturnScreen = 'MENU';
 const gameContent = document.getElementById('game-content');
 
 // --- DOM Element References for Score Displays & UI Text ---
@@ -70,6 +72,7 @@ function showScreen(screenName) {
     pauseMenu.classList.remove('active');
     gameOverMenu.classList.remove('active');
     highScoresScreen.classList.remove('active');
+    settingsScreen.classList.remove('active');
     gameContent.classList.remove('active');
 
     if (screenName === 'MENU') startMenu.classList.add('active');
@@ -77,7 +80,8 @@ function showScreen(screenName) {
     else if (screenName === 'PAUSED') pauseMenu.classList.add('active');
     else if (screenName === 'GAMEOVER') gameOverMenu.classList.add('active');
     else if (screenName === 'HIGH_SCORES') highScoresScreen.classList.add('active');
-    if (typeof syncMusicForScreen === 'function') syncMusicForScreen(screenName);
+    else if (screenName === 'SETTINGS') settingsScreen.classList.add('active');
+    if (typeof syncMusicForScreen === 'function') syncMusicForScreen(screenName === 'SETTINGS' ? settingsReturnScreen : screenName);
 }
 
 
@@ -257,6 +261,30 @@ function initializeMenuEventListeners(gameActions) {
         });
     }
     updateMuteButtonIcons();
+    const refreshAudioSettings = () => {
+        document.getElementById('music-volume').value = getMusicVolume();
+        document.getElementById('sfx-volume').value = getSfxVolume();
+        document.getElementById('music-volume-value').textContent = getMusicVolume() + '%';
+        document.getElementById('sfx-volume-value').textContent = getSfxVolume() + '%';
+        document.getElementById('music-muted').checked = getMusicMuteState();
+        document.getElementById('sfx-muted').checked = getSfxMuteState();
+    };
+    function openAudioSettings(returnScreen) {
+        settingsReturnScreen = returnScreen;
+        refreshAudioSettings();
+        showScreen('SETTINGS');
+    }
+    document.getElementById('settings-start-button')?.addEventListener('click', () => openAudioSettings('MENU'));
+    document.getElementById('settings-pause-button')?.addEventListener('click', () => openAudioSettings('PAUSED'));
+    document.getElementById('settings-back-button')?.addEventListener('click', () => showScreen(settingsReturnScreen));
+    for (const [prefix, setter] of [['music', setMusicVolume], ['sfx', setSfxVolume]]) {
+        document.getElementById(prefix + '-volume')?.addEventListener('input', (event) => {
+            setter(Number(event.target.value));
+            document.getElementById(prefix + '-volume-value').textContent = event.target.value + '%';
+        });
+    }
+    document.getElementById('music-muted')?.addEventListener('change', e => setMusicMuted(e.target.checked));
+    document.getElementById('sfx-muted')?.addEventListener('change', e => setSfxMuted(e.target.checked));
 }
 // One-time tutorial gate: dismiss by one tap, click, Enter or Space.
 // Stores completion locally so returning players can start immediately.

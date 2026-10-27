@@ -7,6 +7,11 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.11] — Audio Settings UI (2026-10-27)
+- Added Settings access from main menu and pause screen; moved BGM/SFX controls into dedicated panel with independent volume sliders (0–100%) and mute checkboxes.
+- Persist music and effects volume locally; preserve existing mute keys and local offline audio sources.
+- Static source review completed; actual Safari/Android/UI smoke test outstanding; no APK build.
+
 ## [0.1.10] — Offline menu/game music routing (2026-10-27)
 - Connect existing `audio/Opening.mp3` to MENU/HIGH_SCORES and `audio/BGM.mp3` to PLAYING; both loop locally.
 - Stop music on PAUSED/GAMEOVER and switch tracks without overlap; preserve a shared persistent Music mute toggle and independent SFX.

@@ -10,6 +10,8 @@ const LANGUAGE_STORAGE_KEY = 'tetrisJSLanguage';
 // --- Audio Mute Settings Storage Keys ---
 const MUSIC_MUTE_STORAGE_KEY = 'tetrisJSMusicMuted_v1';
 const SFX_MUTE_STORAGE_KEY = 'tetrisJSSfxMuted_v1';
+const MUSIC_VOLUME_STORAGE_KEY = 'tetrisJSMusicVolume_v1';
+const SFX_VOLUME_STORAGE_KEY = 'tetrisJSSfxVolume_v1';
 
 // --- Piece Definitions ---
 const PIECE_TYPES = {
@@ -440,6 +442,8 @@ const THEMES = {
  */
 const TRANSLATIONS = {
     th: {
+        settingsTitle: "ตั้งค่า",
+        muteLabel: "ปิดเสียง",
         tetrisTitle: "เกมเรียงบล็อก",
         languageLabel: "ภาษา:",
         themeLabel: "ธีม:",
@@ -475,6 +479,8 @@ const TRANSLATIONS = {
         tutorialDismiss: "แตะหนึ่งครั้งเพื่อเริ่มเล่น"
     },
     es: {
+        settingsTitle: "Configuración",
+        muteLabel: "Silenciar",
         tutorialTitle: "Cómo jugar",
         tutorialMove: "👆 Desliza a izquierda o derecha para mover",
         tutorialRotate: "🔄 Toca el tablero para girar",
@@ -517,6 +523,8 @@ const TRANSLATIONS = {
         levelLabelCaps: "NIVEL",
     },
     en: {
+        settingsTitle: "Settings",
+        muteLabel: "Mute",
         tutorialTitle: "How to play",
         tutorialMove: "👆 Drag left or right to move blocks",
         tutorialRotate: "🔄 Tap the board to rotate",

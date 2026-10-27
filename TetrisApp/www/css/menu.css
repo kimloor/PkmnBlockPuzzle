@@ -284,3 +284,10 @@
         text-shadow: 0 0 10px #fff352, 0 0 20px var(--accent-color-primary);
     }
 }
+/* Audio Settings panel: compact, touch-friendly and scrollable on small screens. */
+.settings-panel { max-width: 400px; box-sizing: border-box; max-height: 88dvh; overflow-y: auto; }
+.settings-audio-group { margin: 14px 0 20px; padding: 14px; border: 1px solid var(--side-panel-card-border); border-radius: 10px; background: var(--side-panel-card-bg); text-align: left; }
+.settings-audio-heading { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; font-weight: 600; }
+.settings-audio-group input[type="range"] { width: 100%; display: block; accent-color: var(--accent-color-primary); min-height: 32px; touch-action: pan-x; }
+.settings-mute { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; }
+.settings-mute input { width: 20px; height: 20px; accent-color: var(--checkbox-accent); }
