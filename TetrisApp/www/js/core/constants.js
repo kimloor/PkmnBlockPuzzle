@@ -83,8 +83,7 @@ const MAX_HIGH_SCORES = 5;
  * - Background image properties.
  */
 const THEMES = {
-    // Placeholder palette: Pokemon-themed UI, no copyrighted background artwork.
-    // Dedicated Pokemon artwork/assets can be integrated in a later approved task.
+    // Theme supports local, offline background assets and an optional companion slot.
     pokemonTheme: {
         name: "Pokemon Theme",
         '--body-bg': '#12264e',
@@ -108,7 +107,7 @@ const THEMES = {
             S: '#50d477', Z: '#ff6472', J: '#418cff', L: '#ffab3a'
         },
         ghostFillColor: 'rgba(255, 240, 150, 0.24)',
-        '--body-background-image': 'none',
+        '--body-background-image': 'url("../images/pokemon/backgrounds/pokemon_bg_desktop.webp")',
         '--body-background-size': 'cover',
         '--body-background-position': 'center',
         '--body-background-repeat': 'no-repeat',
