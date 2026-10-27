@@ -5,6 +5,12 @@ Canonical repository: https://github.com/kimloor/PkmnBlockPuzzle
 ## Purpose
 A responsive falling-block puzzle game for browser and Android (via Apache Cordova). This document describes the currently documented experience, not an assertion that every behavior has passed QA.
 
+## Bonus Block ×2 (v0.2.0)
+- 90% normal pieces, 10% special five-cell pieces: PLUS, U-SHAPE, LONG-L (uniform choice inside the special pool).
+- Bonus pieces move, rotate, ghost, and swap via the existing controls; gold distinguishes them across themes.
+- When the currently locking bonus piece completes at least one row, that lock's line-clear score is doubled after the normal level multiplier. No bonus applies to clears by ordinary pieces even if earlier bonus cells appear in the completed row.
+- No line clear means no bonus. The full score counts toward leveling and High Scores. APK build remains manual.
+
 ## Core gameplay loop
 1. Start a game and control the active falling tetromino.
 2. Move or rotate the piece to fill horizontal rows.
