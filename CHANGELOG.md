@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.3] — Google Drive image import (2026-10-27)
+- Import workflow now supports public Google Drive single-file links using gdown, alongside direct HTTPS URLs and Base64 data.
+- Destination remains configurable under the site's images/ or assets/ directories; validation, version synchronization and manual-only APK policy unchanged.
+- Workflow source checks only, no live dispatch performed.
+
+
 ## [0.4.2] — Flexible image importer (2026-10-27)
 - Manual importer accepts either direct HTTPS URL or Base64 input for small images, with a selectable path under TetrisApp/www/images/ or assets/.
 - Validate image signatures and sizes; fix the previous malformed XML version replacement and handle both new and existing image changes.
