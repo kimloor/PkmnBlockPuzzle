@@ -233,3 +233,50 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
     #start-menu .menu-content-wrapper { padding-top: 12px; padding-bottom: 12px; }
     #start-menu .game-menu-icon { width: 72px; }
 }
+
+
+/* v0.4.0 — presentation-only Pokemon theme background and reserved companion slot.
+   Both assets are offline local files; CSS gradients provide a graceful fallback. */
+html.pokemon-theme-active body {
+    background-color: #75cb77;
+    background-image: linear-gradient(rgba(10, 28, 53, .15), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_desktop.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+html.pokemon-theme-active #game-content.active { position: relative; }
+html.pokemon-theme-active #tetris-canvas { box-shadow: 0 8px 22px rgba(5,22,45,.65); }
+#pokemon-side-slot { display: none; }
+html.pokemon-theme-active #pokemon-side-slot {
+    display: flex;
+    width: clamp(110px, 13vw, 180px);
+    height: 220px;
+    flex: 0 0 auto;
+    border: 1px dashed rgba(255,255,255,.6);
+    border-radius: 20px;
+    background: rgba(12,50,64,.13);
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    align-self: center;
+    order: 0;
+}
+html.pokemon-theme-active #pokemon-side-slot .pokemon-side-placeholder {
+    display: block;
+    width: 70%;
+    height: 76%;
+    border: 2px dashed rgba(255,255,255,.58);
+    border-radius: 50% 50% 38% 38%;
+    opacity: .45;
+}
+@media (max-width: 1050px) {
+    html.pokemon-theme-active #pokemon-side-slot { display: none; }
+}
+@media (max-width: 768px) and (orientation: portrait) {
+    html.pokemon-theme-active body {
+        background-image: linear-gradient(rgba(10, 28, 53, .12), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.webp");
+        background-attachment: scroll;
+    }
+    html.pokemon-theme-active #pokemon-side-slot { display: none; }
+}
