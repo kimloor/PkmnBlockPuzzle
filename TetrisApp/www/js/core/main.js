@@ -32,6 +32,24 @@ let scoreNeededToReachNextLevel = 0;
 let canSwapPiece = true;
 let isPieceLanded = false;
 let lockDelayTimerId = null;
+let sessionRecordedScore = null;
+
+// Save synchronously before mobile browsers suspend/close a page.
+function recordCurrentSessionScore() {
+    if (gameState !== 'PLAYING' && gameState !== 'PAUSED' && gameState !== 'GAMEOVER') return false;
+    if (sessionRecordedScore === null) {
+        addScoreToHighScoresList(score);
+    } else if (sessionRecordedScore !== score) {
+        updateSessionHighScore(sessionRecordedScore, score);
+    } else return false;
+    sessionRecordedScore = score;
+    return true;
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') recordCurrentSessionScore();
+});
+window.addEventListener('pagehide', recordCurrentSessionScore);
 
 
 // --- Game Logic Instance for Controls.js ---
@@ -73,6 +91,10 @@ const gameInstance = {
  * @returns None.
  */
 function initializeNewGame(keepScore = false) {
+    if (!keepScore) {
+        recordCurrentSessionScore();
+        sessionRecordedScore = null;
+    }
     initGameBoard();
     gameOver = false;
     isPieceLanded = false;
@@ -136,7 +158,11 @@ function handleGameOver() {
     lockDelayTimerId = null;
 
     const currentScoreVal = score;
-    const isNewHigh = addScoreToHighScoresList(currentScoreVal);
+    const isNewHigh = sessionRecordedScore === null
+        ? addScoreToHighScoresList(currentScoreVal)
+        : (sessionRecordedScore !== currentScoreVal
+            ? updateSessionHighScore(sessionRecordedScore, currentScoreVal) : false);
+    sessionRecordedScore = currentScoreVal;
     const allHighScores = getHighScores();
     const globalHighScore = allHighScores.length > 0 ? allHighScores[0] : 0;
 
@@ -478,6 +504,7 @@ const gameControlActions = {
      * @brief Restarts the current game from the beginning, resetting score and level.
      */
     onRestartGame: () => {
+        recordCurrentSessionScore();
         playButtonClickSound();
         stopBackgroundMusic();
         initializeNewGame(false);
@@ -487,6 +514,7 @@ const gameControlActions = {
      * @brief Navigates the player back to the main menu screen.
      */
     onGoToMainMenu: () => {
+        recordCurrentSessionScore();
         playButtonClickSound();
         gameState = 'MENU';
         clearTimeout(lockDelayTimerId);
@@ -501,6 +529,8 @@ const gameControlActions = {
      * @brief Allows the player to start a new game after a "Game Over", typically keeping the previous score and level.
      */
     onContinueAfterGameOver: () => {
+        // A continued game starts a new score history entry at its next exit.
+        sessionRecordedScore = null;
         playButtonClickSound();
         initializeNewGame(true);
     },
