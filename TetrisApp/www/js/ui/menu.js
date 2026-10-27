@@ -262,17 +262,24 @@ function initializeMenuEventListeners(gameActions) {
     }
     updateMuteButtonIcons();
     const refreshAudioSettings = () => {
+        if (!settingsScreen) { console.error('Settings screen is missing'); return false; }
+        const requiredIds = ['music-volume', 'sfx-volume', 'music-volume-value', 'sfx-volume-value', 'music-muted', 'sfx-muted'];
+        if (requiredIds.some(id => !document.getElementById(id))) {
+            console.error('Settings controls are missing'); return false;
+        }
         document.getElementById('music-volume').value = getMusicVolume();
         document.getElementById('sfx-volume').value = getSfxVolume();
         document.getElementById('music-volume-value').textContent = getMusicVolume() + '%';
         document.getElementById('sfx-volume-value').textContent = getSfxVolume() + '%';
         document.getElementById('music-muted').checked = getMusicMuteState();
         document.getElementById('sfx-muted').checked = getSfxMuteState();
+        return true;
     };
     function openAudioSettings(returnScreen) {
         settingsReturnScreen = returnScreen;
-        refreshAudioSettings();
+        // Open the panel even if an audio control fails to initialize.
         showScreen('SETTINGS');
+        try { refreshAudioSettings(); } catch (error) { console.error('Unable to refresh audio settings', error); }
     }
     document.getElementById('settings-start-button')?.addEventListener('click', () => openAudioSettings('MENU'));
     document.getElementById('settings-pause-button')?.addEventListener('click', () => openAudioSettings('PAUSED'));

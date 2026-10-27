@@ -291,3 +291,8 @@
 .settings-audio-group input[type="range"] { width: 100%; display: block; accent-color: var(--accent-color-primary); min-height: 32px; touch-action: pan-x; }
 .settings-mute { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; }
 .settings-mute input { width: 20px; height: 20px; accent-color: var(--checkbox-accent); }
+
+/* Keep main menu controls in the owner's requested vertical order. */
+#start-menu .menu-content-wrapper { display: flex; flex-direction: column; align-items: stretch; }
+#start-menu .menu-content-wrapper > .menu-button { width: 100%; margin: 5px 0; box-sizing: border-box; }
+#start-menu .menu-content-wrapper > .menu-option { margin-top: 8px; margin-bottom: 8px; }

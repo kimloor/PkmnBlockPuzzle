@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="PkmnBlockPuzzle">
 
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/menu.css?v=0.1.12">
     <link rel="stylesheet" href="css/highscores.css">
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -35,17 +35,14 @@
     <div id="start-menu" class="menu-overlay active">
         <div class="menu-content-wrapper">
             <h1 data-i18n-key="tetrisTitle">TETRIS</h1>
-            <div class="game-version" aria-label="Game version">v0.1.11</div>
-            <div class="menu-option">
-                <input type="checkbox" id="dynamic-speed-toggle" name="dynamic-speed-toggle" checked>
-                <label for="dynamic-speed-toggle" data-i18n-key="dynamicDescentLabel">Velocidad dinámica</label>
-            </div>
-            
+            <div class="game-version" aria-label="Game version">v0.1.12</div>
+            <button id="start-game-button" class="menu-button" data-i18n-key="startGameButton">Iniciar Juego</button>
+            <button id="settings-start-button" class="menu-button" data-i18n-key="settingsTitle">Settings</button>
+            <button id="high-scores-button" class="menu-button" data-i18n-key="highScoresButton">Mejores Puntuaciones</button>
             <div class="menu-option theme-selector-container">
                 <label for="theme-selector" data-i18n-key="themeLabel">Tema:</label>
                 <select id="theme-selector" name="theme-selector"></select>
             </div>
-
             <div class="menu-option language-selector-container">
                 <label for="language-selector" data-i18n-key="languageLabel">Idioma:</label>
                 <select id="language-selector" name="language-selector">
@@ -54,11 +51,10 @@
                     <option value="th">ไทย</option>
                 </select>
             </div>
-
-            <button id="settings-start-button" class="menu-button" data-i18n-key="settingsTitle">Settings</button>
-
-            <button id="start-game-button" class="menu-button" data-i18n-key="startGameButton">Iniciar Juego</button>
-            <button id="high-scores-button" class="menu-button" data-i18n-key="highScoresButton">Mejores Puntuaciones</button>
+            <div class="menu-option">
+                <input type="checkbox" id="dynamic-speed-toggle" name="dynamic-speed-toggle" checked>
+                <label for="dynamic-speed-toggle" data-i18n-key="dynamicDescentLabel">Velocidad dinámica</label>
+            </div>
         </div>
     </div>
 
@@ -171,8 +167,8 @@
         Your browser does not support the audio element.
     </audio>
 
-    <script src="js/core/constants.js"></script> 
-    <script src="js/services/audio.js"></script>
+    <script src="js/core/constants.js?v=0.1.12"></script> 
+    <script src="js/services/audio.js?v=0.1.12"></script>
     <script src="js/services/storage.js"></script>
     <script src="js/services/localization.js"></script>
     <script src="js/services/theme.js"></script>
@@ -183,8 +179,8 @@
     <script src="js/game/board.js"></script>
     <script src="js/game/piece.js"></script>
 
-    <script src="js/ui/menu.js"></script>
-    <script src="js/core/main.js"></script>
+    <script src="js/ui/menu.js?v=0.1.12"></script>
+    <script src="js/core/main.js?v=0.1.12"></script>
     
 
     </body>
