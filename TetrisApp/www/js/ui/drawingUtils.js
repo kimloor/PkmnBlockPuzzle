@@ -1,3 +1,19 @@
+/** Highlight one golden cell, while keeping ordinary piece bevels unchanged. */
+function drawGoldenGlow(ctx, x, y) {
+    ctx.save();
+    ctx.shadowColor = '#ff9c00';
+    ctx.shadowBlur = 17;
+    ctx.fillStyle = '#ffd261';
+    ctx.fillRect(x + 2, y + 2, BLOCK_SIZE - 4, BLOCK_SIZE - 4);
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#fff8cb';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x + 3, y + 3, BLOCK_SIZE - 6, BLOCK_SIZE - 6);
+    ctx.fillStyle = 'rgba(255,255,255,0.78)';
+    ctx.fillRect(x + 6, y + 5, BLOCK_SIZE - 12, 4);
+    ctx.restore();
+}
+
 /**
  * @brief Draws the preview of the next Tetris piece in its designated canvas.
  * The piece is drawn centered within the preview area and styled with a bevel effect
@@ -52,6 +68,7 @@ function drawNextPiecePreview(nextPieceToDraw, canvasCtx, currentTheme, nextCanv
                 canvasCtx.fill();
                 canvasCtx.fillStyle = baseColor;
                 canvasCtx.fillRect(x + bs, y + bs, BLOCK_SIZE - 2 * bs, BLOCK_SIZE - 2 * bs);
+                if (isBonusPieceType(nextPieceToDraw.type)) drawGoldenGlow(canvasCtx, x, y);
             }
         });
     });
