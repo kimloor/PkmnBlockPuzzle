@@ -345,7 +345,10 @@ function lockPieceAndContinue() {
 function handleLineClears(linesClearedInfo) {
     if (linesClearedInfo.count > 0) {
         const multiplier = 1 + (linesClearedInfo.goldenCellsCleared || 0);
-        addScore(linesClearedInfo.count, multiplier);
+        // Chain reactions may clear more than four rows; score each valid group.
+        for (let remaining = linesClearedInfo.count; remaining > 0; remaining -= 4) {
+            addScore(Math.min(remaining, 4), multiplier);
+        }
         if (multiplier > 1) showBonusScoreFeedback(multiplier);
 
         if (linesClearedInfo.count === 4) {
@@ -529,8 +532,6 @@ const gameControlActions = {
      * @brief Allows the player to start a new game after a "Game Over", typically keeping the previous score and level.
      */
     onContinueAfterGameOver: () => {
-        // A continued game starts a new score history entry at its next exit.
-        sessionRecordedScore = null;
         playButtonClickSound();
         initializeNewGame(true);
     },
