@@ -80,6 +80,7 @@ class Piece {
                         // Main color in the center
                         context.fillStyle = baseColor;
                         context.fillRect(x + bs, y + bs, BLOCK_SIZE - 2 * bs, BLOCK_SIZE - 2 * bs);
+                        if (isBonusPieceType(this.type)) drawGoldenGlow(context, x, y);
                     }
                 }
             });
