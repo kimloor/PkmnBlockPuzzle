@@ -84,12 +84,12 @@ function checkLevelUp() {
  * @param {number} linesCleared - The number of lines cleared by the player.
  * @returns None.
  */
-function addScore(linesCleared) {
+function addScore(linesCleared, bonusMultiplier = 1) {
     let basePoints = BASE_POINTS_LINE_CLEAR[linesCleared] || 0; 
     if (basePoints === 0) return;
 
     let currentMultiplier = getScoreMultiplier(gameLevel);
-    let pointsEarned = Math.round(basePoints * currentMultiplier);
+    let pointsEarned = Math.round(basePoints * currentMultiplier * bonusMultiplier);
 
     score += pointsEarned;
     updateScoreDisplay();
