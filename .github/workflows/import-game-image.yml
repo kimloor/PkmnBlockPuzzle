@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       image_url:
-        description: 'Direct HTTPS image URL (PNG, JPG, WebP, GIF)'
-        required: true
+        description: 'Optional direct HTTPS image URL (leave empty when using Base64)'
+        required: false
+        type: string
+      image_base64:
+        description: 'Optional Base64-encoded image (small files only; workflow input limit applies)'
+        required: false
         type: string
       destination:
-        description: 'Path under TetrisApp/www/assets/ (e.g. pokemon/background.webp)'
+        description: 'Destination under TetrisApp/www/, e.g. images/pokemon/backgrounds/pokemon_bg_desktop.webp'
         required: true
         type: string
 
@@ -31,71 +35,94 @@ jobs:
           ref: master
           persist-credentials: true
 
-      - name: Validate input and download image
+      - name: Validate input and import
         env:
           IMAGE_URL: ${{ inputs.image_url }}
+          IMAGE_BASE64: ${{ inputs.image_base64 }}
           DESTINATION: ${{ inputs.destination }}
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import os, pathlib, re, urllib.parse
-          url = urllib.parse.urlparse(os.environ['IMAGE_URL'])
-          assert url.scheme == 'https' and url.hostname, 'A direct HTTPS image URL is required'
-          dest = os.environ['DESTINATION']
-          assert re.fullmatch(r'[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*\.(?:png|jpg|jpeg|webp|gif)', dest, re.I), 'Invalid destination (use subfolders and a PNG/JPG/WebP/GIF filename)'
-          target = pathlib.Path('TetrisApp/www/assets') / dest
+          import base64, ipaddress, os, pathlib, re, socket, urllib.parse, urllib.request
+          dest = os.environ['DESTINATION'].strip()
+          # Only image files in two dedicated asset roots may be written.
+          assert re.fullmatch(r'(?:images|assets)/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*\.(?:png|jpg|jpeg|webp|gif)', dest, re.I), 'Invalid image destination'
+          base = pathlib.Path('TetrisApp/www').resolve()
+          target = (base / dest).resolve()
+          assert target.is_relative_to(base), 'Invalid destination traversal'
+          url = os.environ.get('IMAGE_URL', '').strip()
+          encoded = os.environ.get('IMAGE_BASE64', '').strip()
+          assert bool(url) != bool(encoded), 'Supply exactly one of image_url or image_base64'
+          if encoded:
+              # workflow_dispatch has a ~65K total input payload limit.
+              data = base64.b64decode(encoded, validate=True)
+          else:
+              parsed = urllib.parse.urlsplit(url)
+              assert parsed.scheme == 'https' and parsed.hostname and not parsed.username and not parsed.password, 'HTTPS URL required'
+              # Reject private/reserved addresses, including resolved hostnames.
+              for result in socket.getaddrinfo(parsed.hostname, parsed.port or 443, type=socket.SOCK_STREAM):
+                  addr = ipaddress.ip_address(result[4][0])
+                  assert addr.is_global, 'Destination resolves to a private/reserved address'
+              request = urllib.request.Request(url, headers={'User-Agent': 'PkmnBlockPuzzle-AssetImporter/1.0'})
+              # Disable redirects to prevent bypassing initial hostname checks.
+              class NoRedirect(urllib.request.HTTPRedirectHandler):
+                  def redirect_request(self, req, fp, code, msg, headers, newurl):
+                      return None
+              opener = urllib.request.build_opener(NoRedirect)
+              with opener.open(request, timeout=45) as response:
+                  assert response.status == 200, 'Image request failed'
+                  data = response.read(15_000_001)
+          assert 0 < len(data) <= 15_000_000, 'Image must be nonempty and at most 15 MB'
+          ext = target.suffix.lower()
+          valid = ((ext == '.png' and data.startswith(b'\x89PNG\r\n\x1a\n')) or
+                   (ext in ('.jpg', '.jpeg') and data.startswith(b'\xff\xd8\xff')) or
+                   (ext == '.gif' and data[:6] in (b'GIF87a', b'GIF89a')) or
+                   (ext == '.webp' and data[:4] == b'RIFF' and data[8:12] == b'WEBP'))
+          assert valid, 'Image signature does not match extension'
           target.parent.mkdir(parents=True, exist_ok=True)
-          with open(os.environ['GITHUB_ENV'], 'a') as f:
-              f.write(f'IMAGE_PATH={target.as_posix()}\n')
-          PY
-          curl --fail --silent --show-error --location --max-redirs 3 --proto '=https' --proto-redir '=https' --retry 2 --max-time 60 --max-filesize 15000000 "$IMAGE_URL" --output "$IMAGE_PATH"
-          test -s "$IMAGE_PATH"
-          python3 - <<'PY'
-          import os, pathlib
-          p = pathlib.Path(os.environ['IMAGE_PATH'])
-          data = p.read_bytes()
-          assert len(data) <= 15_000_000, 'Image exceeds 15 MB'
-          ext = p.suffix.lower()
-          valid = (ext == '.png' and data.startswith(b'\x89PNG\r\n\x1a\n')) or (ext in ('.jpg','.jpeg') and data.startswith(b'\xff\xd8\xff')) or (ext == '.gif' and data[:6] in (b'GIF87a',b'GIF89a')) or (ext == '.webp' and data[:4] == b'RIFF' and data[8:12] == b'WEBP')
-          assert valid, 'Content is not a matching image format'
+          target.write_bytes(data)
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write(f'IMAGE_PATH={target.relative_to(pathlib.Path.cwd()).as_posix()}\n')
+          print(f'Validated {len(data)} bytes -> {dest}')
           PY
 
-      - name: Bump patch version when image changed
+      - name: Bump patch version for changed image
         id: version
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- "$IMAGE_PATH" && git ls-files --error-unmatch "$IMAGE_PATH" >/dev/null 2>&1; then
+          git add -- "$IMAGE_PATH"
+          if git diff --cached --quiet -- "$IMAGE_PATH"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           python3 - <<'PY'
-          import pathlib, re
+          import os, pathlib, re
           config = pathlib.Path('TetrisApp/config.xml')
           html = pathlib.Path('TetrisApp/www/index.html')
           xml = config.read_text()
           match = re.search(r'(<widget\b[^>]*\bversion=")(\d+)\.(\d+)\.(\d+)(")', xml)
           assert match, 'Cordova version missing'
-          major, minor, patch = map(int, match.group(2,3,4))
+          major, minor, patch = map(int, match.group(2, 3, 4))
           old = f'{major}.{minor}.{patch}'
-          new = f'{major}.{minor}.{patch+1}'
+          new = f'{major}.{minor}.{patch + 1}'
           config.write_text(xml[:match.start(2)] + new + xml[match.end(4):])
-          text = html.read_text()
-          old_visible = f'v{old}</div>'
-          assert text.count(old_visible) == 1, 'Visible version not aligned'
-          html.write_text(text.replace(old_visible, f'v{new}</div>', 1))
-          changelog = pathlib.Path('CHANGELOG.md')
-          current = changelog.read_text()
-          entry = f'\n## [{new}] — Image asset import\n- Added or updated an image under TetrisApp/www/assets/ using the manual GitHub Actions import workflow.\n- APK build not triggered.\n'
+          visible = html.read_text()
+          old_version = f'v{old}</div>'
+          assert visible.count(old_version) == 1, 'Visible version not aligned'
+          html.write_text(visible.replace(old_version, f'v{new}</div>', 1))
+          log = pathlib.Path('CHANGELOG.md')
+          current = log.read_text()
           assert '## [Unreleased]' in current
-          changelog.write_text(current.replace('## [Unreleased]', '## [Unreleased]' + entry, 1))
-          with open(__import__('os').environ['GITHUB_OUTPUT'], 'a') as output:
+          entry = f'\n## [{new}] — Image asset import\n- Imported `{os.environ["IMAGE_PATH"]}` through the manual GitHub Actions workflow.\n- APK build not triggered.\n'
+          log.write_text(current.replace('## [Unreleased]', '## [Unreleased]' + entry, 1))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f'version={new}\n')
           PY
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Commit image and version to master
+      - name: Commit image and synchronized version to master
         if: steps.version.outputs.changed == 'true'
         shell: bash
         run: |
