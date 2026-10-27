@@ -6,6 +6,13 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.3.0] — Bomb Block V1 (2026-10-27)
+- Standard four-cell pieces have a 5% chance of carrying one bomb cell, preserved during rotation and Next swap; bonus five-cell golden pieces never have bombs.
+- Completing a row containing a bomb triggers a 3×3 blast and chained bombs before removing the originally complete rows. Explosions remove occupied cells but do not grant extra line clears or scoring.
+- Gold destroyed by blasts does not count toward the golden multiplier; gold remaining in completed rows counts as usual.
+- Render bomb markers on active, Next and fixed blocks, with BOOM/CHAIN feedback. Browser and Android smoke tests pending; APK not triggered.
+
+
 ## [0.2.1] — Golden Glow & stacked clear multipliers (2026-10-27)
 - Golden cells now have a bright gold/white highlight and amber glow while falling, in Next preview, and when locked on the board.
 - Each golden *cell actually removed* by a completed row adds +1 to that clear's score multiplier (0=×1, 1=×2, 2=×3, etc.), regardless of which piece completed the row.
