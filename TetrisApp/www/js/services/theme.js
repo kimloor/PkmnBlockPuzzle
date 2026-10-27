@@ -56,6 +56,7 @@ function applyTheme(themeName, needsRedrawCallback) {
     }
 
     currentGridColor = theme['--grid-color'];
+    document.documentElement.classList.toggle('pokemon-theme-active', themeName === 'pokemonTheme');
 
     if (typeof needsRedrawCallback === 'function') {
         needsRedrawCallback();
