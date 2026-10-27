@@ -8,7 +8,7 @@ class Piece {
      * @brief Constructs a new Piece object.
      * @param {string} typeKey - The key representing the type of the piece,`.
      */
-    constructor(typeKey) {
+    constructor(typeKey, bombCell = undefined) {
         this.type = typeKey;
         const pieceData = PIECE_TYPES[this.type];
         if (!pieceData) {
@@ -18,6 +18,15 @@ class Piece {
             this.shape = pieceData.shape.map(row => [...row]);
         }
         
+        const cells = [];
+        this.shape.forEach((row, r) => row.forEach((value, c) => {
+            if (value) cells.push({ r, c });
+        }));
+        // Only standard tetrominoes can have a bomb; swap preserves assigned metadata.
+        this.bombCell = bombCell === undefined
+            ? (!isBonusPieceType(this.type) && Math.random() < BOMB_PIECE_CHANCE
+                ? cells[Math.floor(Math.random() * cells.length)] : null)
+            : (bombCell ? { ...bombCell } : null);
         this.x = Math.floor((COLS - (this.shape[0] ? this.shape[0].length : 1)) / 2);
         this.y = 0;
     }
@@ -81,6 +90,7 @@ class Piece {
                         context.fillStyle = baseColor;
                         context.fillRect(x + bs, y + bs, BLOCK_SIZE - 2 * bs, BLOCK_SIZE - 2 * bs);
                         if (isBonusPieceType(this.type)) drawGoldenGlow(context, x, y);
+                        if (this.bombCell && this.bombCell.r === r && this.bombCell.c === c) drawBombCell(context, x, y);
                     }
                 }
             });
@@ -183,6 +193,9 @@ class Piece {
             }
         }
         
+        const rotatedBombCell = this.bombCell
+            ? { r: this.bombCell.c, c: numRowsOriginal - 1 - this.bombCell.r }
+            : null;
         // Save current form before attempting rotation
         const previousShape = this.shape;
         this.shape = newRotatedShape;
@@ -206,6 +219,7 @@ class Piece {
             }
         }
 
+        if (rotationApplied) this.bombCell = rotatedBombCell;
         if (!rotationApplied) {
             this.shape = previousShape; // Revert to original form if rotation failed
         }
