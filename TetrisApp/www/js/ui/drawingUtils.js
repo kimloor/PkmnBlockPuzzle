@@ -14,6 +14,29 @@ function drawGoldenGlow(ctx, x, y) {
     ctx.restore();
 }
 
+/** Simple canvas bomb icon, independent of third-party artwork. */
+function drawBombCell(ctx, x, y) {
+    ctx.save();
+    ctx.shadowColor = '#ff6b36';
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = '#181d32';
+    ctx.beginPath();
+    ctx.arc(x + BLOCK_SIZE / 2, y + BLOCK_SIZE / 2 + 2, BLOCK_SIZE * 0.29, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#ff8558';
+    ctx.stroke();
+    ctx.strokeStyle = '#ffe8a3';
+    ctx.beginPath();
+    ctx.moveTo(x + BLOCK_SIZE * 0.55, y + BLOCK_SIZE * 0.25);
+    ctx.lineTo(x + BLOCK_SIZE * 0.70, y + BLOCK_SIZE * 0.13);
+    ctx.stroke();
+    ctx.fillStyle = '#fff09a';
+    ctx.fillRect(x + BLOCK_SIZE * 0.68, y + BLOCK_SIZE * 0.09, 4, 4);
+    ctx.restore();
+}
+
 /**
  * @brief Draws the preview of the next Tetris piece in its designated canvas.
  * The piece is drawn centered within the preview area and styled with a bevel effect
@@ -69,6 +92,7 @@ function drawNextPiecePreview(nextPieceToDraw, canvasCtx, currentTheme, nextCanv
                 canvasCtx.fillStyle = baseColor;
                 canvasCtx.fillRect(x + bs, y + bs, BLOCK_SIZE - 2 * bs, BLOCK_SIZE - 2 * bs);
                 if (isBonusPieceType(nextPieceToDraw.type)) drawGoldenGlow(canvasCtx, x, y);
+                if (nextPieceToDraw.bombCell && nextPieceToDraw.bombCell.r === r_local && nextPieceToDraw.bombCell.c === c_local) drawBombCell(canvasCtx, x, y);
             }
         });
     });
