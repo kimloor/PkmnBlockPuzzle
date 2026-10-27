@@ -1,0 +1,107 @@
+name: Import Game Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_url:
+        description: 'Direct HTTPS image URL (PNG, JPG, WebP, GIF)'
+        required: true
+        type: string
+      destination:
+        description: 'Path under TetrisApp/www/assets/ (e.g. pokemon/background.webp)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-game-image-master
+  cancel-in-progress: false
+
+jobs:
+  import-image:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout latest master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          persist-credentials: true
+
+      - name: Validate input and download image
+        env:
+          IMAGE_URL: ${{ inputs.image_url }}
+          DESTINATION: ${{ inputs.destination }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, pathlib, re, urllib.parse
+          url = urllib.parse.urlparse(os.environ['IMAGE_URL'])
+          assert url.scheme == 'https' and url.hostname, 'A direct HTTPS image URL is required'
+          dest = os.environ['DESTINATION']
+          assert re.fullmatch(r'[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*\.(?:png|jpg|jpeg|webp|gif)', dest, re.I), 'Invalid destination (use subfolders and a PNG/JPG/WebP/GIF filename)'
+          target = pathlib.Path('TetrisApp/www/assets') / dest
+          target.parent.mkdir(parents=True, exist_ok=True)
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              f.write(f'IMAGE_PATH={target.as_posix()}\n')
+          PY
+          curl --fail --silent --show-error --location --max-redirs 3 --proto '=https' --proto-redir '=https' --retry 2 --max-time 60 --max-filesize 15000000 "$IMAGE_URL" --output "$IMAGE_PATH"
+          test -s "$IMAGE_PATH"
+          python3 - <<'PY'
+          import os, pathlib
+          p = pathlib.Path(os.environ['IMAGE_PATH'])
+          data = p.read_bytes()
+          assert len(data) <= 15_000_000, 'Image exceeds 15 MB'
+          ext = p.suffix.lower()
+          valid = (ext == '.png' and data.startswith(b'\x89PNG\r\n\x1a\n')) or (ext in ('.jpg','.jpeg') and data.startswith(b'\xff\xd8\xff')) or (ext == '.gif' and data[:6] in (b'GIF87a',b'GIF89a')) or (ext == '.webp' and data[:4] == b'RIFF' and data[8:12] == b'WEBP')
+          assert valid, 'Content is not a matching image format'
+          PY
+
+      - name: Bump patch version when image changed
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- "$IMAGE_PATH" && git ls-files --error-unmatch "$IMAGE_PATH" >/dev/null 2>&1; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          python3 - <<'PY'
+          import pathlib, re
+          config = pathlib.Path('TetrisApp/config.xml')
+          html = pathlib.Path('TetrisApp/www/index.html')
+          xml = config.read_text()
+          match = re.search(r'(<widget\b[^>]*\bversion=")(\d+)\.(\d+)\.(\d+)(")', xml)
+          assert match, 'Cordova version missing'
+          major, minor, patch = map(int, match.group(2,3,4))
+          old = f'{major}.{minor}.{patch}'
+          new = f'{major}.{minor}.{patch+1}'
+          config.write_text(xml[:match.start(2)] + new + xml[match.end(4):])
+          text = html.read_text()
+          old_visible = f'v{old}</div>'
+          assert text.count(old_visible) == 1, 'Visible version not aligned'
+          html.write_text(text.replace(old_visible, f'v{new}</div>', 1))
+          changelog = pathlib.Path('CHANGELOG.md')
+          current = changelog.read_text()
+          entry = f'\n## [{new}] — Image asset import\n- Added or updated an image under TetrisApp/www/assets/ using the manual GitHub Actions import workflow.\n- APK build not triggered.\n'
+          assert '## [Unreleased]' in current
+          changelog.write_text(current.replace('## [Unreleased]', '## [Unreleased]' + entry, 1))
+          with open(__import__('os').environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'version={new}\n')
+          PY
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit image and version to master
+        if: steps.version.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "$IMAGE_PATH" TetrisApp/config.xml TetrisApp/www/index.html CHANGELOG.md
+          git commit -m "assets: import image (v${{ steps.version.outputs.version }})"
+          git push origin HEAD:master
