@@ -99,3 +99,137 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
 @media (max-width: 768px) and (orientation: portrait) and (max-height: 390px) {
   #game-content.active { height: auto; min-height: 100dvh; overflow-y: auto; }
 }
+
+
+/* v0.1.14 Main Hub alignment: loaded last, overrides legacy portrait rules only on start menu. */
+#start-menu {
+    padding: max(10px, env(safe-area-inset-top)) 12px max(10px, env(safe-area-inset-bottom));
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100dvh;
+    height: 100dvh;
+    box-sizing: border-box;
+}
+#start-menu .menu-content-wrapper {
+    box-sizing: border-box;
+    width: min(100%, 350px);
+    max-width: 350px;
+    max-height: calc(100dvh - 20px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 18px 20px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+#start-menu .game-menu-icon {
+    display: block;
+    width: clamp(72px, 19vw, 84px);
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.24);
+    margin: 0 auto 9px;
+    flex-shrink: 0;
+}
+#start-menu .game-brand {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0 0 12px;
+    text-align: center;
+    font-family: "Trebuchet MS", "Arial Rounded MT Bold", "Arial Black", system-ui, sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.25rem, 5.5vw, 2.05rem);
+    letter-spacing: -.035em;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+#start-menu .menu-content-wrapper > .menu-button,
+#start-menu .menu-content-wrapper > .menu-option {
+    box-sizing: border-box;
+    width: min(100%, 260px);
+    max-width: 100%;
+    min-width: 0;
+    align-self: center;
+}
+#start-menu .menu-content-wrapper > .menu-button {
+    display: block;
+    padding: 10px 12px;
+    min-height: 40px;
+    margin: 4px 0;
+    font-size: .9rem;
+    line-height: 1.2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+#start-menu .menu-content-wrapper > .theme-selector-container,
+#start-menu .menu-content-wrapper > .language-selector-container {
+    display: grid;
+    grid-template-columns: minmax(0, 78px) minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 0;
+    text-align: left;
+}
+#start-menu .theme-selector-container label,
+#start-menu .language-selector-container label {
+    min-width: 0;
+    margin: 0;
+    text-align: left;
+    font-size: .88rem;
+    overflow-wrap: anywhere;
+}
+#start-menu #theme-selector,
+#start-menu #language-selector {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 40px;
+    padding: 7px 30px 7px 10px;
+    margin: 0;
+    font-size: .88rem;
+    font-family: inherit;
+}
+#start-menu .menu-content-wrapper > .speed-option {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0 0;
+    text-align: left;
+    font-size: .88rem;
+}
+#start-menu .speed-option input[type="checkbox"] {
+    box-sizing: border-box;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+}
+#start-menu .speed-option label { min-width: 0; overflow-wrap: anywhere; }
+#start-menu .game-version {
+    align-self: center;
+    display: inline-flex;
+    width: auto;
+    max-width: 100%;
+    margin: 12px 0 0;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: .68rem;
+    line-height: 1;
+    opacity: .8;
+    letter-spacing: .04em;
+    border: 1px solid var(--side-panel-card-border);
+    background: var(--side-panel-card-bg);
+    color: var(--text-color-medium);
+}
+@media (max-height: 560px) {
+    #start-menu .menu-content-wrapper { padding-top: 12px; padding-bottom: 12px; }
+    #start-menu .game-menu-icon { width: 72px; }
+}

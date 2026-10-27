@@ -7,6 +7,13 @@ This file tracks verified releases. Historical release details should be filled 
 ## [Unreleased]
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
+## [0.1.14] — Main Menu alignment and icon branding (2026-10-27)
+- Reused the existing local app icon above the PkmnBlockPuzzle title without changing the source asset.
+- Unified Start/Settings/High Scores button width and Theme/Language/Speed control alignment with a shared 260px column and fixed label grid.
+- Scoped responsive overrides to the start menu, retained compact buttons, offline font fallbacks and bottom pill version badge.
+- Added menu scrolling and safe-area padding for short/rotated viewports.
+- Static HTML/CSS/version assertions PASS; browser/iOS Safari/Android Chrome visual and interaction tests NOT TESTED. APK NOT TRIGGERED.
+
 ## [0.1.13] — Main hub polish and Pokemon theme placeholder (2026-10-27)
 - Standardized localized title to PkmnBlockPuzzle and styled brand text with offline-safe font fallbacks.
 - Restored compact main menu button sizes; moved version to the bottom as a small badge.
