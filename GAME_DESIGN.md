@@ -5,6 +5,13 @@ Canonical repository: https://github.com/kimloor/PkmnBlockPuzzle
 ## Purpose
 A responsive falling-block puzzle game for browser and Android (via Apache Cordova). This document describes the currently documented experience, not an assertion that every behavior has passed QA.
 
+## Pokémon Theme presentation (v0.4.0)
+- Desktop background: local `images/pokemon/backgrounds/pokemon_bg_desktop.webp`.
+- Portrait background: local `images/pokemon/backgrounds/pokemon_bg_mobile.webp`; fallback color remains usable when an image is absent.
+- An optional presentation-only `#pokemon-side-slot` is reserved beside the desktop playfield. It is hidden for narrow and mobile screens rather than shrinking the board.
+- Supplied backgrounds must be uploaded to the paths above to activate; Pikachu remains unmounted pending a transparent asset.
+- No gameplay or APK workflow changes.
+
 ## Bomb Gravity & FX (v0.3.1)
 - After bomb and chain explosions have erased cells, remove the initially completed rows, then pack every fixed board column downward independently. Remaining clusters may split by column.
 - Draw a transient 300ms ring, flash and sparks over the already-collapsed field; gameplay rules and golden multiplier remain unchanged.
