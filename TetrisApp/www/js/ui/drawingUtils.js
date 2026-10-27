@@ -13,7 +13,7 @@ function drawNextPiecePreview(nextPieceToDraw, canvasCtx, currentTheme, nextCanv
     if (!nextPieceToDraw) return;
 
     const themePieceColors = THEMES[currentTheme].pieceColors;
-    const baseColor = themePieceColors[nextPieceToDraw.type];
+    const baseColor = getPieceColor(nextPieceToDraw.type, currentTheme);
     if (!baseColor) {
         console.error(`Colour not defined for piece type ${nextPieceToDraw.type} in theme ${currentTheme}`);
         return;
