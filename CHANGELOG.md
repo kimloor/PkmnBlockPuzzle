@@ -5,6 +5,13 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
 ## [Unreleased]
+
+## [0.2.0] — Bonus Block ×2 (2026-10-27)
+- Added three five-cell bonus shapes (PLUS, U, LONG-L), collectively spawned with 10% probability per generated piece.
+- A bonus piece that directly completes one or more rows doubles that lock's line-clear score, after the existing level multiplier; earlier bonus cells left on the board do not trigger the multiplier.
+- Special blocks render gold across themes and in Next preview; successful clears briefly display BONUS ×2.
+- Existing swap, ghost, and lock behavior are retained. Web/mobile runtime QA pending; Android APK not triggered.
+
 - Pending runtime/browser/Android confirmation and Phase 2 fixes.
 
 ## [0.1.15] — Android APK artifact filename (2026-10-27)
