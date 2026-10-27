@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.1] — Manual image import workflow (2026-10-27)
+- Added workflow_dispatch importer for direct HTTPS PNG/JPEG/WebP/GIF image URLs into TetrisApp/www/assets/.
+- Added validation, 15 MB size limit, automatic patch version bump for subsequent image imports, and a direct commit to master.
+- Android APK build remains manual-only. Workflow execution has not yet been tested.
+
+
 ## [0.4.0] — Pokémon landscape theme and side companion slot (2026-10-27)
 - Added landscape/mobile background asset paths for the Pokémon theme with a subtle contrast overlay and fallback color.
 - Added an inactive companion illustration slot next to the desktop board; hidden on compact screens to preserve gameplay space and reserved for a later approved transparent sprite.
