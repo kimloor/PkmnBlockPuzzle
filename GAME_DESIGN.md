@@ -5,6 +5,11 @@ Canonical repository: https://github.com/kimloor/PkmnBlockPuzzle
 ## Purpose
 A responsive falling-block puzzle game for browser and Android (via Apache Cordova). This document describes the currently documented experience, not an assertion that every behavior has passed QA.
 
+## Bomb Gravity & FX (v0.3.1)
+- After bomb and chain explosions have erased cells, remove the initially completed rows, then pack every fixed board column downward independently. Remaining clusters may split by column.
+- Draw a transient 300ms ring, flash and sparks over the already-collapsed field; gameplay rules and golden multiplier remain unchanged.
+- No extra scoring/line clears are awarded from collapse. No APK build is run for source changes.
+
 ## Bomb Block V1 (v0.3.0)
 - On creating a standard four-cell piece, 5% chance to assign one bomb to a randomly selected occupied cell; Next swap and rotations preserve the bomb's actual cell location.
 - Clearing a completed row containing a bomb triggers a 3×3 blast centered on it. A blast contacting another bomb triggers a chain explosion; edge blasts clip to the 10×20 board.
