@@ -28,8 +28,7 @@ const PIECE_TYPES = {
 };
 const BONUS_PIECE_TYPES = ['BONUS_PLUS', 'BONUS_U', 'BONUS_LONG_L'];
 const BONUS_PIECE_CHANCE = 0.10;
-const BONUS_SCORE_MULTIPLIER = 2;
-const BONUS_PIECE_COLOR = '#f5bf36';
+const BONUS_PIECE_COLOR = '#ffc247';
 function isBonusPieceType(type) { return BONUS_PIECE_TYPES.includes(type); }
 function getPieceColor(type, themeName) {
     return isBonusPieceType(type) ? BONUS_PIECE_COLOR : (THEMES[themeName]?.pieceColors?.[type] || '#888888');
