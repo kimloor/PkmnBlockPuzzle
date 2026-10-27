@@ -29,7 +29,7 @@ class Piece {
      */
     draw(context) {
         const themePieceColors = THEMES[currentThemeName].pieceColors;
-        const baseColor = themePieceColors[this.type];
+        const baseColor = getPieceColor(this.type, currentThemeName);
 
         if (!baseColor) {
             console.error(`Colour not defined for the standard piece ${this.type} on the theme ${currentThemeName}`);
