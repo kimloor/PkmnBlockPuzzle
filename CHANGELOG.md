@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.2] — Flexible image importer (2026-10-27)
+- Manual importer accepts either direct HTTPS URL or Base64 input for small images, with a selectable path under TetrisApp/www/images/ or assets/.
+- Validate image signatures and sizes; fix the previous malformed XML version replacement and handle both new and existing image changes.
+- Static source verification only; live GitHub Actions workflow not dispatched. No APK build.
+
+
 ## [0.4.1] — Manual image import workflow (2026-10-27)
 - Added workflow_dispatch importer for direct HTTPS PNG/JPEG/WebP/GIF image URLs into TetrisApp/www/assets/.
 - Added validation, 15 MB size limit, automatic patch version bump for subsequent image imports, and a direct commit to master.
