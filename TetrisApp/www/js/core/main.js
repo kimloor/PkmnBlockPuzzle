@@ -274,10 +274,9 @@ function pieceDroppedToBottom() {
 function lockPieceAndContinue() {
     if (!currentPiece || gameState !== 'PLAYING' || !isPieceLanded || gameOver) return;
 
-    const lockedPieceWasBonus = isBonusPieceType(currentPiece.type);
     fixPieceOnBoard(currentPiece); 
     const linesClearedInfo = checkAndClearLines(); 
-    handleLineClears(linesClearedInfo, lockedPieceWasBonus);
+    handleLineClears(linesClearedInfo);
     
     spawnNewPieceInternalLogic();
 
@@ -307,10 +306,11 @@ function lockPieceAndContinue() {
  * @param {object} linesClearedInfo - An object containing information about the lines cleared.
  * @returns None.
  */
-function handleLineClears(linesClearedInfo, isBonusClear = false) {
+function handleLineClears(linesClearedInfo) {
     if (linesClearedInfo.count > 0) {
-        addScore(linesClearedInfo.count, isBonusClear ? BONUS_SCORE_MULTIPLIER : 1);
-        if (isBonusClear) showBonusScoreFeedback();
+        const multiplier = 1 + (linesClearedInfo.goldenCellsCleared || 0);
+        addScore(linesClearedInfo.count, multiplier);
+        if (multiplier > 1) showBonusScoreFeedback(multiplier);
 
         if (linesClearedInfo.count === 4) {
             playTetrisClearSound();
@@ -328,10 +328,10 @@ function handleLineClears(linesClearedInfo, isBonusClear = false) {
 }
 
 
-function showBonusScoreFeedback() {
+function showBonusScoreFeedback(multiplier) {
     const badge = document.getElementById('bonus-score-feedback');
     if (!badge) return;
-    badge.textContent = 'BONUS ×2!';
+    badge.textContent = `BONUS ×${multiplier}!`;
     badge.hidden = false;
     clearTimeout(showBonusScoreFeedback.timeoutId);
     showBonusScoreFeedback.timeoutId = setTimeout(() => { badge.hidden = true; }, 1200);
