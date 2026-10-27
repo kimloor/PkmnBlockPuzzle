@@ -6,6 +6,13 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.2.1] — Golden Glow & stacked clear multipliers (2026-10-27)
+- Golden cells now have a bright gold/white highlight and amber glow while falling, in Next preview, and when locked on the board.
+- Each golden *cell actually removed* by a completed row adds +1 to that clear's score multiplier (0=×1, 1=×2, 2=×3, etc.), regardless of which piece completed the row.
+- Multiple cleared rows sum their removed golden cells before multiplying the normal combined clear award; other rows' golden cells are not counted.
+- Static source checks pending; actual visual browser/emulator QA not executed. APK not triggered.
+
+
 ## [0.2.0] — Bonus Block ×2 (2026-10-27)
 - Added three five-cell bonus shapes (PLUS, U, LONG-L), collectively spawned with 10% probability per generated piece.
 - A bonus piece that directly completes one or more rows doubles that lock's line-clear score, after the existing level multiplier; earlier bonus cells left on the board do not trigger the multiplier.
