@@ -85,6 +85,9 @@ function initializeNewGame(keepScore = false) {
         scoreNeededToReachNextLevel = calculateTotalScoreNeededForLevel(gameLevel + 1);
     }
     canSwapPiece = true;
+    clearTimeout(showBonusScoreFeedback.timeoutId);
+    const bonusFeedback = document.getElementById('bonus-score-feedback');
+    if (bonusFeedback) bonusFeedback.hidden = true;
     updateScoreDisplay();
 
     if (dynamicSpeedToggle) dynamicSpeedEnabled = dynamicSpeedToggle.checked;
@@ -155,8 +158,10 @@ function handleGameOver() {
  * @returns {string} A string representing a random piece type key.
  */
 function getRandomPieceTypeKey() {
-    const pieceTypeKeys = Object.keys(PIECE_TYPES);
-    return pieceTypeKeys[Math.floor(Math.random() * pieceTypeKeys.length)];
+    const pool = Math.random() < BONUS_PIECE_CHANCE
+        ? BONUS_PIECE_TYPES
+        : Object.keys(PIECE_TYPES).filter(type => !isBonusPieceType(type));
+    return pool[Math.floor(Math.random() * pool.length)];
 }
 
 
@@ -269,9 +274,10 @@ function pieceDroppedToBottom() {
 function lockPieceAndContinue() {
     if (!currentPiece || gameState !== 'PLAYING' || !isPieceLanded || gameOver) return;
 
+    const lockedPieceWasBonus = isBonusPieceType(currentPiece.type);
     fixPieceOnBoard(currentPiece); 
     const linesClearedInfo = checkAndClearLines(); 
-    handleLineClears(linesClearedInfo);
+    handleLineClears(linesClearedInfo, lockedPieceWasBonus);
     
     spawnNewPieceInternalLogic();
 
@@ -301,9 +307,10 @@ function lockPieceAndContinue() {
  * @param {object} linesClearedInfo - An object containing information about the lines cleared.
  * @returns None.
  */
-function handleLineClears(linesClearedInfo) {
+function handleLineClears(linesClearedInfo, isBonusClear = false) {
     if (linesClearedInfo.count > 0) {
-        addScore(linesClearedInfo.count);
+        addScore(linesClearedInfo.count, isBonusClear ? BONUS_SCORE_MULTIPLIER : 1);
+        if (isBonusClear) showBonusScoreFeedback();
 
         if (linesClearedInfo.count === 4) {
             playTetrisClearSound();
@@ -320,6 +327,15 @@ function handleLineClears(linesClearedInfo) {
     }
 }
 
+
+function showBonusScoreFeedback() {
+    const badge = document.getElementById('bonus-score-feedback');
+    if (!badge) return;
+    badge.textContent = 'BONUS ×2!';
+    badge.hidden = false;
+    clearTimeout(showBonusScoreFeedback.timeoutId);
+    showBonusScoreFeedback.timeoutId = setTimeout(() => { badge.hidden = true; }, 1200);
+}
 
 /** ----- Rendering and UI Update Functions ----- */
 
