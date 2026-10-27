@@ -170,9 +170,12 @@ function applyColumnGravity() {
 }
 
 function checkAndClearLines() {
+    const result = { count: 0, indices: [], goldenCellsCleared: 0, explosions: [] };
+    // Repeat after bomb-driven column gravity, which can complete additional rows.
+    for (let pass = 0; pass < ROWS; pass++) {
     const fullRows = [];
     for (let r = 0; r < ROWS; r++) if (isRowFull(r)) fullRows.push(r);
-    if (!fullRows.length) return { count: 0, indices: [], goldenCellsCleared: 0, explosions: [] };
+    if (!fullRows.length) break;
 
     // Snapshot bomb coordinates from completed rows before modifying the board.
     const queue = [];
@@ -203,8 +206,14 @@ function checkAndClearLines() {
         gameBoard.splice(r, 1);
         gameBoard.unshift(Array(COLS).fill(0));
     }
-    if (explosions.length) applyColumnGravity();
-    return { count: fullRows.length, indices: fullRows, goldenCellsCleared, explosions };
+    result.count += fullRows.length;
+    result.indices.push(...fullRows);
+    result.goldenCellsCleared += goldenCellsCleared;
+    result.explosions.push(...explosions);
+    if (!explosions.length) break; // Standard row removal cannot create new full rows.
+    applyColumnGravity();
+    }
+    return result;
 }
 
 /**
