@@ -47,7 +47,7 @@ function drawFixedPieces(context, themeNameToUse) {
     gameBoard.forEach((row, r_idx) => {
         row.forEach((pieceTypeKey, c_idx) => { 
             if (pieceTypeKey !== 0) { 
-                const baseColor = themePieceColors[pieceTypeKey];
+                const baseColor = getPieceColor(pieceTypeKey, themeNameToUse);
                 if (!baseColor) {
                     console.error(`Colour not defined for type ${pieceTypeKey} in theme ${currentThemeName}`);
                     context.fillStyle = '#555555';
