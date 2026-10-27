@@ -28,6 +28,8 @@ const PIECE_TYPES = {
 };
 const BONUS_PIECE_TYPES = ['BONUS_PLUS', 'BONUS_U', 'BONUS_LONG_L'];
 const BONUS_PIECE_CHANCE = 0.10;
+const BOMB_PIECE_CHANCE = 0.05;
+const BOMB_CELL = 'BOMB';
 const BONUS_PIECE_COLOR = '#ffc247';
 function isBonusPieceType(type) { return BONUS_PIECE_TYPES.includes(type); }
 function getPieceColor(type, themeName) {
