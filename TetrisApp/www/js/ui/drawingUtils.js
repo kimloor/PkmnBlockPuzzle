@@ -14,6 +14,35 @@ function drawGoldenGlow(ctx, x, y) {
     ctx.restore();
 }
 
+/** Flash, expanding rings and particles over the resolved board (no external assets). */
+function drawExplosionEffectsFrame(ctx, effects, now) {
+    return effects.filter(effect => {
+        const progress = Math.max(0, (now - effect.startTime) / 300);
+        if (progress >= 1) return false;
+        ctx.save();
+        const x = (effect.c + 0.5) * BLOCK_SIZE;
+        const y = (effect.r + 0.5) * BLOCK_SIZE;
+        ctx.globalAlpha = 1 - progress;
+        ctx.fillStyle = 'rgba(255,223,107,0.65)';
+        ctx.beginPath();
+        ctx.arc(x, y, BLOCK_SIZE * (0.35 + progress * 0.9), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ff792e';
+        ctx.lineWidth = 4 * (1 - progress) + 1;
+        ctx.beginPath();
+        ctx.arc(x, y, BLOCK_SIZE * (0.4 + progress * 1.3), 0, Math.PI * 2);
+        ctx.stroke();
+        for (let i = 0; i < 10; i++) {
+            const angle = i * Math.PI / 5;
+            const distance = BLOCK_SIZE * (0.2 + progress * 1.7);
+            ctx.fillStyle = i % 2 ? '#fff0a7' : '#ff8638';
+            ctx.fillRect(x + Math.cos(angle) * distance - 2, y + Math.sin(angle) * distance - 2, 4, 4);
+        }
+        ctx.restore();
+        return true;
+    });
+}
+
 /** Simple canvas bomb icon, independent of third-party artwork. */
 function drawBombCell(ctx, x, y) {
     ctx.save();
