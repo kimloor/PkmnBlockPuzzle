@@ -77,6 +77,7 @@ function drawFixedPieces(context, themeNameToUse) {
                 context.fillStyle = baseColor;
                 context.fillRect(x + bs, y + bs, BLOCK_SIZE - 2 * bs, BLOCK_SIZE - 2 * bs);
                 if (isBonusPieceType(pieceTypeKey)) drawGoldenGlow(context, x, y);
+                if (pieceTypeKey === BOMB_CELL) drawBombCell(context, x, y);
             }
         });
     });
@@ -96,7 +97,8 @@ function fixPieceOnBoard(piece) {
                 const boardX = piece.x + xOffset;
                 const boardY = piece.y + yOffset;
                 if (boardY >= 0 && boardY < ROWS && boardX >= 0 && boardX < COLS) {
-                    gameBoard[boardY][boardX] = piece.type;
+                    gameBoard[boardY][boardX] = piece.bombCell && piece.bombCell.r === yOffset && piece.bombCell.c === xOffset
+                        ? BOMB_CELL : piece.type;
                 }
             }
         });
@@ -152,23 +154,41 @@ function isRowFull(rowIndex) {
  * - `indices`: {Array<number>} An array of the original row indices that were cleared.
  */
 function checkAndClearLines() {
-    let linesClearedThisTurn = 0;
-    let clearedRowIndicesThisTurn = [];
-    let goldenCellsCleared = 0;
+    const fullRows = [];
+    for (let r = 0; r < ROWS; r++) if (isRowFull(r)) fullRows.push(r);
+    if (!fullRows.length) return { count: 0, indices: [], goldenCellsCleared: 0, explosions: [] };
 
-    for (let r = ROWS - 1; r >= 0; r--) {
-        if (isRowFull(r)) {
-            goldenCellsCleared += gameBoard[r].filter(isBonusPieceType).length;
-            clearedRowIndicesThisTurn.push(r); // Save the index BEFORE deleting
-            gameBoard.splice(r, 1); // Delete the entire row
-            gameBoard.unshift(Array(COLS).fill(0)); // Add new empty row at the top
-            linesClearedThisTurn++;
-            r++; // Re-evaluate the row that has just moved down to this position
+    // Snapshot bomb coordinates from completed rows before modifying the board.
+    const queue = [];
+    for (const r of fullRows) for (let c = 0; c < COLS; c++) {
+        if (gameBoard[r][c] === BOMB_CELL) queue.push({ r, c });
+    }
+    const visited = new Set();
+    const explosions = [];
+    while (queue.length) {
+        const bomb = queue.shift();
+        const key = bomb.r + ',' + bomb.c;
+        if (visited.has(key)) continue;
+        visited.add(key);
+        explosions.push(bomb);
+        for (let r = Math.max(0, bomb.r - 1); r <= Math.min(ROWS - 1, bomb.r + 1); r++) {
+            for (let c = Math.max(0, bomb.c - 1); c <= Math.min(COLS - 1, bomb.c + 1); c++) {
+                if (gameBoard[r][c] === BOMB_CELL && !visited.has(r + ',' + c)) queue.push({ r, c });
+                gameBoard[r][c] = 0;
+            }
         }
     }
-    return { count: linesClearedThisTurn, indices: clearedRowIndicesThisTurn, goldenCellsCleared };
-}
 
+    // Count only golden cells still present in completed rows, not ones blast-destroyed.
+    let goldenCellsCleared = 0;
+    for (const r of fullRows) goldenCellsCleared += gameBoard[r].filter(isBonusPieceType).length;
+    // Clear the rows that were complete before detonation, even when explosions made gaps.
+    for (const r of fullRows.slice().reverse()) {
+        gameBoard.splice(r, 1);
+        gameBoard.unshift(Array(COLS).fill(0));
+    }
+    return { count: fullRows.length, indices: fullRows, goldenCellsCleared, explosions };
+}
 
 /**
  * @brief Calculates the Y-coordinate where the "ghost" or preview of the current piece would land if dropped straight down.
