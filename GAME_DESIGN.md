@@ -5,6 +5,12 @@ Canonical repository: https://github.com/kimloor/PkmnBlockPuzzle
 ## Purpose
 A responsive falling-block puzzle game for browser and Android (via Apache Cordova). This document describes the currently documented experience, not an assertion that every behavior has passed QA.
 
+## Bomb Block V1 (v0.3.0)
+- On creating a standard four-cell piece, 5% chance to assign one bomb to a randomly selected occupied cell; Next swap and rotations preserve the bomb's actual cell location.
+- Clearing a completed row containing a bomb triggers a 3×3 blast centered on it. A blast contacting another bomb triggers a chain explosion; edge blasts clip to the 10×20 board.
+- The rows that were complete before explosion are cleared and scored once. Explosion-cleared cells give no additional score; gold destroyed by an explosion is excluded from golden multiplier.
+- Bombs remain on the board until a row containing them is cleared or another bomb detonates them. No gravity is applied to leftover board cells.
+
 ## Golden Glow scoring (v0.2.1)
 - Every golden cell removed in a line clear contributes +1 to the score multiplier. The aggregate over all simultaneously cleared lines is applied to the existing line-clear award and level multiplier.
 - Golden cells may be placed earlier and remain on the board until eventually cleared by any piece. A zero-gold clear receives ×1.
