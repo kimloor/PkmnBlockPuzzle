@@ -6,6 +6,13 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.3.1] — Bomb Gravity & Explosion FX (2026-10-27)
+- Apply per-column gravity to fixed board cells after any bomb/chain explosion and the originally complete row clear, preventing suspended cells from remaining after blasts.
+- Add a lightweight 300ms Canvas explosion flash, expanding ring and spark particles at each bomb position, including chain blasts.
+- Preserve existing Golden Block scoring (only gold surviving blast in original cleared rows counts) and do not award extra rows from gravity.
+- Source-based verification only; gameplay visual/device testing pending, no APK build.
+
+
 ## [0.3.0] — Bomb Block V1 (2026-10-27)
 - Standard four-cell pieces have a 5% chance of carrying one bomb cell, preserved during rotation and Next swap; bonus five-cell golden pieces never have bombs.
 - Completing a row containing a bomb triggers a 3×3 blast and chained bombs before removing the originally complete rows. Explosions remove occupied cells but do not grant extra line clears or scoring.
