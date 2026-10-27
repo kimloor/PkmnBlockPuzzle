@@ -5,10 +5,15 @@ Canonical repository: https://github.com/kimloor/PkmnBlockPuzzle
 ## Purpose
 A responsive falling-block puzzle game for browser and Android (via Apache Cordova). This document describes the currently documented experience, not an assertion that every behavior has passed QA.
 
+## Golden Glow scoring (v0.2.1)
+- Every golden cell removed in a line clear contributes +1 to the score multiplier. The aggregate over all simultaneously cleared lines is applied to the existing line-clear award and level multiplier.
+- Golden cells may be placed earlier and remain on the board until eventually cleared by any piece. A zero-gold clear receives ×1.
+- Golden cells glow in active piece, next piece and locked board states; only eliminated cells count.
+
 ## Bonus Block ×2 (v0.2.0)
 - 90% normal pieces, 10% special five-cell pieces: PLUS, U-SHAPE, LONG-L (uniform choice inside the special pool).
 - Bonus pieces move, rotate, ghost, and swap via the existing controls; gold distinguishes them across themes.
-- When the currently locking bonus piece completes at least one row, that lock's line-clear score is doubled after the normal level multiplier. No bonus applies to clears by ordinary pieces even if earlier bonus cells appear in the completed row.
+- Superseded by v0.2.1: bonus scoring now depends on golden cells actually cleared, not the last piece locked.
 - No line clear means no bonus. The full score counts toward leveling and High Scores. APK build remains manual.
 
 ## Core gameplay loop
