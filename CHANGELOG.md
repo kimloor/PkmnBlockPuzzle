@@ -5,6 +5,7 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
 ## [Unreleased]
+- Verified owner-supplied v0.4.13 APK binary (package/versionCode, Debug signing fingerprint, four Pikachu assets); documented Phase 0 release-signing migration gate. Docs-only v0.4.17, no APK build.
 - Extended Phase 0 evidence: confirmed 4 Pikachu source PNG assets and documented binary audit blocker; docs-only v0.4.16, no APK build.
 - Phase 0 source audit completed with localStorage key inventory; binary signing and installed APK compatibility remain unverified (docs-only v0.4.15, no APK build).
 - Authorized Android updater/Pikachu-first-update roadmap and Phase 0 preliminary source audit; documentation-only v0.4.14, no APK build.
