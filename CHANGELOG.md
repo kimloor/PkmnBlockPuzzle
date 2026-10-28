@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.9] — Full-row resolution and gold bomb rule (2026-10-28)
+- Resolve every full row until the board stabilizes, including rows formed after bomb gravity; add a board invariant diagnostic.
+- Apply per-wave scoring so gold bonus belongs only to surviving golden cells in completed rows; explosion itself scores nothing.
+- Explosions clear gold within their 3×3 radius just like ordinary blocks. Source review; in-browser QA pending. No APK build.
+
+
 ## [0.4.8] — Pokémon companion upper-right alignment (2026-10-28)
 - Anchor the reserved Pokémon companion slot to the upper-right of the game viewport on supported desktop layouts, instead of vertically centering it.
 - Keep existing mobile hiding and game controls unchanged. Source inspection only; device visual QA pending. No APK build.
