@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.13] — Repair Android APK artifact path (2026-10-28)
+- Restore Cordova Android debug APK output directory and rename `app-debug.apk` to `PkmnBlockPuzzle.apk` after build.
+- Fix upload-artifact path to the renamed file, retaining artifact name `PkmnBlockPuzzle` and manual-only workflow trigger.
+- Workflow source/path review only; an actual GitHub Actions build has not been run as part of this fix.
+
 ## [0.4.12] — Pikachu position (2026-10-28)
 - Position Pokémon companion outside the upper-left of the Tetris board container with a 10px gap on supported desktop layouts; keep its original dimensions, animations, theme visibility, and responsive mobile hiding unchanged.
 - Source-level verification only; browser/device layout QA pending. No APK build.
