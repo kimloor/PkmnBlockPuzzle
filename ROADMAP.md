@@ -68,3 +68,9 @@ Authorized changes may go straight to master without PR; request owner approval 
 - All future APKs MUST retain package ID `com.kimloor.pkmnblockpuzzle`, the same signing certificate/key, and a strictly increasing Android versionCode. A lost signing key prevents normal in-place updates; keep secure offline backup of KEY itself (not player data).
 - First test sequence remains: Release-signed APK A (updater present, Pikachu old layout) -> Release-signed APK B (responsive fix), with A and B signed identically. APK builds remain owner-opt-in.
 - Decision resolves data-migration design blocker; Release signing provisioning and on-device APK A→B QA remain outstanding.
+
+### Phase 1 progress — 2026-10-28
+- [x] Manual GitHub Actions release APK workflow configured; fail closed when any of four signing secrets are missing; output APK and SHA-256.
+- [ ] Provision permanent owner-custodied signing key and GitHub repository secrets.
+- [ ] Run release workflow, verify signature/manifest and install on Android.
+- [ ] Publish baseline APK A with updater in a later authorized phase. Target v0.5.0 only when release APK and update functionality are actually ready; do not mislabel docs-only commits.
