@@ -259,8 +259,13 @@ html.pokemon-theme-active #pokemon-side-slot {
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    align-self: center;
+    /* Anchor companion to the upper-right of the game viewport, not the middle of the row. */
+    position: absolute;
+    top: max(12px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+    align-self: flex-start;
     order: 0;
+    z-index: 2;
 }
 html.pokemon-theme-active #pokemon-side-slot .pokemon-side-placeholder {
     display: block;
