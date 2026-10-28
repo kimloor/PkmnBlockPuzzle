@@ -46,7 +46,7 @@ Status: Phase 0 SOURCE AUDIT COMPLETE; binary/device gate BLOCKED / NOT TESTED. 
 - [ ] Phase 6: **first real update test**: install signed baseline A with updater but without Pikachu fix, upgrade in place to signed B carrying Pikachu fix; confirm scores/settings persist.
 - [ ] Phase 7: QA evidence, release acceptance, documentation and production checks.
 
-Source-asset follow-up: four Pikachu PNG paths were confirmed in Git source; APK inclusion remains NOT TESTED. Binary artifact/run ID is required to close Phase 0 (see audit report).
+Binary inspection update: Owner-provided v0.4.13 APK inspected. Package `com.kimloor.pkmnblockpuzzle`, versionCode 413; Android Debug signing certificate and four Pikachu assets found. Release-signing migration remains BLOCKED pending owner decision and Android device upgrade QA (see audit report).\n\nSource-asset follow-up: four Pikachu PNG paths were confirmed in Git source; APK inclusion remains NOT TESTED. Binary artifact/run ID is required to close Phase 0 (see audit report).
 
 ### Phase 0 source evidence
 - PASS: Cordova app ID `com.kimloor.pkmnblockpuzzle`; baseline version 0.4.13 before documentation bump; cordova-android 14.0.1 specified.
