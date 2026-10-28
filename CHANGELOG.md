@@ -6,6 +6,10 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.10] — Pikachu companion asset (2026-10-28)
+- Add the transparent 500×500 PNG at `TetrisApp/www/images/pokemon/characters/pikachu.png` and render it in the existing upper-right Pokémon companion slot.
+- Remove placeholder outlines, keep responsive behavior and existing gameplay unchanged; source-level review only, browser/device QA pending. No APK build.
+
 ## [0.4.9] — Full-row resolution and gold bomb rule (2026-10-28)
 - Resolve every full row until the board stabilizes, including rows formed after bomb gravity; add a board invariant diagnostic.
 - Apply per-wave scoring so gold bonus belongs only to surviving golden cells in completed rows; explosion itself scores nothing.
