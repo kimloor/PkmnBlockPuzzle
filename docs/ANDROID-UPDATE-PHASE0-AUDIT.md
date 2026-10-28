@@ -44,3 +44,10 @@ Source: PkmnBlockPuzzle.apk from owner-provided Drive file ID `1l5On1zTnrhahRDZ5
 - BLOCKER — Android Debug certificate differs from any newly created release key; ordinary Android package installation cannot upgrade it in place to a differently signed release. A one-time migration/reinstall with explicit save-data backup or retaining the same signing identity must be decided before Phase 1. A per-run debug signing key is not a durable release strategy.
 - NOT TESTED — Android device installation, upgrade preserving localStorage, system package manager confirmation, gameplay visual QA, end-to-end update A→B.
 - DECISION GATE — Owner approval required for proposed Phase 1 Release Signing and migration approach; do not delete device app or trigger APK build without explicit owner instruction.
+
+### Owner signing decision — 2026-10-28
+- APPROVED: no backup or migration of data from the previously installed Debug APK. Owner will uninstall/replace it once with the first Release-signed APK, acknowledging that local high scores/settings may be lost.
+- MANDATORY: generate one permanent Release signing keystore, secure it outside the repository, and supply its keystore bytes/passwords only through protected GitHub Actions Secrets or equivalent secure mechanism. Never commit secrets or put them in workflow logs.
+- All future APKs MUST retain package ID `com.kimloor.pkmnblockpuzzle`, the same signing certificate/key, and a strictly increasing Android versionCode. A lost signing key prevents normal in-place updates; keep secure offline backup of KEY itself (not player data).
+- First test sequence remains: Release-signed APK A (updater present, Pikachu old layout) -> Release-signed APK B (responsive fix), with A and B signed identically. APK builds remain owner-opt-in.
+- Decision resolves data-migration design blocker; Release signing provisioning and on-device APK A→B QA remain outstanding.
