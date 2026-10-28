@@ -170,48 +170,54 @@ function applyColumnGravity() {
 }
 
 function checkAndClearLines() {
-    const result = { count: 0, indices: [], goldenCellsCleared: 0, explosions: [] };
-    // Repeat after bomb-driven column gravity, which can complete additional rows.
+    const result = { count: 0, indices: [], goldenCellsCleared: 0, explosions: [], waves: [] };
+    // Every pass clears at least one row. A finite board cannot exceed ROWS passes.
     for (let pass = 0; pass < ROWS; pass++) {
-    const fullRows = [];
-    for (let r = 0; r < ROWS; r++) if (isRowFull(r)) fullRows.push(r);
-    if (!fullRows.length) break;
+        const fullRows = [];
+        for (let r = 0; r < ROWS; r++) if (isRowFull(r)) fullRows.push(r);
+        if (!fullRows.length) break;
 
-    // Snapshot bomb coordinates from completed rows before modifying the board.
-    const queue = [];
-    for (const r of fullRows) for (let c = 0; c < COLS; c++) {
-        if (gameBoard[r][c] === BOMB_CELL) queue.push({ r, c });
-    }
-    const visited = new Set();
-    const explosions = [];
-    while (queue.length) {
-        const bomb = queue.shift();
-        const key = bomb.r + ',' + bomb.c;
-        if (visited.has(key)) continue;
-        visited.add(key);
-        explosions.push(bomb);
-        for (let r = Math.max(0, bomb.r - 1); r <= Math.min(ROWS - 1, bomb.r + 1); r++) {
-            for (let c = Math.max(0, bomb.c - 1); c <= Math.min(COLS - 1, bomb.c + 1); c++) {
-                if (gameBoard[r][c] === BOMB_CELL && !visited.has(r + ',' + c)) queue.push({ r, c });
-                gameBoard[r][c] = 0;
+        const bombs = [];
+        for (const r of fullRows) for (let c = 0; c < COLS; c++) {
+            if (gameBoard[r][c] === BOMB_CELL) bombs.push({ r, c });
+        }
+        // Count golden blocks *only* when a completed row is cleared, and
+        // only if they survive the blast. Direct explosion grants no bonus.
+        const queue = bombs.slice();
+        const visited = new Set();
+        const explosions = [];
+        while (queue.length) {
+            const bomb = queue.shift();
+            const key = bomb.r + ',' + bomb.c;
+            if (visited.has(key)) continue;
+            visited.add(key);
+            explosions.push(bomb);
+            for (let r = Math.max(0, bomb.r - 1); r <= Math.min(ROWS - 1, bomb.r + 1); r++) {
+                for (let c = Math.max(0, bomb.c - 1); c <= Math.min(COLS - 1, bomb.c + 1); c++) {
+                    if (gameBoard[r][c] === BOMB_CELL && !visited.has(r + ',' + c)) queue.push({ r, c });
+                    // Gold is destructible like any other occupied cell.
+                    gameBoard[r][c] = 0;
+                }
             }
         }
-    }
 
-    // Count only golden cells still present in completed rows, not ones blast-destroyed.
-    let goldenCellsCleared = 0;
-    for (const r of fullRows) goldenCellsCleared += gameBoard[r].filter(isBonusPieceType).length;
-    // Clear the rows that were complete before detonation, even when explosions made gaps.
-    for (const r of fullRows.slice().reverse()) {
-        gameBoard.splice(r, 1);
-        gameBoard.unshift(Array(COLS).fill(0));
+        let goldenCellsCleared = 0;
+        for (const r of fullRows) goldenCellsCleared += gameBoard[r].filter(isBonusPieceType).length;
+        for (const r of fullRows.slice().reverse()) {
+            gameBoard.splice(r, 1);
+            gameBoard.unshift(Array(COLS).fill(0));
+        }
+        result.count += fullRows.length;
+        result.indices.push(...fullRows);
+        result.goldenCellsCleared += goldenCellsCleared;
+        result.explosions.push(...explosions);
+        result.waves.push({ count: fullRows.length, indices: fullRows, goldenCellsCleared, explosions });
+
+        if (explosions.length) applyColumnGravity();
+        // Recheck even without bombs; all mutations converge to an empty/full-row-free board.
     }
-    result.count += fullRows.length;
-    result.indices.push(...fullRows);
-    result.goldenCellsCleared += goldenCellsCleared;
-    result.explosions.push(...explosions);
-    if (!explosions.length) break; // Standard row removal cannot create new full rows.
-    applyColumnGravity();
+    if (gameBoard.some(row => row.every(cell => cell !== 0))) {
+        console.error('Line-clear safety check: full row remains after resolution');
     }
     return result;
 }
