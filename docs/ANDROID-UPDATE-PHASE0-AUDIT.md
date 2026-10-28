@@ -33,3 +33,14 @@ Phase 1: NOT STARTED. No APK built.
 - BLOCKED: no verified Android APK binary or workflow run artifact could be obtained during this audit, hence signing certificate, installed versionCode, APK ZIP contents and update compatibility are NOT TESTED.
 - Manual binary checks when existing APK is available: `apksigner verify --print-certs PkmnBlockPuzzle.apk`; `aapt dump badging PkmnBlockPuzzle.apk`; `unzip -l PkmnBlockPuzzle.apk | grep -E 'pikachu(_wave|_excited|_celebrate)?\\.png'`. Cordova web assets can be located under `assets/www/` inside the APK.
 - Next gate: provide the exact existing APK binary or its GitHub Actions run ID/artifact; then inspect signing and installed-app identity before choosing transition strategy. Do not uninstall existing app or discard locally saved scores.
+
+## APK Binary Verification — supplied Google Drive APK (2026-10-28)
+Source: PkmnBlockPuzzle.apk from owner-provided Drive file ID `1l5On1zTnrhahRDZ5y0kLtg2SJcae4UtN`.
+- PASS — ZIP/APK readable; size `13,451,987` bytes, SHA-256 `ac6de4af904556620c52dfae79a1e9805d1bfbcb4fe90f4d041304cdeeaf8f4f`.
+- PASS — Binary AndroidManifest.xml: package `com.kimloor.pkmnblockpuzzle`, versionName `0.4.13`, versionCode `413`, minSdk `24`, targetSdk `35`.
+- PASS — APK v2 signing block present (ID `0x7109871a`); certificate subject `C=US,O=Android,CN=Android Debug`, DER cert SHA-256 fingerprint `FDB767B0DC01EB4DEBCBCF35A63442B22C363647BAA004ED6714FC5E68646B21`. Certificate identity was extracted from signing block; full cryptographic `apksigner verify` NOT RUN (SDK tool unavailable).
+- PASS — 4 Pikachu images included under `assets/www/images/pokemon/characters/`: idle/wave/excited/celebrate. APK's bundled HTML displays `v0.4.13`.
+- WARNING — The actual installed Android APK certificate must match this exact certificate before this downloaded APK can be treated as its base. Do not infer matching signatures solely from file names.
+- BLOCKER — Android Debug certificate differs from any newly created release key; ordinary Android package installation cannot upgrade it in place to a differently signed release. A one-time migration/reinstall with explicit save-data backup or retaining the same signing identity must be decided before Phase 1. A per-run debug signing key is not a durable release strategy.
+- NOT TESTED — Android device installation, upgrade preserving localStorage, system package manager confirmation, gameplay visual QA, end-to-end update A→B.
+- DECISION GATE — Owner approval required for proposed Phase 1 Release Signing and migration approach; do not delete device app or trigger APK build without explicit owner instruction.
