@@ -308,6 +308,10 @@ function lockPieceAndContinue() {
     fixPieceOnBoard(currentPiece); 
     const linesClearedInfo = checkAndClearLines(); 
     handleLineClears(linesClearedInfo);
+    // A completed row takes precedence over the ordinary piece-lock reaction.
+    if (window.pokemonCompanion) {
+        window.pokemonCompanion.play(linesClearedInfo.count > 0 ? 'celebrate' : 'excited');
+    }
     if (linesClearedInfo.explosions?.length) {
         showBombFeedback(linesClearedInfo.explosions.length);
         const startTime = performance.now();

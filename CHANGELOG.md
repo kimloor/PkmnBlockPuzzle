@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.11] — Pikachu companion reactions (2026-10-28)
+- Add three normalized 500×500 RGBA companion pose assets: wave, excited and celebrate; the existing pikachu.png remains the idle pose.
+- Show idle/wave in a timed alternating loop; a locked piece triggers excited, while clearing one or more rows triggers celebrate with priority. Discrete stepped CSS keyframes move each pose, with reduced-motion fallback.
+- Keep the companion in the upper-right Pokémon-theme desktop slot; no scoring or gameplay changes. Source review only, browser/device QA pending. No APK build.
+
 ## [0.4.10] — Pikachu companion asset (2026-10-28)
 - Add the transparent 500×500 PNG at `TetrisApp/www/images/pokemon/characters/pikachu.png` and render it in the existing upper-right Pokémon companion slot.
 - Remove placeholder outlines, keep responsive behavior and existing gameplay unchanged; source-level review only, browser/device QA pending. No APK build.
