@@ -1,4 +1,4 @@
-name: Android Debug APK
+name: Android Release APK
 
 on:
   workflow_dispatch:
@@ -7,12 +7,17 @@ permissions:
   contents: read
 
 jobs:
-  android-debug-apk:
+  android-release-apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     defaults:
       run:
         working-directory: TetrisApp
+    env:
+      RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+      RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+      RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+      RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,29 +29,42 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Verify Android SDK
+      - name: Verify release secrets without printing values
+        shell: bash
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          test -d "$ANDROID_HOME"
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --version
+          set -euo pipefail
+          for k in RELEASE_KEYSTORE_BASE64 RELEASE_STORE_PASSWORD RELEASE_KEY_ALIAS RELEASE_KEY_PASSWORD; do
+            test -n "${!k}" || { echo "::error::Missing required signing secret: $k"; exit 1; }
+          done
       - name: Install dependencies
         run: npm ci
       - name: Install Cordova
         run: npm install --global cordova@12
       - name: Add Android platform
         run: cordova platform add android@14.0.1
-      - name: Build Android debug APK
-        run: cordova build android --debug -- --packageType=apk
-      - name: Rename debug APK
+      - name: Build Android release APK
+        shell: bash
         run: |
           set -euo pipefail
-          apk_dir="platforms/android/app/build/outputs/apk/debug"
-          test -s "$apk_dir/app-debug.apk"
-          mv "$apk_dir/app-debug.apk" "$apk_dir/PkmnBlockPuzzle.apk"
-          test -s "$apk_dir/PkmnBlockPuzzle.apk"
+          trap 'rm -f "$RUNNER_TEMP/pkmn-release.keystore"' EXIT
+          printf '%s' "$RELEASE_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/pkmn-release.keystore"
+          chmod 600 "$RUNNER_TEMP/pkmn-release.keystore"
+          keytool -list -keystore "$RUNNER_TEMP/pkmn-release.keystore" -storepass "$RELEASE_STORE_PASSWORD" -alias "$RELEASE_KEY_ALIAS" >/dev/null
+          cordova build android --release -- --packageType=apk \
+            --keystore="$RUNNER_TEMP/pkmn-release.keystore" \
+            --storePassword="$RELEASE_STORE_PASSWORD" \
+            --alias="$RELEASE_KEY_ALIAS" \
+            --password="$RELEASE_KEY_PASSWORD"
+          apk="platforms/android/app/build/outputs/apk/release/app-release.apk"
+          test -s "$apk"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$apk" | grep -E 'Verifies|Signer #1 certificate SHA-256 digest'
+          cp "$apk" PkmnBlockPuzzle.apk
+          sha256sum PkmnBlockPuzzle.apk > PkmnBlockPuzzle.apk.sha256
       - uses: actions/upload-artifact@v4
         with:
-          name: PkmnBlockPuzzle
-          path: TetrisApp/platforms/android/app/build/outputs/apk/debug/PkmnBlockPuzzle.apk
+          name: PkmnBlockPuzzle-release
+          path: |
+            TetrisApp/PkmnBlockPuzzle.apk
+            TetrisApp/PkmnBlockPuzzle.apk.sha256
           if-no-files-found: error
           retention-days: 14
