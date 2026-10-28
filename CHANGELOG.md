@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]\n\n## [0.4.5] — Background import\n- Published Desktop/Mobile JPGs and aligned Pokémon theme paths.\n
 
+## [0.4.7] — Fix Pokémon background visibility (2026-10-28)
+- Corrected theme CSS variable background URL relative to the HTML document; bust cached CSS/theme config URLs.
+- Removed the heavy full-screen blur and opacity overlay from Pokémon theme menus so the landscape is actually visible, while preserving menu-card contrast.
+- Source-level QA only; live browser/device visual verification pending. No APK build.
+
 ## [0.4.6] — Backup asset import runbook (2026-10-28)
 - Documented validated Google Drive → GitHub Actions → master import as a fallback in docs/ASSET-IMPORT-FALLBACK.md; linked from README and AGENTS.
 - Documentation-only change; no APK build.
