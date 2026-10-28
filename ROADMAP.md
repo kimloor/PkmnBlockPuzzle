@@ -34,5 +34,28 @@ Status: planning document; items are proposals until confirmed by the owner.
 - [ ] Build Android APK **only on explicit owner instruction**.
 - [ ] Update changelog, test report and release notes before release.
 
+## Android In-App Update V1 + Pikachu First Update (Owner-authorized 2026-10-28)
+Status: roadmap authorized; Phase 0 source audit started. No Phase 1–7 implementation or APK build authorized.
+
+- [x] Phase 0: audit current Android workflow, package identity, versionCode, signing, data persistence (source review; binary/device QA pending).
+- [ ] Phase 1: release-signed APK pipeline with persistent secure key, stable app ID, monotonic versionCode (manual dispatch).
+- [ ] Phase 2: GitHub Releases with APK, release notes, machine-readable version metadata and checksum.
+- [ ] Phase 3: Settings manual Check for Updates, online/offline handling and version comparison.
+- [ ] Phase 4: download progress, checksum verification, Android user-confirmed installer, retry/error handling.
+- [ ] Phase 5: fix Pikachu mobile layout, preserve visible board/HUD, bundle idle/wave/excited/celebrate assets; verify 360/390/412px portrait and landscape.
+- [ ] Phase 6: **first real update test**: install signed baseline A with updater but without Pikachu fix, upgrade in place to signed B carrying Pikachu fix; confirm scores/settings persist.
+- [ ] Phase 7: QA evidence, release acceptance, documentation and production checks.
+
+### Phase 0 source evidence
+- PASS: Cordova app ID `com.kimloor.pkmnblockpuzzle`; baseline version 0.4.13 before documentation bump; cordova-android 14.0.1 specified.
+- PASS: `.github/workflows/android-apk.yml` uses `workflow_dispatch`, debug build, renames output to PkmnBlockPuzzle.apk, uploads a 14-day artifact.
+- WARNING: current workflow has no release signing/keystore configuration. Cannot guarantee installed debug APK can upgrade to newly release-signed APK due to signing identity mismatch.
+- WARNING: explicit Android versionCode absent from `TetrisApp/config.xml`; inspect generated APK code and establish monotonic code policy.
+- PASS: High scores saved to localStorage via `TetrisApp/www/js/services/storage.js`. Retaining data requires compatible in-place upgrade; inventory remaining settings keys.
+- PASS: companion referenced in HTML and 4 pose paths in `js/ui/pokemonCompanion.js`; `mobile-fix.css` includes CSS hiding companion at <=1050px and portrait <=768px.
+- NOT TESTED: binary signing fingerprint, APK contents, runtime persistence, device/emulator installation and upgrade, live GitHub releases.
+- EXIT GATE: inspect real existing APK certificate/package/versionCode, data backup/transition plan, full storage key inventory, and signing decision before Phase 1.
+- SEQUENCING: do not ship Pikachu fix in baseline APK A; A and B share app ID/signing key; B higher versionCode.
+
 ## Working agreement
 Authorized changes may go straight to master without PR; request owner approval before fixing *newly discovered* issues, preserve gameplay, report real test evidence and obey `AGENTS.md`. Roadmap checkboxes are not completion claims.
