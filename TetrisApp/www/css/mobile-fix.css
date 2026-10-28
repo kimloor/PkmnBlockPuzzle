@@ -239,7 +239,7 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
    Both assets are offline local files; CSS gradients provide a graceful fallback. */
 html.pokemon-theme-active body {
     background-color: #75cb77;
-    background-image: linear-gradient(rgba(10, 28, 53, .15), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_desktop.webp");
+    background-image: linear-gradient(rgba(10, 28, 53, .15), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -275,7 +275,7 @@ html.pokemon-theme-active #pokemon-side-slot .pokemon-side-placeholder {
 }
 @media (max-width: 768px) and (orientation: portrait) {
     html.pokemon-theme-active body {
-        background-image: linear-gradient(rgba(10, 28, 53, .12), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.webp");
+        background-image: linear-gradient(rgba(10, 28, 53, .12), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg");
         background-attachment: scroll;
     }
     html.pokemon-theme-active #pokemon-side-slot { display: none; }

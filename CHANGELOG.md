@@ -4,7 +4,7 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
-## [Unreleased]
+## [Unreleased]\n\n## [0.4.5] — Background import\n- Published Desktop/Mobile JPGs and aligned Pokémon theme paths.\n
 
 ## [0.4.4] — Chain clear and exit score persistence (2026-10-27)
 - Recheck and clear rows completed by bomb-induced column gravity until stable; aggregate scores and explosions, including totals above four rows.
