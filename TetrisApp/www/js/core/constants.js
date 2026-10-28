@@ -107,7 +107,7 @@ const THEMES = {
             S: '#50d477', Z: '#ff6472', J: '#418cff', L: '#ffab3a'
         },
         ghostFillColor: 'rgba(255, 240, 150, 0.24)',
-        '--body-background-image': 'url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg")',
+        '--body-background-image': 'url("images/pokemon/backgrounds/pokemon_bg_desktop.jpg")',
         '--body-background-size': 'cover',
         '--body-background-position': 'center',
         '--body-background-repeat': 'no-repeat',
