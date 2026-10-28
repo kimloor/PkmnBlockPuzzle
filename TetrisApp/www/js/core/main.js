@@ -344,12 +344,16 @@ function lockPieceAndContinue() {
  */
 function handleLineClears(linesClearedInfo) {
     if (linesClearedInfo.count > 0) {
-        const multiplier = 1 + (linesClearedInfo.goldenCellsCleared || 0);
-        // Chain reactions may clear more than four rows; score each valid group.
-        for (let remaining = linesClearedInfo.count; remaining > 0; remaining -= 4) {
-            addScore(Math.min(remaining, 4), multiplier);
+        // Score each chain wave independently. Bomb-destroyed gold gives no bonus.
+        let maxMultiplier = 1;
+        for (const wave of (linesClearedInfo.waves || [linesClearedInfo])) {
+            const multiplier = 1 + (wave.goldenCellsCleared || 0);
+            maxMultiplier = Math.max(maxMultiplier, multiplier);
+            for (let remaining = wave.count; remaining > 0; remaining -= 4) {
+                addScore(Math.min(remaining, 4), multiplier);
+            }
         }
-        if (multiplier > 1) showBonusScoreFeedback(multiplier);
+        if (maxMultiplier > 1) showBonusScoreFeedback(maxMultiplier);
 
         if (linesClearedInfo.count === 4) {
             playTetrisClearSound();
