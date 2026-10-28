@@ -6,6 +6,10 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]\n\n## [0.4.5] — Background import\n- Published Desktop/Mobile JPGs and aligned Pokémon theme paths.\n
 
+## [0.4.6] — Backup asset import runbook (2026-10-28)
+- Documented validated Google Drive → GitHub Actions → master import as a fallback in docs/ASSET-IMPORT-FALLBACK.md; linked from README and AGENTS.
+- Documentation-only change; no APK build.
+
 ## [0.4.4] — Chain clear and exit score persistence (2026-10-27)
 - Recheck and clear rows completed by bomb-induced column gravity until stable; aggregate scores and explosions, including totals above four rows.
 - Save score when leaving to menu, restarting, pagehide, or mobile visibility hidden; update an existing score snapshot after resume instead of appending a duplicate.
