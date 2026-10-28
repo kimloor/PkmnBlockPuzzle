@@ -26,3 +26,6 @@ Preserve original upstream MIT LICENSE and third-party notices.
 - Preserve web and Android compatibility and run appropriate smoke tests wherever tooling permits.
 - Do not remove assets or modify unrelated features without approval.
 - Keep `README.md`, `ROADMAP.md`, `GAME_DESIGN.md`, `CHANGELOG.md`, and QA records consistent with verified behavior.
+
+## Backup image import
+When direct binary upload is unavailable, follow the documented **Google Drive → GitHub Actions → master** fallback in [`docs/ASSET-IMPORT-FALLBACK.md`](docs/ASSET-IMPORT-FALLBACK.md). Keep it as a fallback, verify the actual image commit and UI asset path, and do not run an APK build.
