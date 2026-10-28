@@ -27,3 +27,9 @@ Phase 0 source audit: COMPLETE.
 Phase 0 binary/device compatibility gate: BLOCKED / NOT TESTED due to no verified APK + signing/certificate and no live device/emulator evidence.
 Phase 1: NOT STARTED. No APK built.
 
+
+## Phase 0 follow-up — 2026-10-28
+- PASS (repository evidence): all four pose source assets exist under `TetrisApp/www/images/pokemon/characters/`. Their Git blob SHAs: idle `b3a4b4c3e24636f0c4452c0931bc204cea616170`; wave `79509e37e9fd1b343570775c3baa8ddef027c2cf`; excited `702d6784528ae070db75dff564f0f7068d14a174`; celebrate `0f84b561218928b59304794e73e2ead81676200b`. This proves presence in source only, NOT APK inclusion.
+- BLOCKED: no verified Android APK binary or workflow run artifact could be obtained during this audit, hence signing certificate, installed versionCode, APK ZIP contents and update compatibility are NOT TESTED.
+- Manual binary checks when existing APK is available: `apksigner verify --print-certs PkmnBlockPuzzle.apk`; `aapt dump badging PkmnBlockPuzzle.apk`; `unzip -l PkmnBlockPuzzle.apk | grep -E 'pikachu(_wave|_excited|_celebrate)?\\.png'`. Cordova web assets can be located under `assets/www/` inside the APK.
+- Next gate: provide the exact existing APK binary or its GitHub Actions run ID/artifact; then inspect signing and installed-app identity before choosing transition strategy. Do not uninstall existing app or discard locally saved scores.
