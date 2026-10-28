@@ -61,3 +61,10 @@ Binary inspection update: Owner-provided v0.4.13 APK inspected. Package `com.kim
 
 ## Working agreement
 Authorized changes may go straight to master without PR; request owner approval before fixing *newly discovered* issues, preserve gameplay, report real test evidence and obey `AGENTS.md`. Roadmap checkboxes are not completion claims.
+
+### Owner signing decision — 2026-10-28
+- APPROVED: no backup or migration of data from the previously installed Debug APK. Owner will uninstall/replace it once with the first Release-signed APK, acknowledging that local high scores/settings may be lost.
+- MANDATORY: generate one permanent Release signing keystore, secure it outside the repository, and supply its keystore bytes/passwords only through protected GitHub Actions Secrets or equivalent secure mechanism. Never commit secrets or put them in workflow logs.
+- All future APKs MUST retain package ID `com.kimloor.pkmnblockpuzzle`, the same signing certificate/key, and a strictly increasing Android versionCode. A lost signing key prevents normal in-place updates; keep secure offline backup of KEY itself (not player data).
+- First test sequence remains: Release-signed APK A (updater present, Pikachu old layout) -> Release-signed APK B (responsive fix), with A and B signed identically. APK builds remain owner-opt-in.
+- Decision resolves data-migration design blocker; Release signing provisioning and on-device APK A→B QA remain outstanding.
