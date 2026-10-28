@@ -2,7 +2,7 @@
 
 **Repository:** https://github.com/kimloor/PkmnBlockPuzzle
 
-**Documentation:** [Development rules](AGENTS.md) · [Roadmap](ROADMAP.md) · [Game design](GAME_DESIGN.md) · [Changelog](CHANGELOG.md)
+**Documentation:** [Development rules](AGENTS.md) · [Roadmap](ROADMAP.md) · [Game design](GAME_DESIGN.md) · [Changelog](CHANGELOG.md) · [Backup image import](docs/ASSET-IMPORT-FALLBACK.md)
 
 A classic Tetris game built with HTML, CSS, and vanilla JavaScript, featuring multiple themes, responsive design, touch controls, and several modern gameplay mechanics.
 
