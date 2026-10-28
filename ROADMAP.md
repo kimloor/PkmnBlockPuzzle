@@ -35,7 +35,7 @@ Status: planning document; items are proposals until confirmed by the owner.
 - [ ] Update changelog, test report and release notes before release.
 
 ## Android In-App Update V1 + Pikachu First Update (Owner-authorized 2026-10-28)
-Status: roadmap authorized; Phase 0 source audit started. No Phase 1–7 implementation or APK build authorized.
+Status: Phase 0 SOURCE AUDIT COMPLETE; binary/device gate BLOCKED / NOT TESTED. See docs/ANDROID-UPDATE-PHASE0-AUDIT.md. No Phase 1–7 implementation or APK build authorized.
 
 - [x] Phase 0: audit current Android workflow, package identity, versionCode, signing, data persistence (source review; binary/device QA pending).
 - [ ] Phase 1: release-signed APK pipeline with persistent secure key, stable app ID, monotonic versionCode (manual dispatch).
