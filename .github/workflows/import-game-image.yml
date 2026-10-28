@@ -1,6 +1,10 @@
 name: Import Game Image
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/import-game-image.yml'
   workflow_dispatch:
     inputs:
       image_url:
@@ -25,7 +29,7 @@ concurrency:
 
 jobs:
   import-image:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -147,4 +151,57 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- "$IMAGE_PATH" TetrisApp/config.xml TetrisApp/www/index.html CHANGELOG.md
           git commit -m "assets: import image (v${{ steps.version.outputs.version }})"
+          git push origin HEAD:master
+
+  bootstrap-backgrounds:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Download and validate owner-shared images
+        run: |
+          python3 -m pip install 'gdown==5.2.0'
+          mkdir -p TetrisApp/www/images/pokemon/backgrounds
+          python3 -m gdown --id 10rnA9lcJJR9HbJ87526L6pTqYducwyqA -O TetrisApp/www/images/pokemon/backgrounds/pokemon_bg_desktop.jpg
+          python3 -m gdown --id 1aZQ8Mc4iVl3LOC4y_S28cKUw_w8SO-vU -O TetrisApp/www/images/pokemon/backgrounds/pokemon_bg_mobile.jpg
+          python3 - <<'PY'
+          from pathlib import Path
+          for kind in ['desktop','mobile']:
+              file=Path(f'TetrisApp/www/images/pokemon/backgrounds/pokemon_bg_{kind}.jpg')
+              data=file.read_bytes()
+              assert data.startswith(bytes.fromhex('ffd8ff')) and 1000 < len(data) < 15000000
+          PY
+      - name: Sync game references and version
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          for path in ['TetrisApp/www/css/mobile-fix.css','TetrisApp/www/js/core/constants.js']:
+              p=Path(path)
+              p.write_text(p.read_text().replace('pokemon_bg_desktop.webp','pokemon_bg_desktop.jpg').replace('pokemon_bg_mobile.webp','pokemon_bg_mobile.jpg'))
+          config=Path('TetrisApp/config.xml')
+          xml=config.read_text()
+          m=re.search(r'(version=")([0-9]+)\.([0-9]+)\.([0-9]+)(")',xml)
+          assert m
+          old=f'{m.group(2)}.{m.group(3)}.{m.group(4)}'
+          new=f'{m.group(2)}.{m.group(3)}.{int(m.group(4))+1}'
+          config.write_text(xml[:m.start(2)]+new+xml[m.end(4):])
+          index=Path('TetrisApp/www/index.html')
+          content=index.read_text()
+          assert content.count(f'v{old}</div>')==1
+          index.write_text(content.replace(f'v{old}</div>',f'v{new}</div>',1))
+          changelog=Path('CHANGELOG.md')
+          changelog.write_text(changelog.read_text().replace('## [Unreleased]',f'## [Unreleased]\\n\\n## [{new}] — Background import\\n- Published Desktop/Mobile JPGs and aligned Pokémon theme paths.\\n',1))
+          PY
+      - name: Commit backgrounds
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add TetrisApp/www/images/pokemon/backgrounds TetrisApp/www/css/mobile-fix.css TetrisApp/www/js/core/constants.js TetrisApp/config.xml TetrisApp/www/index.html CHANGELOG.md
+          git diff --cached --quiet && exit 0
+          git commit -m "assets: import Pokémon backgrounds"
           git push origin HEAD:master
