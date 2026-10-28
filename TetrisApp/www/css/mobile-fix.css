@@ -258,10 +258,10 @@ html.pokemon-theme-active #pokemon-side-slot {
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    /* Anchor companion to the upper-right of the game viewport, not the middle of the row. */
+    /* Place the companion just outside the top-left of the Tetris board. */
     position: absolute;
-    top: max(12px, env(safe-area-inset-top));
-    right: max(12px, env(safe-area-inset-right));
+    top: 20px;
+    right: calc(100% + 10px);
     align-self: flex-start;
     order: 0;
     z-index: 2;
@@ -345,3 +345,6 @@ html.pokemon-theme-active #pokemon-side-slot .pokemon-side-character[data-pose="
         transform: none !important;
     }
 }
+
+/* v0.4.12: use the game board container as the Pikachu position anchor. */
+html.pokemon-theme-active #main-container { position: relative; }

@@ -6,6 +6,10 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.4.12] — Pikachu position (2026-10-28)
+- Position Pokémon companion outside the upper-left of the Tetris board container with a 10px gap on supported desktop layouts; keep its original dimensions, animations, theme visibility, and responsive mobile hiding unchanged.
+- Source-level verification only; browser/device layout QA pending. No APK build.
+
 ## [0.4.11] — Pikachu companion reactions (2026-10-28)
 - Add three normalized 500×500 RGBA companion pose assets: wave, excited and celebrate; the existing pikachu.png remains the idle pose.
 - Show idle/wave in a timed alternating loop; a locked piece triggers excited, while clearing one or more rows triggers celebrate with priority. Discrete stepped CSS keyframes move each pose, with reduced-motion fallback.
