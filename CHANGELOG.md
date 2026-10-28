@@ -4,7 +4,12 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
-## [Unreleased]\n\n## [0.4.5] — Background import\n- Published Desktop/Mobile JPGs and aligned Pokémon theme paths.\n
+## [Unreleased]
+
+## [0.4.8] — Pokémon companion upper-right alignment (2026-10-28)
+- Anchor the reserved Pokémon companion slot to the upper-right of the game viewport on supported desktop layouts, instead of vertically centering it.
+- Keep existing mobile hiding and game controls unchanged. Source inspection only; device visual QA pending. No APK build.
+\n\n## [0.4.5] — Background import\n- Published Desktop/Mobile JPGs and aligned Pokémon theme paths.\n
 
 ## [0.4.7] — Fix Pokémon background visibility (2026-10-28)
 - Corrected theme CSS variable background URL relative to the HTML document; bust cached CSS/theme config URLs.
