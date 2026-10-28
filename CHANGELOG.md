@@ -5,6 +5,7 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
 ## [Unreleased]
+- Phase 0 source audit completed with localStorage key inventory; binary signing and installed APK compatibility remain unverified (docs-only v0.4.15, no APK build).
 - Authorized Android updater/Pikachu-first-update roadmap and Phase 0 preliminary source audit; documentation-only v0.4.14, no APK build.
 
 ## [0.4.13] — Repair Android APK artifact path (2026-10-28)
