@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.5.5] — Planned score milestone rewards (source/docs only; 2026-10-29)
+- Add owner-requested post-roadmap feature specification: Pikachu speech-bubble announcements and gameplay pause at 10k / 20k / 30k / 100k points, with four fixed prize descriptions.
+- No reward runtime implementation, APK build or release requested. Version bump follows AGENTS.md.
+
+
 ## [0.5.4] — Build status reporting (source only; 2026-10-29)
 - Record GitHub Actions Android release step outcomes in `.github/build-status/latest.json` after each workflow attempt, including failed builds when the runner and token remain available.
 - No APK Build or Release v0.5.4 requested; v0.5.2 release result still requires verification.
