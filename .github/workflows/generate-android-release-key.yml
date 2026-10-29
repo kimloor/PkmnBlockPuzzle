@@ -1,0 +1,63 @@
+name: Generate Android Release Key (one-time)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      KEY_EXPORT_PASSPHRASE: ${{ secrets.KEY_EXPORT_PASSPHRASE }}
+    steps:
+      - name: Require owner-configured export passphrase
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${#KEY_EXPORT_PASSPHRASE}" -lt 20 ]; then
+            echo "::error::Set a strong KEY_EXPORT_PASSPHRASE (20+ characters) in repository Actions secrets before running."
+            exit 1
+          fi
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Generate keystore and encrypted recovery bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          work="$RUNNER_TEMP/pkmn-keygen"
+          mkdir -p "$work"
+          trap 'rm -rf "$work"' EXIT
+          export STORE_PASSWORD="$(openssl rand -hex 32)"
+          export KEY_PASSWORD="$STORE_PASSWORD"
+          alias_name=pkmnblockpuzzle
+          keytool -genkeypair -noprompt \
+            -keystore "$work/PkmnBlockPuzzle-release.jks" \
+            -storetype PKCS12 -alias "$alias_name" \
+            -keyalg RSA -keysize 3072 -validity 10000 \
+            -dname "CN=PkmnBlockPuzzle,O=kimloor,C=TH" \
+            -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" >/dev/null 2>&1
+          keytool -list -keystore "$work/PkmnBlockPuzzle-release.jks" -alias "$alias_name" -storepass "$STORE_PASSWORD" >/dev/null 2>&1
+          printf '%s' "$STORE_PASSWORD" > "$work/store-password.txt"
+          printf '%s' "$KEY_PASSWORD" > "$work/key-password.txt"
+          printf '%s' "$alias_name" > "$work/key-alias.txt"
+          base64 -w 0 "$work/PkmnBlockPuzzle-release.jks" > "$work/keystore-base64.txt"
+          ( cd "$work"; zip -q recovery.zip PkmnBlockPuzzle-release.jks store-password.txt key-password.txt key-alias.txt keystore-base64.txt )
+          printf '%s' "$KEY_EXPORT_PASSPHRASE" > "$work/encryption-passphrase"
+          openssl enc -aes-256-cbc -pbkdf2 -iter 250000 -salt \
+            -in "$work/recovery.zip" \
+            -out "$GITHUB_WORKSPACE/PkmnBlockPuzzle-key-recovery.zip.enc" \
+            -pass file:"$work/encryption-passphrase"
+          test -s "$GITHUB_WORKSPACE/PkmnBlockPuzzle-key-recovery.zip.enc"
+          echo "Encrypted recovery artifact created. Store it securely. Never upload the decrypted bundle."
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PkmnBlockPuzzle-encrypted-key-recovery
+          path: PkmnBlockPuzzle-key-recovery.zip.enc
+          if-no-files-found: error
+          retention-days: 1
