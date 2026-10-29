@@ -142,7 +142,13 @@ function displayHighScoresOnMenu(scoresArray, noScoresMsgKey = 'noScoresMsg') {
                 const listItem = document.createElement('li');
                 const scoreSpan = document.createElement('span');
                 scoreSpan.className = 'score-value-entry';
-                scoreSpan.textContent = score;
+                const entry=typeof score==='number'?{score,durationMs:null}:score;
+                scoreSpan.textContent=entry.score.toLocaleString();
+                const time=document.createElement('span');
+                time.className='score-time-entry';
+                const ms=entry.durationMs;
+                time.textContent=' · เวลาเล่น '+(Number.isFinite(ms)?[Math.floor(ms/3600000),Math.floor(ms/60000)%60,Math.floor(ms/1000)%60].map(n=>String(n).padStart(2,'0')).join(':'):'—');
+                listItem.appendChild(time);
                 listItem.appendChild(scoreSpan);
                 highScoresListElement.appendChild(listItem);
             });
