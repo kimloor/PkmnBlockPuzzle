@@ -122,10 +122,6 @@ jobs:
             echo "::error::Release $tag already exists; refusing to overwrite it"
             exit 1
           fi
-          if ! gh api "repos/$GITHUB_REPOSITORY" --jq '.permissions.push' | grep -qx true; then
-            echo "::error::Workflow token cannot write releases. Enable Actions > General > Workflow permissions > Read and write permissions, or configure a release PAT with contents:write."
-            exit 1
-          fi
           gh release create "$tag" \
             PkmnBlockPuzzle.apk PkmnBlockPuzzle.apk.sha256 \
             --repo "$GITHUB_REPOSITORY" \
@@ -147,7 +143,7 @@ jobs:
         run: |
           set -euo pipefail
           report_path=".github/build-status/latest.json"
-          mkdir -p "$(dirname "$report_path")"
+          mkdir -p "../.github/build-status"
           python3 - <<'PY'
           import json, os, datetime
           outcomes = {k: os.environ.get(k, "unknown") for k in
@@ -170,12 +166,12 @@ jobs:
               "result": "success" if successful else "failure",
               "release_url": f'https://github.com/{os.environ["GITHUB_REPOSITORY"]}/releases/tag/v{os.environ["REPORTED_VERSION"]}' if successful else None
           }
-          with open(".github/build-status/latest.json", "w") as f:
+          with open("../.github/build-status/latest.json", "w") as f:
               json.dump(data, f, indent=2)
               f.write(chr(10))
           PY
           existing_sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$report_path?ref=master" --jq .sha 2>/dev/null || true)"
-          encoded="$(base64 -w 0 "$report_path")"
+          encoded="$(base64 -w 0 "../$report_path")"
           if [[ -n "$existing_sha" ]]; then
             gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$report_path" \
               -f message="ci: record Android build outcome (run $GITHUB_RUN_ID)" \
