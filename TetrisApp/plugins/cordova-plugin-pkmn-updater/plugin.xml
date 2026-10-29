@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-pkmn-updater" version="1.0.0">
+  <name>PkmnUpdater</name>
+  <engines><engine name="cordova-android" version=">=12.0.0" /></engines>
+  <js-module src="www/Updater.js" name="Updater"><clobbers target="PkmnUpdater" /></js-module>
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*"><feature name="PkmnUpdater"><param name="android-package" value="com.kimloor.pkmnupdater.PkmnUpdater" /></feature></config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.INTERNET" />
+      <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.pkmnupdater.fileprovider" android:exported="false" android:grantUriPermissions="true">
+        <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/pkmn_updater_paths" />
+      </provider>
+    </config-file>
+    <resource-file src="src/android/pkmn_updater_paths.xml" target="app/src/main/res/xml/pkmn_updater_paths.xml" />
+    <source-file src="src/android/PkmnUpdater.java" target-dir="app/src/main/java/com/kimloor/pkmnupdater" />
+  </platform>
+</plugin>
