@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.6.0] — Score milestone reward implementation (Draft PR only; not released)
+- Pikachu announces rewards at 10,000 / 20,000 / 30,000 / 100,000 points.
+- Gameplay pauses for acknowledgement; queued milestones are handled in order once per run.
+- Mobile reward modal; no real-world redemption, no APK build. QA pending.
+
+
 ## [0.5.5] — Planned score milestone rewards (source/docs only; 2026-10-29)
 - Add owner-requested post-roadmap feature specification: Pikachu speech-bubble announcements and gameplay pause at 10k / 20k / 30k / 100k points, with four fixed prize descriptions.
 - No reward runtime implementation, APK build or release requested. Version bump follows AGENTS.md.
