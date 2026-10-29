@@ -172,7 +172,7 @@ jobs:
           }
           with open(".github/build-status/latest.json", "w") as f:
               json.dump(data, f, indent=2)
-              f.write("\\n")
+              f.write(chr(10))
           PY
           existing_sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$report_path?ref=master" --jq .sha 2>/dev/null || true)"
           encoded="$(base64 -w 0 "$report_path")"
