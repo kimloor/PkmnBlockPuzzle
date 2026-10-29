@@ -151,3 +151,11 @@
     content: "";
     margin-top: 4px;
 }
+.reward-overlay[hidden] { display:none!important; }
+.reward-overlay { position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center; background:rgba(9,18,40,.78); padding:18px; box-sizing:border-box; }
+.reward-card { width:min(92vw,410px); max-height:90dvh; overflow:auto; text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px; }
+.reward-pikachu { width:min(42vw,180px); height:auto; max-height:30dvh; object-fit:contain; }
+.reward-speech { position:relative; background:#fff9da; color:#162748; border:3px solid #f3c342; border-radius:22px; padding:20px 17px; width:100%; box-sizing:border-box; font-weight:800; font-size:clamp(17px,4vw,22px); line-height:1.55; overflow-wrap:anywhere; box-shadow:0 7px 22px #0005; }
+.reward-speech:before { content:""; position:absolute; top:-13px; left:50%; transform:translateX(-50%) rotate(45deg); width:20px; height:20px; background:#fff9da; border-left:3px solid #f3c342; border-top:3px solid #f3c342; }
+#reward-continue { font:inherit; font-weight:800; background:#ffdc45; color:#14234a; border:2px solid #fff; border-radius:30px; padding:13px 22px; min-height:48px; cursor:pointer; touch-action:manipulation; }
+#reward-continue:focus-visible { outline:3px solid #fff; outline-offset:3px; }
