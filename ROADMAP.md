@@ -31,6 +31,26 @@ Status: planning document; items are proposals until confirmed by the owner.
 ### Release workflow policy
 Only an explicit owner request may initiate an APK build. ChatGPT may update the dedicated request file for that purpose; GitHub Actions builds/signs with protected Secrets and publishes a release after successful verification. **Code complete, Build PASS, Release published and Device QA accepted are distinct statuses.**
 
+## Next Feature — Score Milestone Rewards (Owner requested 2026-10-29)
+**Status: PLANNED / DEFERRED.** Start only after Android In-App Update V1 Phase 0–7, device QA and release acceptance are complete. No gameplay implementation or APK build authorized by this roadmap entry.
+
+### Fixed rewards (per game run)
+| Score threshold | Reward | Pikachu dialogue (Thai) |
+| ---: | --- | --- |
+| 10,000 | Dairy Queen ice cream, 1 cone | ยินดีด้วย! คุณได้รับไอศกรีม Dairy Queen 1 โคน! |
+| 20,000 | Gato drink, 1 bottle | ยินดีด้วย! คุณได้รับกาโตะ 1 ขวด! |
+| 30,000 | Pokémon trading card box, 1 box | ยินดีด้วย! คุณได้รับกล่องการ์ดโปเกม่อน 1 กล่อง! |
+| 100,000 | Nintendo Switch, 1 console | ยินดีด้วย! คุณได้รับ Nintendo Switch 1 เครื่อง! |
+
+### Gameplay and UI contract (proposed acceptance criteria)
+- When the active run's score first meets or exceeds a threshold, pause gameplay **immediately** and display a text speech bubble anchored to the side Pikachu, showing the exact awarded item and quantity.
+- Keep the board, score and reward text visible; block gravity, piece input, scoring and lock timers during reward pause. Only a deliberate tap/click on the reward bubble/continue overlay dismisses it and resumes gameplay; avoid a tap-through that also moves or drops a piece.
+- Each threshold triggers once per **game run**, not on every score refresh; store awarded milestone IDs within run state to avoid duplicates on pause/resume or reload. Starting a new run resets eligibility. Preserve earned reward history only if a later owner decision authorizes persistent records.
+- If one scoring action crosses multiple thresholds, queue eligible rewards in ascending threshold order, presenting one Pikachu bubble at a time; gameplay remains paused until all are acknowledged.
+- Ensure Pikachu and bubble stay visible and readable on Android portrait/landscape and mobile web where companion may currently be hidden. Provide keyboard/click/touch continuation and accessibility labeling.
+- Regression tests: exact threshold, jump across thresholds, simultaneous multi-row clear / bomb cascades, repeated score updates, menu exit, app background/resume, game over, and audio/pause behavior.
+- Real-world fulfillment is **not** implemented by this feature: these are in-game reward announcements. Redemption, inventory, physical distribution and terms require separate owner approval.
+
 ## Current verified baseline (26 October 2026)
 - A playable Tetris-style falling-block game is described in `README.md`.
 - Web source is stored in `TetrisApp/www/`, with Cordova configuration at `TetrisApp/config.xml`.
