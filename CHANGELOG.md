@@ -5,6 +5,7 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
 ## [Unreleased]
+- Document successful release APK v0.4.20 binary verification and signing certificate fingerprint; documentation-only v0.4.21 (no new APK build).
 - Add manual-only encrypted signing key generation workflow and owner recovery guide (docs/build workflow only; no key generated, no APK built). v0.4.20.
 - Phase 1: replace debug APK workflow with a manual, fail-closed release signing build requiring GitHub secrets; add SHA-256 artifact. No signing secret created and no APK build yet. v0.4.19 is a pipeline-only release.
 - Owner chose one-time replacement of Debug APK by permanently release-signed APK; no player-data migration. Documentation-only version 0.4.18; no APK build.
