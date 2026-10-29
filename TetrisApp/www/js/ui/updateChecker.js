@@ -11,6 +11,9 @@
   if (!check || !status || !notes) return;
   const defaultLabel = 'Check for Update';
   let updateUrl = null;
+  let checksumUrl = null;
+  let nativeReady = false;
+  let downloading = false;
   const versions = v => {
     const match = /^v?(\d+)\.(\d+)\.(\d+)$/.exec(String(v || '').trim());
     return match ? match.slice(1).map(Number) : null;
@@ -24,6 +27,8 @@
   function message(value) { status.textContent = value; }
   function reset() {
     updateUrl = null;
+    checksumUrl = null;
+    nativeReady = false;
     check.textContent = defaultLabel;
     notes.hidden = true;
     notes.textContent = '';
@@ -39,7 +44,42 @@
   }
   check.addEventListener('click', async function () {
     if (updateUrl) {
-      openExternal(updateUrl);
+      if (downloading) return;
+      if (!window.cordova || !window.PkmnUpdater || !checksumUrl) {
+        openExternal(updateUrl);
+        return;
+      }
+      if (nativeReady) {
+        window.PkmnUpdater.install(
+          () => message('เปิดหน้าติดตั้ง Android แล้ว'),
+          error => message(String(error))
+        );
+        return;
+      }
+      downloading = true;
+      check.disabled = true;
+      message('กำลังดาวน์โหลดอัปเดต 0%');
+      window.PkmnUpdater.download(updateUrl, checksumUrl, result => {
+        if (result.state === 'progress') {
+          message('กำลังดาวน์โหลดอัปเดต ' + result.percent + '%');
+        } else if (result.state === 'ready') {
+          downloading = false;
+          nativeReady = true;
+          check.disabled = false;
+          message('ดาวน์โหลดและตรวจสอบ APK สำเร็จ พร้อมติดตั้ง');
+          window.PkmnUpdater.install(
+            () => message('เปิดหน้าติดตั้ง Android แล้ว'),
+            error => message(String(error))
+          );
+        }
+      }, error => {
+        downloading = false;
+        check.disabled = false;
+        message('ดาวน์โหลดภายในเกมไม่สำเร็จ: ' + String(error) + ' กด Update อีกครั้งเพื่อเปิด Browser');
+        // The browser fallback is opt-in and never bypasses user confirmation.
+        nativeReady = false;
+        window.PkmnUpdater = null;
+      });
       return;
     }
     check.disabled = true;
@@ -61,10 +101,14 @@
         ? release.assets.find(a => a.name === 'PkmnBlockPuzzle.apk' && a.browser_download_url && a.state === 'uploaded')
         : null;
       if (!asset) { reset(); message('พบ v' + latest + ' แต่ยังไม่มี APK ที่พร้อมดาวน์โหลด'); return; }
+      const checksumAsset = Array.isArray(release.assets)
+        ? release.assets.find(a => a.name === 'PkmnBlockPuzzle.apk.sha256' && a.browser_download_url && a.state === 'uploaded')
+        : null;
       const safeUrl = new URL(asset.browser_download_url);
       if (safeUrl.protocol !== 'https:' || safeUrl.hostname !== 'github.com' ||
           !safeUrl.pathname.startsWith('/kimloor/PkmnBlockPuzzle/releases/download/')) throw new Error('Unsafe download URL');
       updateUrl = safeUrl.href;
+      checksumUrl = checksumAsset ? checksumAsset.browser_download_url : null;
       check.textContent = 'Update';
       message('มีอัปเดตใหม่ v' + latest + ' (ปัจจุบัน v' + current + ')');
       notes.hidden = false;
