@@ -74,3 +74,5 @@ Authorized changes may go straight to master without PR; request owner approval 
 - [ ] Provision permanent owner-custodied signing key and GitHub repository secrets.
 - [ ] Run release workflow, verify signature/manifest and install on Android.
 - [ ] Publish baseline APK A with updater in a later authorized phase. Target v0.5.0 only when release APK and update functionality are actually ready; do not mislabel docs-only commits.
+
+- [x] One-time manual GitHub Actions key generator added with AES-256 PBKDF2 encrypted recovery artifact; key generation **not run**. Owner must supply KEY_EXPORT_PASSPHRASE secret and run it, then configure permanent release secrets.
