@@ -80,3 +80,10 @@ Authorized changes may go straight to master without PR; request owner approval 
 ### Phase 1 artifact QA — 2026-10-29
 - [x] Owner-provided v0.4.20 signed Release APK inspected: checksum, APK v2 cert, package identity, four Pikachu pose assets; see docs/ANDROID-UPDATE-PHASE1-APK-QA.md.
 - [ ] Android device install/smoke acceptance remains pending; actual update A→B belongs to later phases.
+
+### Update-capable base APK preparation (2026-10-29)
+- [x] Add manual Check for Updates in Settings, comparing semantic version against GitHub latest published Release; show offline, 404 and error states.
+- [x] Present release notes and open the verified APK asset in the Android system browser via cordova-plugin-inappbrowser; Android handles download and prompts for user installation. This is NOT a background auto-install or embedded APK download manager.
+- [x] Preserve pre-fix Pikachu mobile hiding in baseline APK A; responsive fix reserved for APK B as first upgrade test.
+- [ ] Run GitHub Actions Android Release APK, confirm embedded plugin and settings functionality on phone.
+- [ ] Publish a properly signed GitHub Release containing PkmnBlockPuzzle.apk for APK B and perform A → B update test.
