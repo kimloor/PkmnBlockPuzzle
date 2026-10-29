@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.5.4] — Build status reporting (source only; 2026-10-29)
+- Record GitHub Actions Android release step outcomes in `.github/build-status/latest.json` after each workflow attempt, including failed builds when the runner and token remain available.
+- No APK Build or Release v0.5.4 requested; v0.5.2 release result still requires verification.
+
+
 ## [0.5.3] — Roadmap maintenance (source only, 2026-10-29)
 - Refresh progress and release acceptance gates following owner-approved v0.5.0→v0.5.1 update and v0.5.2 Native Updater implementation.
 - This is a documentation-focused source version bump required by AGENTS.md; **no v0.5.3 APK build or release was requested**.
