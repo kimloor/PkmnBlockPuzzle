@@ -1,81 +1,27 @@
-/**
- * @brief Module-scoped array to store the current list of high scores.
- * This array is populated by `loadHighScoresFromStorage` and modified by `addScoreToHighScoresList`.
- * @type {Array<number>}
- */
 let highScores = [];
-
-/**
- * @brief Loads high scores from localStorage into the module-scoped `highScores` array.
- * @returns {Array<number>} An array of high scores loaded from storage, or an empty array if none found or on error.
- */
+let sessionSequence = 0;
+function normalizeScore(s) {
+  if (typeof s === 'number' && Number.isFinite(s)) return {score:s, durationMs:null, id:'old-'+(++sessionSequence)};
+  if (!s || !Number.isFinite(s.score)) return null;
+  return {score:s.score,durationMs:Number.isFinite(s.durationMs)?Math.max(0,Math.round(s.durationMs)):null,id:s.id||'old-'+(++sessionSequence)};
+}
+function sortScores() { highScores.sort((a,b)=>b.score-a.score); highScores=highScores.slice(0,MAX_HIGH_SCORES); }
 function loadHighScoresFromStorage() {
-    try {
-        const scoresJSON = localStorage.getItem(HIGH_SCORES_KEY);
-        if (scoresJSON) {
-            const parsedScores = JSON.parse(scoresJSON);
-            if (Array.isArray(parsedScores) && parsedScores.every(s => typeof s === 'number')) {
-                highScores = parsedScores;
-                return parsedScores;
-            }
-        }
-    } catch (error) {
-        console.error("Error loading high scores from localStorage:", error);
-    }
-    highScores = [];
-    return [];
+  try { const arr=JSON.parse(localStorage.getItem(HIGH_SCORES_KEY)||'[]'); if(Array.isArray(arr)){ highScores=arr.map(normalizeScore).filter(Boolean);sortScores();return getHighScores(); } }
+  catch(e) { console.error('Score load',e); }
+  highScores=[]; return [];
 }
-
-
-/**
- * @brief Returns a copy of the current high scores list.
- * @returns {Array<number>} A new array containing the current high scores.
- */
-function getHighScores() {
-    return [...highScores];
+function getHighScores(){return highScores.map(x=>({...x}));}
+function saveHighScoresToStorage(){try{localStorage.setItem(HIGH_SCORES_KEY,JSON.stringify(highScores));}catch(e){console.error('Score save',e);}}
+function addScoreToHighScoresList(score,durationMs=null,id=null){
+  const key=id||'run-'+Date.now()+'-'+(++sessionSequence);
+  highScores.push(normalizeScore({score,durationMs,id:key}));sortScores();saveHighScoresToStorage();
+  return highScores.some(x=>x.id===key);
 }
-
-
-/**
- * @brief Saves the current state of the module-scoped `highScores` array to localStorage.
- * @arguments None.
- * @returns None.
- */
-function saveHighScoresToStorage() {
-    try {
-        localStorage.setItem(HIGH_SCORES_KEY, JSON.stringify(highScores));
-    } catch (error) {
-        console.error("Error saving high scores in localStorage:", error);
-    }
-}
-
-
-/**
- * @brief Adds a new score to the high scores list, keeps the list sorted and capped at `MAX_HIGH_SCORES`,
- * and then saves the updated list to localStorage.
- * @param {number} scoreToAdd - The new score to be added to the high scores list.
- * @returns {boolean} `true` if the new score was added and resulted in a change to the top high scores list
- * (and is part of the new list), `false` otherwise.
- */
-function addScoreToHighScoresList(scoreToAdd) {
-    const oldHighScoresString = JSON.stringify(highScores);
-
-    highScores.push(scoreToAdd);
-    highScores.sort((a, b) => b - a);
-    highScores = highScores.slice(0, MAX_HIGH_SCORES);
-
-    saveHighScoresToStorage();
-
-    const newHighScoresString = JSON.stringify(highScores);
-    return (newHighScoresString !== oldHighScoresString) && highScores.includes(scoreToAdd);
-}
-/** Update a game's previously saved snapshot rather than add duplicate scores on resume. */
-function updateSessionHighScore(previousScore, updatedScore) {
-    const index = highScores.indexOf(previousScore);
-    if (index !== -1) highScores.splice(index, 1);
-    highScores.push(updatedScore);
-    highScores.sort((a, b) => b - a);
-    highScores = highScores.slice(0, MAX_HIGH_SCORES);
-    saveHighScoresToStorage();
-    return highScores.includes(updatedScore);
+function updateSessionHighScore(oldScore,score,durationMs=null,id=null){
+  let x=id?highScores.find(x=>x.id===id):highScores.find(x=>x.score===oldScore);
+  if(x){x.score=score;x.durationMs=durationMs;}
+  else highScores.push(normalizeScore({score,durationMs,id:id||'run-'+Date.now()+'-'+(++sessionSequence)}));
+  sortScores();saveHighScoresToStorage();
+  return id?highScores.some(x=>x.id===id):highScores.some(x=>x.score===score);
 }
