@@ -333,3 +333,10 @@
     border: 1px solid var(--side-panel-card-border);
     background: var(--side-panel-card-bg);
 }
+
+/* Manual GitHub Releases updater controls; fit portrait Settings. */
+.settings-update-group { margin: 12px 0; padding: 12px; border: 1px solid var(--side-panel-card-border); border-radius: 10px; background: var(--side-panel-card-bg); text-align: left; overflow-wrap: anywhere; }
+.settings-update-group h3 { margin: 0 0 8px; font-size: 1rem; }
+.settings-update-group p { font-size: .85rem; line-height: 1.4; margin: 8px 0; white-space: pre-wrap; }
+.settings-update-group .menu-button { display: block; margin: 7px auto; width: 100%; min-width: 0; padding: 10px; font-size: .86rem; }
+.settings-update-group [hidden] { display: none !important; }
