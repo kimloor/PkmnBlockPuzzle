@@ -1,5 +1,5 @@
 {
-  "version": "0.5.2",
-  "request_id": "v052-release-after-permissions-20261029-r2",
-  "reason": "Owner confirmed GitHub Actions Read and write permissions saved; retry signed v0.5.2 release"
+  "version": "0.5.4",
+  "request_id": "v054-owner-build-20261029-statusfix-01",
+  "reason": "Owner authorized check, repair, and rebuild; use latest source version and publish signed release"
 }
