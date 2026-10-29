@@ -114,8 +114,12 @@
 
     <div id="reward-dialog" class="reward-overlay" role="dialog" aria-modal="true" aria-labelledby="reward-message" hidden>
         <div class="reward-card">
-            <img src="images/pokemon/characters/pikachu_celebrate.png" alt="ปิกาจูแสดงความยินดี" class="reward-pikachu">
-            <div class="reward-speech" id="reward-message" aria-live="assertive"></div>
+            <div class="reward-speech" aria-live="assertive">
+                <div class="reward-stars" aria-hidden="true">✦ ⭐ ✦</div>
+                <h2 class="reward-heading">ยินดีด้วย!</h2>
+                <p id="reward-message" class="reward-description"></p>
+                <div id="reward-prize-visual" class="reward-prize-visual" aria-hidden="true">🍦</div>
+            </div>
             <button id="reward-continue" type="button">แตะเพื่อเล่นต่อ ▶</button>
         </div>
     </div>
