@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/menu.css?v=0.4.22">
     <link rel="stylesheet" href="css/highscores.css">
-    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/game.css?v=0.6.0">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/mobile-fix.css?v=0.4.12">
     <link rel="stylesheet" href="css/tutorial.css">
@@ -54,7 +54,7 @@
                 <input type="checkbox" id="dynamic-speed-toggle" name="dynamic-speed-toggle" checked>
                 <label for="dynamic-speed-toggle" data-i18n-key="dynamicDescentLabel">Velocidad dinámica</label>
             </div>
-            <div class="game-version" aria-label="Game version">v0.5.5</div>
+            <div class="game-version" aria-label="Game version">v0.6.0</div>
         </div>
     </div>
 
@@ -112,6 +112,13 @@
         </div>
     </div>
 
+    <div id="reward-dialog" class="reward-overlay" role="dialog" aria-modal="true" aria-labelledby="reward-message" hidden>
+        <div class="reward-card">
+            <img src="images/pokemon/characters/pikachu_celebrate.png" alt="ปิกาจูแสดงความยินดี" class="reward-pikachu">
+            <div class="reward-speech" id="reward-message" aria-live="assertive"></div>
+            <button id="reward-continue" type="button">แตะเพื่อเล่นต่อ ▶</button>
+        </div>
+    </div>
     <div id="game-content">
         <div id="main-container">
             <aside id="pokemon-side-slot" aria-label="Pokémon companion area" aria-hidden="true"><img class="pokemon-side-character" src="images/pokemon/characters/pikachu.png" data-pose="idle" alt="" decoding="async"></aside>
@@ -192,7 +199,7 @@
     <script src="js/ui/menu.js?v=0.1.12"></script>
     <script src="js/ui/updateChecker.js?v=0.5.2"></script>
     <script src="js/ui/pokemonCompanion.js?v=0.4.11"></script>
-    <script src="js/core/main.js?v=0.4.11"></script>
+    <script src="js/core/main.js?v=0.6.0"></script>
     
 
     </body>
