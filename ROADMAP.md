@@ -5,6 +5,9 @@ Status: planning document; items are proposals until confirmed by the owner.
 
 ## Project status snapshot — 29 October 2026
 
+- [x] Added GitHub Actions status reporter to write `.github/build-status/latest.json` with run ID, version, commit, step outcomes and release URL. Source is v0.5.4; reporter runtime verification pending the next authorized build.
+
+
 **Repository:** `master`. **Current source:** v0.5.3 (Android versionCode 503) after documentation update; **v0.5.2 release build** was triggered at an earlier commit and remains pending verification. This is a progress snapshot; older Phase 0 audit entries below are historical and must not be read as current blockers.
 
 ### Completed — code and owner acceptance
