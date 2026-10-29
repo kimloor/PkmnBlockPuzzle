@@ -1,0 +1,19 @@
+{
+  "name": "cordova-plugin-pkmn-updater",
+  "version": "1.0.0",
+  "description": "In-app signed APK update downloader for PkmnBlockPuzzle",
+  "cordova": {
+    "id": "cordova-plugin-pkmn-updater",
+    "platforms": [
+      "android"
+    ]
+  },
+  "main": "www/Updater.js",
+  "license": "MIT",
+  "keywords": [
+    "cordova",
+    "cordova-android",
+    "ecosystem:cordova",
+    "android"
+  ]
+}
