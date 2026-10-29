@@ -82,6 +82,7 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Release version $version (code $code)"
       - name: Build Android release APK
+        id: build_apk
         shell: bash
         run: |
           set -euo pipefail
@@ -100,6 +101,7 @@ jobs:
           cp "$apk" PkmnBlockPuzzle.apk
           sha256sum PkmnBlockPuzzle.apk > PkmnBlockPuzzle.apk.sha256
       - uses: actions/upload-artifact@v4
+        id: upload_apk
         with:
           name: PkmnBlockPuzzle-release
           path: |
@@ -109,6 +111,7 @@ jobs:
           retention-days: 14
 
       - name: Publish GitHub Release
+        id: publish_release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -129,3 +132,57 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "PkmnBlockPuzzle $tag" \
             --notes "Signed Android release $tag. Check in-app updates for release notes. Android may require installation confirmation."
+
+      - name: Save build status for ChatGPT inspection
+        if: ${{ always() }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VALIDATION_RESULT: ${{ steps.release_version.outcome }}
+          BUILD_RESULT: ${{ steps.build_apk.outcome }}
+          ARTIFACT_RESULT: ${{ steps.upload_apk.outcome }}
+          RELEASE_RESULT: ${{ steps.publish_release.outcome }}
+          REPORTED_VERSION: ${{ steps.release_version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          report_path=".github/build-status/latest.json"
+          mkdir -p "$(dirname "$report_path")"
+          python3 - <<'PY'
+          import json, os, datetime
+          outcomes = {k: os.environ.get(k, "unknown") for k in
+                      ("VALIDATION_RESULT", "BUILD_RESULT", "ARTIFACT_RESULT", "RELEASE_RESULT")}
+          successful = all(v == "success" for v in outcomes.values())
+          data = {
+              "schema_version": 1,
+              "workflow": os.environ["GITHUB_WORKFLOW"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "run_url": f'https://github.com/{os.environ["GITHUB_REPOSITORY"]}/actions/runs/{os.environ["GITHUB_RUN_ID"]}',
+              "source_sha": os.environ["GITHUB_SHA"],
+              "source_ref": os.environ["GITHUB_REF"],
+              "version": os.environ.get("REPORTED_VERSION") or "unknown",
+              "reported_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "steps": {"version_validation": outcomes["VALIDATION_RESULT"],
+                        "apk_build_and_signing": outcomes["BUILD_RESULT"],
+                        "artifact_upload": outcomes["ARTIFACT_RESULT"],
+                        "release_publish": outcomes["RELEASE_RESULT"]},
+              "result": "success" if successful else "failure",
+              "release_url": f'https://github.com/{os.environ["GITHUB_REPOSITORY"]}/releases/tag/v{os.environ["REPORTED_VERSION"]}' if successful else None
+          }
+          with open(".github/build-status/latest.json", "w") as f:
+              json.dump(data, f, indent=2)
+              f.write("\\n")
+          PY
+          existing_sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$report_path?ref=master" --jq .sha 2>/dev/null || true)"
+          encoded="$(base64 -w 0 "$report_path")"
+          if [[ -n "$existing_sha" ]]; then
+            gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$report_path" \
+              -f message="ci: record Android build outcome (run $GITHUB_RUN_ID)" \
+              -f content="$encoded" -f sha="$existing_sha" -f branch=master > /dev/null
+          else
+            gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$report_path" \
+              -f message="ci: record Android build outcome (run $GITHUB_RUN_ID)" \
+              -f content="$encoded" -f branch=master > /dev/null
+          fi
+          echo "Build report saved to $report_path"
