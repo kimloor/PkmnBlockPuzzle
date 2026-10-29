@@ -2,9 +2,13 @@ name: Android Release APK
 
 on:
   workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/android-apk.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   android-release-apk:
@@ -70,3 +74,19 @@ jobs:
             TetrisApp/PkmnBlockPuzzle.apk.sha256
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish v0.5.1 GitHub Release (automated one-time push)
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="v0.5.1"
+          gh release create "$tag" \
+            PkmnBlockPuzzle.apk \
+            PkmnBlockPuzzle.apk.sha256 \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "PkmnBlockPuzzle $tag" \
+            --notes "Update UI: one Check for Update button changes to Update when a newer release is available, and displays release notes underneath. Android release versionCode 501. Signed with the existing release key."
