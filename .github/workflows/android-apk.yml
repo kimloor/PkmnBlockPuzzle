@@ -42,6 +42,8 @@ jobs:
         run: npm install --global cordova@12
       - name: Add Android platform
         run: cordova platform add android@14.0.1
+      - name: Install external browser bridge
+        run: cordova plugin add cordova-plugin-inappbrowser@6.0.0
       - name: Build Android release APK
         shell: bash
         run: |
