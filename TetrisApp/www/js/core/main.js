@@ -71,7 +71,9 @@ function showNextScoreReward() {
     lockDelayTimerId = null;
     if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
     animationFrameId = null;
-    if (rewardMessage) rewardMessage.textContent = 'ยินดีด้วย! คุณได้รับ' + next.label + '!';
+    if (rewardMessage) rewardMessage.textContent = 'คุณได้รับ' + next.label + '!';
+    const prizeVisual = document.getElementById('reward-prize-visual');
+    if (prizeVisual) prizeVisual.textContent = ({10000:'🍦',20000:'🧃',30000:'🎴',100000:'🎮'})[next.points] || '🎁';
     if (rewardDialog) rewardDialog.hidden = false;
     if (window.pokemonCompanion) window.pokemonCompanion.play('celebrate');
     if (rewardContinue) rewardContinue.focus();
