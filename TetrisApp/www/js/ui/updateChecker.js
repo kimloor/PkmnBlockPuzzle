@@ -4,6 +4,8 @@
   const API = 'https://api.github.com/repos/kimloor/PkmnBlockPuzzle/releases/latest';
   const RELEASES = 'https://github.com/kimloor/PkmnBlockPuzzle/releases/latest';
   const current = document.querySelector('.game-version')?.textContent.trim().replace(/^v/i, '') || '0.0.0';
+  const versionLabel = document.getElementById('update-current-version');
+  if (versionLabel) versionLabel.textContent = 'v' + current;
   const status = document.getElementById('update-status');
   const check = document.getElementById('check-update-button');
   const download = document.getElementById('download-update-button');
