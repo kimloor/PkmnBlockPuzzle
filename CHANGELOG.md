@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.6.1] — High Score elapsed active play time (Draft PR only)
+- Save HH:MM:SS duration per run together with scores; pause, reward dialogs and background time excluded.
+- Existing numeric High Scores remain available with unknown duration shown as a dash.
+- Source implementation only; browser and Android runtime QA pending. No APK build.
+
+
 ## [0.6.0] — Score milestone reward implementation (Draft PR only; not released)
 - Pikachu announces rewards at 10,000 / 20,000 / 30,000 / 100,000 points.
 - Gameplay pauses for acknowledgement; queued milestones are handled in order once per run.
