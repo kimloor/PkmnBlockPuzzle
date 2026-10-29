@@ -49,6 +49,17 @@ jobs:
           test -f local-plugins/cordova-plugin-pkmn-updater/package.json
           test -f local-plugins/cordova-plugin-pkmn-updater/plugin.xml
           cordova plugin add ./local-plugins/cordova-plugin-pkmn-updater
+      - name: Verify Android updater resource placement
+        shell: bash
+        run: |
+          set -euo pipefail
+          resource="platforms/android/app/src/main/res/xml/pkmn_updater_paths.xml"
+          source="local-plugins/cordova-plugin-pkmn-updater/src/android/pkmn_updater_paths.xml"
+          test -s "$source"
+          mkdir -p "$(dirname "$resource")"
+          cp "$source" "$resource"
+          test -s "$resource"
+          echo "Updater FileProvider XML present at: $resource"
       - name: Confirm v0.5.2 source version
         shell: bash
         run: |
