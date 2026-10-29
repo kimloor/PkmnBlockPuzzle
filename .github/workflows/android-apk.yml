@@ -45,7 +45,10 @@ jobs:
       - name: Install external browser bridge
         run: cordova plugin add cordova-plugin-inappbrowser@6.0.0
       - name: Install in-app updater
-        run: cordova plugin add ./plugins/cordova-plugin-pkmn-updater
+        run: |
+          test -f local-plugins/cordova-plugin-pkmn-updater/package.json
+          test -f local-plugins/cordova-plugin-pkmn-updater/plugin.xml
+          cordova plugin add ./local-plugins/cordova-plugin-pkmn-updater
       - name: Confirm v0.5.2 source version
         shell: bash
         run: |
