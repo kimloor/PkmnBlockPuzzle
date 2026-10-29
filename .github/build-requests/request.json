@@ -1,5 +1,5 @@
 {
   "version": "0.5.2",
-  "request_id": "v052-release-retry-20261029-403",
-  "reason": "Owner-requested signed build and release retry after HTTP 403 publish failure"
+  "request_id": "v052-release-after-permissions-20261029-r2",
+  "reason": "Owner confirmed GitHub Actions Read and write permissions saved; retry signed v0.5.2 release"
 }
