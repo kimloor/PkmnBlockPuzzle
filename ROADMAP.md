@@ -5,7 +5,7 @@ Status: planning document; items are proposals until confirmed by the owner.
 
 ## Project status snapshot — 29 October 2026
 
-**Repository:** `master`. **Current source:** v0.5.2 (Android versionCode 502) before this documentation update. This is a progress snapshot; older Phase 0 audit entries below are historical and must not be read as current blockers.
+**Repository:** `master`. **Current source:** v0.5.3 (Android versionCode 503) after documentation update; **v0.5.2 release build** was triggered at an earlier commit and remains pending verification. This is a progress snapshot; older Phase 0 audit entries below are historical and must not be read as current blockers.
 
 ### Completed — code and owner acceptance
 - [x] Core game playable on web and Android; menu/Settings, Thai default, local BGM/SFX, Pokémon theme, Pikachu companion and its idle/wave/land/line-clear reactions implemented.
