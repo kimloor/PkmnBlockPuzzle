@@ -5,6 +5,12 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
 ## [Unreleased]
+
+## [0.5.0] — Update-capable Release APK baseline (source ready; APK build pending)
+- Add manual Settings Check for Updates using latest public GitHub Release API with version comparison, connectivity/error handling and release notes.
+- Add safe download launch through Android system browser with cordova-plugin-inappbrowser installed by manual release workflow; Android manages installation confirmation.
+- Pikachu responsive fix intentionally deferred to first follow-on update; no APK build or Android runtime QA completed.
+
 - Document successful release APK v0.4.20 binary verification and signing certificate fingerprint; documentation-only v0.4.21 (no new APK build).
 - Add manual-only encrypted signing key generation workflow and owner recovery guide (docs/build workflow only; no key generated, no APK built). v0.4.20.
 - Phase 1: replace debug APK workflow with a manual, fail-closed release signing build requiring GitHub secrets; add SHA-256 artifact. No signing secret created and no APK build yet. v0.4.19 is a pipeline-only release.
