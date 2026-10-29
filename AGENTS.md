@@ -15,8 +15,8 @@ Increment the semantic version in `TetrisApp/config.xml` for **every** change (i
 - MAJOR for breaking changes.
 - Validate the version alignment before every direct commit. PR-only version workflows are not a substitute for direct-commit verification.
 
-## Android APK builds — owner opt-in only
-`.github/workflows/android-apk.yml` must remain **workflow_dispatch only**. Never trigger an APK build or add push, PR, or schedule triggers without explicit owner instruction. GitHub Pages deployment remains automatic.
+## Android APK builds — owner opt-in (updated 2026-10-29)
+An explicit owner instruction to ChatGPT to build/release authorizes a single GitHub Actions run through a committed `.github/build-requests/request.json` change on `master`. The workflow listens **only** to this exact file path on pushes, and also supports `workflow_dispatch` as fallback. Normal code/document edits must not trigger builds. Never update the request file unless the owner explicitly requests a build. Each request must have the source version string and a distinct request_id; validate both before building. Do not store signing keys in git; use GitHub Secrets. Publish a matching GitHub Release only after a successful signed APK build. GitHub Pages deployment remains automatic.
 
 ## License
 Preserve original upstream MIT LICENSE and third-party notices.
