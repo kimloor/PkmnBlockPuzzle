@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.5.3] — Roadmap maintenance (source only, 2026-10-29)
+- Refresh progress and release acceptance gates following owner-approved v0.5.0→v0.5.1 update and v0.5.2 Native Updater implementation.
+- This is a documentation-focused source version bump required by AGENTS.md; **no v0.5.3 APK build or release was requested**.
+- v0.5.2 release still awaiting confirmation after latest authorized Build Trigger.
+
+
 ## [0.5.0] — Update-capable Release APK baseline (source ready; APK build pending)
 - Add manual Settings Check for Updates using latest public GitHub Release API with version comparison, connectivity/error handling and release notes.
 - Add safe download launch through Android system browser with cordova-plugin-inappbrowser installed by manual release workflow; Android manages installation confirmation.
