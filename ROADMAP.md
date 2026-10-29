@@ -3,6 +3,31 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
+## Project status snapshot — 29 October 2026
+
+**Repository:** `master`. **Current source:** v0.5.2 (Android versionCode 502) before this documentation update. This is a progress snapshot; older Phase 0 audit entries below are historical and must not be read as current blockers.
+
+### Completed — code and owner acceptance
+- [x] Core game playable on web and Android; menu/Settings, Thai default, local BGM/SFX, Pokémon theme, Pikachu companion and its idle/wave/land/line-clear reactions implemented.
+- [x] Golden-cell multiplier, bomb / chain gravity, repeated row clearing and score-on-exit fixes implemented; device-level regression remains a separate gate.
+- [x] Release signing workflow uses owner-managed GitHub Secrets, stable package `com.kimloor.pkmnblockpuzzle`, and increasing Android versionCode.
+- [x] **Owner QA accepted** manual in-app version check and update from signed v0.5.0 to v0.5.1 (browser download → Android installer → reopen). No claim of unattended installation.
+- [x] One-button Settings update UI: Check for Update becomes Update with GitHub Release notes shown underneath.
+- [x] v0.5.2 native Cordova updater source implemented: internal APK download/progress, SHA-256 verification, package/signature/version checks and Android installer handoff, with browser fallback.
+- [x] GitHub Actions Build Trigger wired to explicit `.github/build-requests/request.json` changes; normal code commits do not trigger APK builds. Signing secrets remain in GitHub.
+- [x] Prior v0.5.2 workflow run progressed through native plugin install, Android release APK build and artifact upload (as shown in owner-provided workflow screenshot).
+
+### Pending / acceptance gates
+- [ ] **v0.5.2 release publication:** last evidenced workflow failed at GitHub Release publishing with HTTP 403 (token write authorization). Owner reports updating workflow permissions; ChatGPT sent a new authorized trigger `a5ad1e3adf39b49ece151bda4a209ba1ddd4cb5b`. **Result of that new run not yet confirmed.**
+- [ ] Confirm v0.5.2 Release assets `PkmnBlockPuzzle.apk` and `PkmnBlockPuzzle.apk.sha256`, release tag and signing fingerprint against prior signed APK.
+- [ ] Android device test of native update **from v0.5.2 to a future higher version** (v0.5.1→v0.5.2 still uses older browser-based updater).
+- [ ] Test download/progress, error/retry, checksum rejection, installer permission/prompt, resumed app and high-score/settings preservation across an in-place upgrade.
+- [ ] Validate Pikachu positioning/animation and gameplay regression on Android portrait/landscape and desktop/mobile web.
+- [ ] Improve automated unit and smoke coverage, release evidence and rollback procedures.
+
+### Release workflow policy
+Only an explicit owner request may initiate an APK build. ChatGPT may update the dedicated request file for that purpose; GitHub Actions builds/signs with protected Secrets and publishes a release after successful verification. **Code complete, Build PASS, Release published and Device QA accepted are distinct statuses.**
+
 ## Current verified baseline (26 October 2026)
 - A playable Tetris-style falling-block game is described in `README.md`.
 - Web source is stored in `TetrisApp/www/`, with Cordova configuration at `TetrisApp/config.xml`.
