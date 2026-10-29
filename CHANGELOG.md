@@ -5,6 +5,7 @@ Repository: https://github.com/kimloor/PkmnBlockPuzzle
 This file tracks verified releases. Historical release details should be filled from Git tags and commits, not guessed.
 
 ## [Unreleased]
+- Add manual-only encrypted signing key generation workflow and owner recovery guide (docs/build workflow only; no key generated, no APK built). v0.4.20.
 - Phase 1: replace debug APK workflow with a manual, fail-closed release signing build requiring GitHub secrets; add SHA-256 artifact. No signing secret created and no APK build yet. v0.4.19 is a pipeline-only release.
 - Owner chose one-time replacement of Debug APK by permanently release-signed APK; no player-data migration. Documentation-only version 0.4.18; no APK build.
 - Verified owner-supplied v0.4.13 APK binary (package/versionCode, Debug signing fingerprint, four Pikachu assets); documented Phase 0 release-signing migration gate. Docs-only v0.4.17, no APK build.
