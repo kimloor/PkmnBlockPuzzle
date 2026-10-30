@@ -275,15 +275,11 @@ html.pokemon-theme-active #pokemon-side-slot .pokemon-side-character {
     filter: drop-shadow(0 4px 8px rgba(5,22,45,.35));
 }
 
-@media (max-width: 1050px) {
-    html.pokemon-theme-active #pokemon-side-slot { display: none; }
-}
 @media (max-width: 768px) and (orientation: portrait) {
     html.pokemon-theme-active body {
         background-image: linear-gradient(rgba(10, 28, 53, .12), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg");
         background-attachment: scroll;
     }
-    html.pokemon-theme-active #pokemon-side-slot { display: none; }
 }
 
 /* v0.4.7: reliable background on the menu and playfield; paths resolved relative to CSS. */
@@ -348,3 +344,115 @@ html.pokemon-theme-active #pokemon-side-slot .pokemon-side-character[data-pose="
 
 /* v0.4.12: use the game board container as the Pikachu position anchor. */
 html.pokemon-theme-active #main-container { position: relative; }
+
+/* v0.7.3: Mobile Safari Pikachu visibility. Give the companion and its
+   speech bubble a dedicated gutter instead of the old offscreen anchor.
+   Desktop layouts wider than 1050px and all non-Pokemon themes stay intact. */
+@media (max-width: 1050px) {
+  html.pokemon-theme-active #pokemon-side-slot {
+    display: flex;
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    height: auto;
+    min-width: 0;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    align-self: start;
+    gap: 6px;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pokemon-side-character {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    object-position: center top;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pikachu-speech {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+    padding: 6px 4px;
+    font-size: clamp(10px, 2.7vw, 12px);
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    border-radius: 10px;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pikachu-speech::before {
+    top: -9px;
+    left: 16px;
+    border: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 9px solid #f5c438;
+  }
+}
+/* Tablet / wide iPhone landscape: avatar, board and HUD sit side-by-side. */
+@media (min-width: 769px) and (max-width: 1050px) {
+  html.pokemon-theme-active #main-container {
+    display: grid;
+    grid-template-columns: clamp(86px, 10vw, 116px) minmax(0, max-content) clamp(145px, 19vw, 200px);
+    column-gap: 12px;
+    align-items: start;
+    justify-content: center;
+    padding: 12px;
+  }
+  html.pokemon-theme-active #pokemon-side-slot { grid-column: 1; grid-row: 1; }
+  html.pokemon-theme-active #game-area { grid-column: 2; grid-row: 1; min-width: 0; }
+  html.pokemon-theme-active #side-panel {
+    grid-column: 3; grid-row: 1; width: 100%; max-width: 100%; min-width: 0;
+  }
+}
+/* Portrait phones: keep score/next above, avatar to the left of the board. */
+@media (max-width: 768px) and (orientation: portrait) {
+  html.pokemon-theme-active #main-container {
+    --companion-gutter: clamp(76px, 22vw, 102px);
+    --board-fit-width: min(
+      calc(100vw - 24px - var(--companion-gutter) - 8px),
+      calc((100dvh - 185px) / 2),
+      390px
+    );
+    display: grid;
+    grid-template-columns: var(--companion-gutter) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 8px;
+    row-gap: 6px;
+    justify-items: center;
+    align-items: start;
+  }
+  html.pokemon-theme-active #side-panel {
+    grid-column: 1 / -1; grid-row: 1; justify-self: center;
+    width: max(0px, var(--board-fit-width)); max-width: 100%; margin: 0;
+  }
+  html.pokemon-theme-active #pokemon-side-slot {
+    grid-column: 1; grid-row: 2; justify-self: stretch; max-width: 100%;
+  }
+  html.pokemon-theme-active #game-area {
+    grid-column: 2; grid-row: 2; justify-self: stretch;
+    width: 100%; min-width: 0;
+  }
+}
+/* Narrow landscape: a compact three-column layout keeps every item in view. */
+@media (max-width: 768px) and (orientation: landscape) {
+  html.pokemon-theme-active #main-container {
+    display: grid;
+    grid-template-columns: clamp(70px, 14vw, 100px) minmax(0, max-content) minmax(94px, 23vw, 145px);
+    column-gap: 8px;
+    align-items: start;
+    justify-content: center;
+    padding: 4px;
+  }
+  html.pokemon-theme-active #pokemon-side-slot { grid-column: 1; grid-row: 1; }
+  html.pokemon-theme-active #game-area {
+    grid-column: 2; grid-row: 1; width: auto; min-width: 0;
+  }
+  html.pokemon-theme-active #side-panel {
+    grid-column: 3; grid-row: 1; width: 100%; max-width: 100%; min-width: 0;
+  }
+}

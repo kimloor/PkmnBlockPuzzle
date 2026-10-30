@@ -28,5 +28,6 @@ test('reward UI labels, buttons, version and game-over cleanup',()=>{
   for(const points of [10000,20000,30000,100000]) assert.match(main,new RegExp('points: '+points+'\\b'));
   assert.match(main,/gameState = 'REWARD_PAUSED'/);
   assert.match(main,/queueScoreRewards\(\)/);
-  assert.match(html,/v0\.6\.2<\/div>/);
+  const config=fs.readFileSync(path.resolve(__dirname,'..','TetrisApp','config.xml'),'utf8');
+  const version=config.match(/version="([^"]+)"/)[1]; assert.ok(html.includes('>v'+version+'</div>'));
 });

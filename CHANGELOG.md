@@ -6,6 +6,13 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.3] — Mobile Safari Pikachu visibility (web source; 2026-10-30)
+- Removed the legacy companion hide rules on screens <=1050px and in portrait.
+- Used a real responsive grid gutter for the companion at phone and tablet sizes, preventing avatar and speech bubble from overlaying the board or score/next strip.
+- Updated mobile stylesheet cache key to 0.7.3, preserving all five sprites, existing reactions, and gameplay rules.
+- Source regression checks recorded; Safari device/Android visual QA remains pending. APK build not requested.
+
+
 ## [0.7.2] — Owner-supplied Pikachu skill pose asset (web source; 2026-10-30)
 - Resize and center the owner's original transparent artwork on the existing 500×500 RGBA companion sprite canvas, retaining the full lightning effect and original pose (no regenerated artwork).
 - Add `images/pokemon/characters/pikachu_skill.png` and register `pokemonCompanion.play('skill')` as a reserved 1.8-second presentation pose; the game does not trigger a skill automatically yet.

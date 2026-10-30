@@ -3,6 +3,10 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
+## Mobile Safari Pikachu visibility fix — v0.7.3 (30 October 2026)
+
+**Status: SOURCE FIX IMPLEMENTED; OWNER SAFARI DEVICE QA PENDING.** Root cause: the old stylesheet explicitly hid the companion at viewport widths <=1050px and on portrait phones. Source now reserves an in-flow Pikachu column alongside the Tetris board on portrait phones, landscape phones and tablets. The score/next strip remains above the board in portrait; the speech bubble is contained inside the companion gutter. A new stylesheet query version prevents Safari using stale CSS. Standard desktop (>1050px), non-Pokemon themes, all five sprite poses and scoring mechanics remain unchanged. Verify 320/360/390/412px phone portrait, landscape, Safari on-device, Android and desktop. No APK build authorized.
+
 ## Future Skill Pose — owner-provided Pikachu artwork (30 October 2026)
 
 **Status: ASSET REGISTERED IN SOURCE v0.7.2; SKILL GAMEPLAY NOT IMPLEMENTED.** Directly resized the owner's transparent original to the same 500×500 canvas as all existing Pikachu poses. Full alpha/lightning preserved; centered transparent content bounds x=46–453, y=25–475. Asset path: `TetrisApp/www/images/pokemon/characters/pikachu_skill.png`.
