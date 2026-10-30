@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.6.4] — Release acceptance and roadmap sync (source/docs only; 2026-10-30)
+- Record GitHub Actions signed Android v0.6.3 Release PASS (run 40998438741), and owner-confirmed in-app update to v0.6.3.
+- Record owner web QA PASS for rewards, high-score play time, Game Over, rank display and 20k water-bottle icon.
+- Track outstanding negative-path updater and broader Android regression separately; no v0.6.4 APK build or release requested.
+
+
 ## [0.6.3] — Accurate Game Over rank and 20k water bottle (web source)
 - Show the current run's actual Top 5 rank using its unique session ID; hide rank message outside Top 5.
 - Replace 20,000-point carton emoji with an offline inline SVG water bottle.
