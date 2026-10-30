@@ -40,7 +40,11 @@ test('Do not change corrected background assets',()=>{
   assert.doesNotMatch(latest,/background-image:|background-color:/);
 });
 test('Version and Safari CSS cache align',()=>{
-  assert.match(config,/version="0\.7\.10" android-versionCode="710"/);
-  assert.match(html,/class="game-version" aria-label="Game version">v0\.7\.10/);
-  assert.match(html,/mobile-fix\.css\?v=0\.7\.10/);
+  const version = config.match(/version="([0-9]+\.[0-9]+\.[0-9]+)"/)?.[1];
+  const code = config.match(/android-versionCode="([0-9]+)"/)?.[1];
+  assert.ok(version && code);
+  const numbers = version.split('.').map(Number);
+  assert.equal(Number(code),numbers[0]*10000 + numbers[1]*100 + numbers[2]);
+  assert.ok(html.includes('class="game-version" aria-label="Game version">v'+version));
+  assert.ok(html.includes('mobile-fix.css?v='+version));
 });

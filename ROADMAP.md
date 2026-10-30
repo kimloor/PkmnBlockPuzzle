@@ -3,6 +3,10 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
+## Pikachu speech Safari QA test synchronization — v0.7.12 (30 October 2026)
+
+**Status: SOURCE TEST MAINTENANCE COMPLETE; SAFARI DEVICE QA PENDING.** The v0.7.11 CSS bubble fix was verified using a mocked DOM controller test, but an older responsive regression had a hard-coded v0.7.10 assertion. The regression now checks UI/CSS version and Android versionCode dynamically. No visual layout or background changes compared with v0.7.11; only cache/version synchronization. Pending Owner Safari confirmation that "ปิก้า! เริ่มกันเลย!" and line-clear speech display over the upper board area.
+
 ## Pikachu speech visibility on mobile Safari — v0.7.11 (30 October 2026)
 
 **Status: SOURCE FIX COMMITTED; OWNER SAFARI DEVICE QA PENDING.** Diagnosis: gameplay does call `pokemonCompanion.say('start', 3)` after entering the active game screen and the companion controller creates a visible DOM speech bubble. However, the v0.7.10 portrait layout gave score/next panel `z-index: 5`, companion `z-index: 4`, sprite container `top: 33px`, and bubble `top: 6px`. This placed the bubble inside and behind the 70px score/next panel. The speech child's own z-index cannot overcome its ancestor's stacking context. Repair only Pokémon Theme portrait: position companion below the score HUD (`top: 76px`), place bubble at its `top: 24px` (about 100px from game layout top, near the top board rows), raise its stacking context above HUD (8 vs 5), and retain the speech `hidden` state and touch pass-through. Do not change approved v0.7.10 board size/no-scroll behavior, background JPEGs, or gameplay/economy rules. Source/controller test and CSS geometry checks required; Safari device screenshot QA remains pending. No APK build.

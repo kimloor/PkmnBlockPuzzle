@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.12] — Pikachu Safari speech test maintenance (2026-10-30)
+- Updated the existing responsive test to derive the expected UI version and Android code from the current config, rather than hard-code 0.7.10.
+- The v0.7.11 speech CSS, approved board sizing, background assets, and gameplay logic remain unchanged. This patch syncs the displayed version and stylesheet cache query to 0.7.12.
+- Speech controller mocked-DOM tests and responsive source checks pass; real Safari device visual QA remains pending. No APK build.
+
+
 ## [0.7.11] — Pikachu speech visible on mobile Safari (2026-10-30)
 - Fixed a CSS stacking and placement regression: v0.7.10 speech bubble was behind the 70px score/next panel because its companion parent had lower z-index and was positioned 33px from layout top.
 - Position speech over the top-left board rows and raise the companion stacking context, preserving bubble hidden/show semantics and all touch controls.
