@@ -578,6 +578,10 @@ function updateGame(currentTime = 0) {
         if (animationFrameId) { cancelAnimationFrame(animationFrameId); animationFrameId = null; }
         return;
     }
+    if (getPlayTimeMs() - companionLastClearMs >= 30000 && companionMisses > 0) {
+        speak('idle30',2);
+        companionLastClearMs = getPlayTimeMs();
+    }
     const deltaTime = currentTime - lastTime;
     lastTime = currentTime;
 
@@ -631,6 +635,7 @@ const gameControlActions = {
         }
         playBackgroundMusic();
         if (typeof showScreen === 'function') showScreen('PLAYING');
+        speak('resume',3);
         lastTime = performance.now();
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
         animationFrameId = requestAnimationFrame(updateGame);
