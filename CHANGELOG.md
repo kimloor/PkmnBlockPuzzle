@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.5.6] — Owner Android update QA record (source/docs only; 2026-10-30)
+- Owner confirmed in-app update v0.5.1 to v0.5.4 succeeded and Pikachu appeared in the installed game.
+- Data preservation and failure-path tests remain open; no new APK build or release requested.
+- Draft PR #11 remains separate and unmerged.
+
+
 ## [0.5.5] — Planned score milestone rewards (source/docs only; 2026-10-29)
 - Add owner-requested post-roadmap feature specification: Pikachu speech-bubble announcements and gameplay pause at 10k / 20k / 30k / 100k points, with four fixed prize descriptions.
 - No reward runtime implementation, APK build or release requested. Version bump follows AGENTS.md.
