@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.6.5] — Pikachu Talking Companion V1 contract (docs only; 2026-10-30)
+- Owner approved 25 text-only Pikachu speech conditions, cooldown/priority rules, UI behavior, three languages, and QA criteria; detailed specification recorded in ROADMAP.md.
+- Implementation and APK build are not authorized by this documentation change.
+
+
 ## [0.6.4] — Release acceptance and roadmap sync (source/docs only; 2026-10-30)
 - Record GitHub Actions signed Android v0.6.3 Release PASS (run 40998438741), and owner-confirmed in-app update to v0.6.3.
 - Record owner web QA PASS for rewards, high-score play time, Game Over, rank display and 20k water-bottle icon.
