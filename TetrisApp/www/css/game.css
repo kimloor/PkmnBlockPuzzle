@@ -166,3 +166,10 @@
 #reward-continue:focus-visible { outline:3px solid #fff; outline-offset:4px; }
 @media (max-height:580px) { .reward-card { width:min(86vw,530px); } .reward-speech { padding:9px 12px; } .reward-heading { margin:0; font-size:27px; } .reward-description { margin:3px; font-size:15px; } .reward-prize-visual { font-size:38px; padding:0; } #reward-continue { min-height:44px; padding:6px; } }
 @media (prefers-reduced-motion:reduce) { .reward-overlay,.reward-speech { animation:none!important; } }
+
+/* Localized Pikachu bubble; pointer events pass to existing controls. */
+#pokemon-side-slot {position:relative;overflow:visible;}
+.pikachu-speech {position:absolute;z-index:9;left:92%;top:0;width:clamp(110px,19vw,185px);box-sizing:border-box;padding:8px;border:2px solid #f5c438;border-radius:14px;background:#fff9e8;color:#193d79;font-size:12px;font-weight:800;line-height:1.35;text-align:center;pointer-events:none;box-shadow:0 4px 10px #0005;}
+.pikachu-speech::before {content:"";position:absolute;left:-9px;top:12px;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:9px solid #f5c438;}
+.pikachu-speech[hidden] {display:none!important;}
+@media(max-width:440px){.pikachu-speech{left:65%;top:-43px;width:130px;font-size:11px;}}
