@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.6.2] — Draft PR compatibility update (unreleased)
+- Align Game Over with master: only Restart and Main Menu; remove stale Continue action and click listener.
+- Simplify High Score game-over update path; source checks pending full runtime QA.
+- No release APK build or merge performed.
+
+
 ## [0.6.1] — High Score elapsed active play time (Draft PR only)
 - Save HH:MM:SS duration per run together with scores; pause, reward dialogs and background time excluded.
 - Existing numeric High Scores remain available with unknown duration shown as a dash.
