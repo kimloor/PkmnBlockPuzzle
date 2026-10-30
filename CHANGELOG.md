@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.2] — Owner-supplied Pikachu skill pose asset (web source; 2026-10-30)
+- Resize and center the owner's original transparent artwork on the existing 500×500 RGBA companion sprite canvas, retaining the full lightning effect and original pose (no regenerated artwork).
+- Add `images/pokemon/characters/pikachu_skill.png` and register `pokemonCompanion.play('skill')` as a reserved 1.8-second presentation pose; the game does not trigger a skill automatically yet.
+- Keep existing idle/wave/excited/celebrate reactions and their on-screen anchor unchanged. Skill gameplay and Android APK build remain unrequested; device/browser QA pending.
+
 ## [0.7.1] — Pikachu dialogue in score milestone rewards (web source)
 - Show Pikachu's text-only speech bubble within each existing 10k/20k/30k/100k reward modal.
 - Use localized Thai/English/Spanish messages and retain the original prize display, pause, queued milestones and Continue action.

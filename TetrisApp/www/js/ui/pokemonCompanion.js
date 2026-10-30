@@ -1,5 +1,5 @@
 /* v0.4.11 — presentation-only Pikachu pose controller.
- * Four static artwork poses animated in stepped CSS keyframes.
+ * Existing four artwork poses plus a reserved, owner-provided skill pose.
  * No gameplay scoring or board state is modified here.
  */
 (function () {
@@ -12,7 +12,8 @@
         idle: root + 'pikachu.png',
         wave: root + 'pikachu_wave.png',
         excited: root + 'pikachu_excited.png',
-        celebrate: root + 'pikachu_celebrate.png'
+        celebrate: root + 'pikachu_celebrate.png',
+        skill: root + 'pikachu_skill.png'
     });
     Object.values(poses).forEach(src => {
         const preload = new Image();
@@ -59,7 +60,7 @@
     let reactionUntil = 0;
     let alternateAt = performance.now() + 4500;
     let rafId = null;
-    const durations = { excited: 850, celebrate: 1650 };
+    const durations = { excited: 850, celebrate: 1650, skill: 1800 };
 
     function setPose(pose) {
         if (pose === current) return;
@@ -70,7 +71,7 @@
 
     function tick(now) {
         if (now >= reactionUntil) {
-            if (current === 'excited' || current === 'celebrate') {
+            if (current === 'excited' || current === 'celebrate' || current === 'skill') {
                 setPose('idle');
                 alternateAt = now + 4500;
             } else if (now >= alternateAt) {
@@ -85,6 +86,8 @@
         play(pose) {
             if (!durations[pose]) return;
             const now = performance.now();
+            // The skill pose is reserved for future gameplay; ordinary reactions must not interrupt it.
+            if (current === 'skill' && pose !== 'skill' && now < reactionUntil) return;
             // Never interrupt an active line-clear celebration with a lock reaction.
             if (pose === 'excited' && current === 'celebrate' && now < reactionUntil) return;
             setPose(pose);

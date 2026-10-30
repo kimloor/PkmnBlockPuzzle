@@ -3,6 +3,14 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
+## Future Skill Pose — owner-provided Pikachu artwork (30 October 2026)
+
+**Status: ASSET REGISTERED IN SOURCE v0.7.2; SKILL GAMEPLAY NOT IMPLEMENTED.** Directly resized the owner's transparent original to the same 500×500 canvas as all existing Pikachu poses. Full alpha/lightning preserved; centered transparent content bounds x=46–453, y=25–475. Asset path: `TetrisApp/www/images/pokemon/characters/pikachu_skill.png`.
+
+- Runtime controller preloads the new `skill` pose and exposes `window.pokemonCompanion.play('skill')` for a future owner-approved skill feature. The reserved pose holds for 1.8 seconds, then returns to idle/wave. Normal excited/celebrate reactions cannot interrupt an ongoing skill pose.
+- Reuses the same existing `#pokemon-side-slot .pokemon-side-character` image element and current CSS positioning; **no skill event, new score rule, ability effect, input, or power is enabled**.
+- Verification: image PNG RGBA and canvas 500×500, content alpha bounds checked locally; Git blob SHA and source registration verified. Browser and Android runtime/device QA remain pending. Do not build APK without explicit owner request.
+
 ## Next Feature — Pikachu Talking Companion V1 (Owner approved, 30 October 2026)
 
 **Status: IMPLEMENTED IN SOURCE v0.7.0 / RUNTIME QA PENDING.** Existing reward dialogs remain authoritative; separate mobile/browser QA required before release. Pause/Game Over speech visibility remains a UI acceptance item. Text-only speech bubbles for the existing Pikachu companion near the top-left Tetris board. Offline; no TTS, voice, AI integration, or new Pikachu artwork. Keep gameplay input/HUD unobstructed. Do not build an APK until separately authorized.
