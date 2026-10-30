@@ -82,6 +82,18 @@ function showNextScoreReward() {
     if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
     animationFrameId = null;
     if (rewardMessage) rewardMessage.textContent = 'คุณได้รับ' + next.label + '!';
+    // A dedicated Pikachu speech bubble belongs to the reward dialog itself.
+    // The ordinary companion bubble is suppressed while this modal is open.
+    const pikachuRewardSpeech = document.getElementById('pikachu-reward-speech');
+    const rewardPhrases = {
+        10000: ['ปิก้า! ยินดีด้วย ได้ไอศกรีม Dairy Queen 1 โคน!', 'Pika! You won a Dairy Queen ice cream cone!', '¡Pika! ¡Ganaste un helado Dairy Queen!'],
+        20000: ['ปิก้า! ได้กาโตะ 1 ขวดแล้ว!', 'Pika! You won a Gato drink bottle!', '¡Pika! ¡Ganaste una botella de Gato!'],
+        30000: ['สุดยอด! ได้กล่องการ์ดโปเกม่อนแล้ว!', 'Amazing! You won a Pokémon card box!', '¡Increíble! ¡Ganaste una caja de cartas Pokémon!'],
+        100000: ['ปิก้าาา! ได้ Nintendo Switch 1 เครื่อง!', 'Pika! You won a Nintendo Switch!', '¡Pika! ¡Ganaste una Nintendo Switch!']
+    };
+    const rewardLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'th';
+    const rewardLangIndex = rewardLang === 'en' ? 1 : rewardLang === 'es' ? 2 : 0;
+    if (pikachuRewardSpeech) pikachuRewardSpeech.textContent = rewardPhrases[next.points]?.[rewardLangIndex] || next.label;
     const prizeVisual = document.getElementById('reward-prize-visual');
     if (prizeVisual) {
         if (next.points === 20000) {
