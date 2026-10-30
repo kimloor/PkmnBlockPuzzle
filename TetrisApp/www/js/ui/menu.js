@@ -21,7 +21,6 @@ const highScoresButton = document.getElementById('high-scores-button');
 const resumeGameButton = document.getElementById('resume-game-button');
 const restartPauseButton = document.getElementById('restart-pause-button');
 const mainMenuPauseButton = document.getElementById('main-menu-pause-button');
-const continueAfterGameOverButton = document.getElementById('continue-after-game-over-button');
 const restartGameOverButton = document.getElementById('restart-game-over-button');
 const mainMenuGameOverButton = document.getElementById('main-menu-game-over-button');
 const backToMainMenuHsButton = document.getElementById('back-to-main-menu-hs-button');
@@ -222,7 +221,6 @@ function initializeMenuEventListeners(gameActions) {
     addButtonListenerWithSound(resumeGameButton, gameActions.onResumeGame);
     addButtonListenerWithSound(restartPauseButton, gameActions.onRestartGame);
     addButtonListenerWithSound(mainMenuPauseButton, gameActions.onGoToMainMenu);
-    addButtonListenerWithSound(continueAfterGameOverButton, gameActions.onContinueAfterGameOver);
     addButtonListenerWithSound(restartGameOverButton, gameActions.onRestartGame);
     addButtonListenerWithSound(mainMenuGameOverButton, gameActions.onGoToMainMenu);
     addButtonListenerWithSound(backToMainMenuHsButton, gameActions.onGoToMainMenu);
