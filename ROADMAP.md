@@ -3,6 +3,76 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
+## Next Feature — Pikachu Talking Companion V1 (Owner approved, 30 October 2026)
+
+**Status: SPEC APPROVED / IMPLEMENTATION NOT STARTED.** Text-only speech bubbles for the existing Pikachu companion near the top-left Tetris board. Offline; no TTS, voice, AI integration, or new Pikachu artwork. Keep gameplay input/HUD unobstructed. Do not build an APK until separately authorized.
+
+### A. Start, idle, and play (6 triggers)
+| Trigger | Thai speech | Condition |
+| --- | --- | --- |
+| New run | ปิก้า! เริ่มกันเลย! | Once when gameplay starts |
+| Piece locks | ปิก้า! / เยี่ยม! | Random 10% chance, subject to cooldown |
+| 5 pieces without clearing | อีกนิดเดียว สู้ ๆ! | Five successive placements without a line clear |
+| 30 seconds without line clear | ปิก้า... ระวังบล็อกเต็มนะ! | While actively playing; do not count paused time |
+| Pause | พักก่อนก็ได้นะ! | Only if Pikachu remains visible on pause UI |
+| Resume | ลุยต่อกันเลย! | When returning from pause |
+
+### B. Clears and scoring (6 triggers)
+| Trigger | Thai speech | Condition |
+| --- | --- | --- |
+| Clear 1 line | ดีมากเลย! | One line in one clear event |
+| Clear 2 lines | ว้าว! สองแถวเลย! | Two simultaneous lines |
+| Clear 3 lines | สุดยอดไปเลย! | Three simultaneous lines |
+| Clear 4 lines | ปิก้าาา! เทพมาก! | Four simultaneous lines |
+| 3 successive line-clearing placements | คอมโบมาแล้ว! ⚡ | Consecutive successful clear placements; reset on non-clear |
+| Overtake previous all-time #1 | ทำลายสถิติแล้ว! | First cross of the saved previous highest score during a run; no spam |
+
+### C. Special blocks (4 triggers)
+| Trigger | Thai speech | Condition |
+| --- | --- | --- |
+| Bomb activates | บูมมม! 💥 | Actual explosion, not mere appearance |
+| Bomb cascade/chain clear | ระเบิดต่อเนื่องเลย! | Additional line clear caused by gravity after a bomb |
+| Golden block contributes to a cleared line | คะแนนคูณมาแล้ว! | Actual golden multiplier scoring |
+| Golden multiplier >= x3 | ปิก้า! คะแนนพุ่งเลย! | Prefer this over generic golden line speech |
+
+### D. Existing reward milestones (4 triggers)
+| Score | Thai text | Existing behavior |
+| ---: | --- | --- |
+| 10,000 | ยินดีด้วย! ได้ไอศกรีม Dairy Queen 1 โคน! | Existing reward dialog + pause until acknowledged |
+| 20,000 | เย้! ได้กาโตะ 1 ขวดแล้ว! | Existing reward dialog + water-bottle image |
+| 30,000 | สุดยอด! ได้กล่องการ์ดโปเกม่อนแล้ว! | Existing reward dialog + pause |
+| 100,000 | ปิก้าาา! Nintendo Switch 1 เครื่อง! | Existing reward dialog + pause |
+
+Do not spawn a second ordinary companion speech bubble while the reward dialog is shown. Existing prize labels/quantity, fulfillment disclaimers, once-per-run triggering, queue, and acknowledgment behavior remain authoritative.
+
+### E. Risk and end-of-game (5 triggers)
+| Trigger | Thai speech | Condition |
+| --- | --- | --- |
+| Board >= 70% occupied height | ระวังนะ! ใกล้เต็มแล้ว! | Entering threshold; avoid repeated warnings |
+| Board >= 90% occupied height | ปิก้า!! อันตรายแล้ว! | Entering critical threshold; override 70% warning |
+| Recover from >= 90% to < 60% | รอดแล้ว! เก่งมาก! | One recovery message per danger episode |
+| Game Over, not Top 5 | ไม่เป็นไรนะ ลองใหม่กัน! | Only when Pikachu is visible on game-over UI |
+| Game Over, in Top 5 | เยี่ยมเลย! ได้อันดับที่ {rank}! | Rank from current run unique ID in saved Top 5 |
+
+**Trigger count: 25** (21 ordinary companion triggers and four existing reward-dialog triggers).
+
+### Presentation and dispatch contract
+- Cream/white rounded speech bubble with subtle yellow border and tail toward Pikachu; visually anchored alongside existing Pikachu within mobile-safe area; no board, controls, HUD, or reward-dialog overlap.
+- Ordinary speech lasts approximately **2.5 seconds**, does not pause gameplay, and may animate companion with existing idle/wave/excited/happy frames.
+- General speech cooldown **8 seconds**, except priority warning/ending events; ordinary piece-lock speech has **10% probability**. Never show identical speech twice consecutively.
+- Priority order: **reward modal (existing; exclusive) > critical danger / Game Over > new record / combo > line clear / special block > casual / idle**. Higher priority may replace low priority; suppress or coalesce lower-priority events, not an unlimited message queue.
+- Correctly restore or dismiss bubble on pause/resume, game over, new run, app backgrounding, and reward modal; cancel stale timers. Reset per-run streaks, dangers, and once-only triggers on new run.
+- Support Thai (default), English, and Spanish based on selected language, including rank placeholder; language change refreshes or dismisses current bubble safely. No network dependency; accessibility-friendly readable text and non-interactive, non-blocking overlay.
+- Warning heights use highest occupied row relative to board height, not count of filled cells; confirm exact implementation against board logic. If Pikachu is hidden on a given screen/layout, speech must not appear stranded or cover the board.
+
+### QA acceptance checklist (required before merge/release)
+- Verify all 25 triggers, priority handling when events collide, cooldown/10% random behavior, no duplicate reward popup, and no missed milestone/paused input leaks.
+- Verify 1–4-line clears, gold multiplier x2/x3+, bomb/cascade, 3-clear streak, record crossing, danger threshold entry/recovery, Top 5 ranking and non-Top 5 end.
+- Verify gameplay timing still works while bubbles display, background/visibility, pause/resume, restart/menu/gameover, and no stale bubble or timers.
+- Verify 360/390/412px mobile portrait, landscape, desktop web and Android; overlays must not block touch controls or score/HUD.
+- Verify all three languages and offline behavior. Automated source/unit checks plus actual runtime QA must be recorded separately as PASS/FAIL/NOT TESTED.
+- **Owner gate:** visual/gameplay approval before merging production behavior; build APK only on explicit owner request.
+
 ## Current milestone — 30 October 2026: Android v0.6.3 released and owner-installed
 
 - [x] **CI PASS:** Signed Android APK build, signing, artifact upload and GitHub Release publication, run [40998438741](https://github.com/kimloor/PkmnBlockPuzzle/actions/runs/40998438741), tag [v0.6.3](https://github.com/kimloor/PkmnBlockPuzzle/releases/tag/v0.6.3).
