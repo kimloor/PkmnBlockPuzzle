@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.1] — Pikachu dialogue in score milestone rewards (web source)
+- Show Pikachu's text-only speech bubble within each existing 10k/20k/30k/100k reward modal.
+- Use localized Thai/English/Spanish messages and retain the original prize display, pause, queued milestones and Continue action.
+- Browser/mobile runtime QA pending; no Android APK build requested.
+
+
 ## [0.7.0] — Pikachu speech companion implementation (web source)
 - Offline speech bubble with Thai, English and Spanish text, priority and cooldown.
 - Gameplay integrations and runtime QA tracked separately; no APK build.
