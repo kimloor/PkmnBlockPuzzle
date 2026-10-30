@@ -173,3 +173,9 @@
 .pikachu-speech::before {content:"";position:absolute;left:-9px;top:12px;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:9px solid #f5c438;}
 .pikachu-speech[hidden] {display:none!important;}
 @media(max-width:440px){.pikachu-speech{left:65%;top:-43px;width:130px;font-size:11px;}}
+
+/* Pikachu reward dialogue: lives inside the paused reward modal so it cannot be hidden behind its overlay. */
+.pikachu-reward-bubble{position:relative;box-sizing:border-box;width:min(96%,420px);margin:0 auto 12px;padding:12px 18px;background:#fff9e8;border:3px solid #f3bd37;border-radius:20px;color:#173b78;text-align:center;font-weight:800;font-size:clamp(13px,3vw,17px);line-height:1.4;box-shadow:0 5px 12px #0004;}
+.pikachu-reward-bubble::after{content:"";position:absolute;bottom:-14px;left:20%;border-left:13px solid transparent;border-right:13px solid transparent;border-top:14px solid #f3bd37;}
+.pikachu-reward-speaker{display:block;font-size:12px;color:#8f6400;margin-bottom:2px;}
+@media(max-height:650px){.pikachu-reward-bubble{padding:5px 10px;margin-bottom:5px;font-size:12px;}}
