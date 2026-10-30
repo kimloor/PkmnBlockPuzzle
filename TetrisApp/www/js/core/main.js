@@ -239,8 +239,7 @@ function handleGameOver() {
     const currentScoreVal = score;
     const isNewHigh = sessionRecordedScore === null
         ? addScoreToHighScoresList(currentScoreVal,getPlayTimeMs(),scoreRunId)
-        : (true
-            ? updateSessionHighScore(sessionRecordedScore,currentScoreVal,getPlayTimeMs(),scoreRunId) : false);
+        : updateSessionHighScore(sessionRecordedScore,currentScoreVal,getPlayTimeMs(),scoreRunId);
     sessionRecordedScore = currentScoreVal;
     const allHighScores = getHighScores();
     const globalHighScore = allHighScores.length > 0 ? allHighScores[0].score : 0;
@@ -624,10 +623,6 @@ const gameControlActions = {
     /**
      * @brief Allows the player to start a new game after a "Game Over", typically keeping the previous score and level.
      */
-    onContinueAfterGameOver: () => {
-        playButtonClickSound();
-        initializeNewGame(true);
-    },
 
     /**
      * @brief Displays the high scores screen.
