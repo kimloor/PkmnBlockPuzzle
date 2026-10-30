@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.0] — Pikachu speech companion implementation (web source)
+- Offline speech bubble with Thai, English and Spanish text, priority and cooldown.
+- Gameplay integrations and runtime QA tracked separately; no APK build.
+
+
 ## [0.6.5] — Pikachu Talking Companion V1 contract (docs only; 2026-10-30)
 - Owner approved 25 text-only Pikachu speech conditions, cooldown/priority rules, UI behavior, three languages, and QA criteria; detailed specification recorded in ROADMAP.md.
 - Implementation and APK build are not authorized by this documentation change.
