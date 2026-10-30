@@ -5,7 +5,7 @@ Status: planning document; items are proposals until confirmed by the owner.
 
 ## Next Feature — Pikachu Talking Companion V1 (Owner approved, 30 October 2026)
 
-**Status: SPEC APPROVED / IMPLEMENTATION NOT STARTED.** Text-only speech bubbles for the existing Pikachu companion near the top-left Tetris board. Offline; no TTS, voice, AI integration, or new Pikachu artwork. Keep gameplay input/HUD unobstructed. Do not build an APK until separately authorized.
+**Status: IMPLEMENTED IN SOURCE v0.7.0 / RUNTIME QA PENDING.** Existing reward dialogs remain authoritative; separate mobile/browser QA required before release. Pause/Game Over speech visibility remains a UI acceptance item. Text-only speech bubbles for the existing Pikachu companion near the top-left Tetris board. Offline; no TTS, voice, AI integration, or new Pikachu artwork. Keep gameplay input/HUD unobstructed. Do not build an APK until separately authorized.
 
 ### A. Start, idle, and play (6 triggers)
 | Trigger | Thai speech | Condition |
