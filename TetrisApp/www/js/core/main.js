@@ -33,21 +33,95 @@ let canSwapPiece = true;
 let isPieceLanded = false;
 let lockDelayTimerId = null;
 let sessionRecordedScore = null;
+let playElapsedMs = 0;
+let playingSince = null;
+let scoreRunId = null;
+function stopPlayClock(){if(playingSince!==null){playElapsedMs+=Math.max(0,performance.now()-playingSince);playingSince=null;}}
+function startPlayClock(){if(!document.hidden && playingSince===null)playingSince=performance.now();}
+function getPlayTimeMs(){return Math.round(playElapsedMs+(playingSince===null?0:Math.max(0,performance.now()-playingSince)));}
+
+
+const rewardMilestones = Object.freeze([
+    { points: 10000, label: 'ไอศกรีม Dairy Queen 1 โคน' },
+    { points: 20000, label: 'กาโตะ 1 ขวด' },
+    { points: 30000, label: 'กล่องการ์ดโปเกม่อน 1 กล่อง' },
+    { points: 100000, label: 'Nintendo Switch 1 เครื่อง' }
+]);
+const earnedRewardPoints = new Set();
+const pendingRewards = [];
+let rewardShowing = false;
+const rewardDialog = document.getElementById('reward-dialog');
+const rewardMessage = document.getElementById('reward-message');
+const rewardContinue = document.getElementById('reward-continue');
+function resetScoreRewards() {
+    earnedRewardPoints.clear();
+    pendingRewards.length = 0;
+    rewardShowing = false;
+    if (rewardDialog) rewardDialog.hidden = true;
+}
+function queueScoreRewards() {
+    if (gameState !== 'PLAYING') return;
+    for (const reward of rewardMilestones) {
+        if (score >= reward.points && !earnedRewardPoints.has(reward.points)) {
+            earnedRewardPoints.add(reward.points);
+            pendingRewards.push(reward);
+        }
+    }
+    if (pendingRewards.length && !rewardShowing) showNextScoreReward();
+}
+function showNextScoreReward() {
+    const next = pendingRewards.shift();
+    if (!next) return;
+    rewardShowing = true;
+    stopPlayClock();
+    gameState = 'REWARD_PAUSED';
+    clearTimeout(lockDelayTimerId);
+    lockDelayTimerId = null;
+    if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+    if (rewardMessage) rewardMessage.textContent = 'คุณได้รับ' + next.label + '!';
+    const prizeVisual = document.getElementById('reward-prize-visual');
+    if (prizeVisual) prizeVisual.textContent = ({10000:'🍦',20000:'🧃',30000:'🎴',100000:'🎮'})[next.points] || '🎁';
+    if (rewardDialog) rewardDialog.hidden = false;
+    if (window.pokemonCompanion) window.pokemonCompanion.play('celebrate');
+    if (rewardContinue) rewardContinue.focus();
+}
+function acknowledgeScoreReward() {
+    if (!rewardShowing) return;
+    if (pendingRewards.length) { showNextScoreReward(); return; }
+    rewardShowing = false;
+    if (rewardDialog) rewardDialog.hidden = true;
+    gameState = 'PLAYING';
+    startPlayClock();
+    lastTime = performance.now();
+    dropCounter = 0;
+    if (isPieceLanded) {
+        isPieceLanded = false;
+        pieceHasLanded();
+    }
+    if (gameOver) { handleGameOver(); return; }
+    if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
+    animationFrameId = requestAnimationFrame(updateGame);
+}
+if (rewardContinue) rewardContinue.addEventListener('click', acknowledgeScoreReward);
+
 
 // Save synchronously before mobile browsers suspend/close a page.
 function recordCurrentSessionScore() {
-    if (gameState !== 'PLAYING' && gameState !== 'PAUSED' && gameState !== 'GAMEOVER') return false;
+    stopPlayClock();
+    if (gameState !== 'PLAYING' && gameState !== 'PAUSED' && gameState !== 'GAMEOVER' && gameState !== 'REWARD_PAUSED') return false;
     if (sessionRecordedScore === null) {
-        addScoreToHighScoresList(score);
-    } else if (sessionRecordedScore !== score) {
-        updateSessionHighScore(sessionRecordedScore, score);
-    } else return false;
+        addScoreToHighScoresList(score,getPlayTimeMs(),scoreRunId);
+    } else {
+        updateSessionHighScore(sessionRecordedScore,score,getPlayTimeMs(),scoreRunId);
+    }
     sessionRecordedScore = score;
     return true;
 }
 
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') recordCurrentSessionScore();
+    else if(gameState==='PLAYING'){lastTime=performance.now();startPlayClock();}
 });
 window.addEventListener('pagehide', recordCurrentSessionScore);
 
@@ -58,6 +132,7 @@ const gameInstance = {
     get currentPiece() { return currentPiece; },
     get gameState() { return gameState; },
     setGameState: (newState) => {
+        if(newState!=='PLAYING')stopPlayClock();else startPlayClock();
         if (newState === 'PAUSED') {
             clearTimeout(lockDelayTimerId);
             lockDelayTimerId = null;
@@ -94,6 +169,8 @@ function initializeNewGame(keepScore = false) {
     if (!keepScore) {
         recordCurrentSessionScore();
         sessionRecordedScore = null;
+        playElapsedMs=0;playingSince=null;scoreRunId='run-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+        resetScoreRewards();
     }
     initGameBoard();
     gameOver = false;
@@ -131,6 +208,7 @@ function initializeNewGame(keepScore = false) {
         handleGameOver();
     } else {
         gameState = 'PLAYING';
+        startPlayClock();
         playBackgroundMusic();
         if (typeof showScreen === 'function') showScreen('PLAYING');
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -148,6 +226,7 @@ function initializeNewGame(keepScore = false) {
  * @returns None.
  */
 function handleGameOver() {
+    stopPlayClock();
     gameState = 'GAMEOVER';
     stopBackgroundMusic();
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -159,12 +238,11 @@ function handleGameOver() {
 
     const currentScoreVal = score;
     const isNewHigh = sessionRecordedScore === null
-        ? addScoreToHighScoresList(currentScoreVal)
-        : (sessionRecordedScore !== currentScoreVal
-            ? updateSessionHighScore(sessionRecordedScore, currentScoreVal) : false);
+        ? addScoreToHighScoresList(currentScoreVal,getPlayTimeMs(),scoreRunId)
+        : updateSessionHighScore(sessionRecordedScore,currentScoreVal,getPlayTimeMs(),scoreRunId);
     sessionRecordedScore = currentScoreVal;
     const allHighScores = getHighScores();
-    const globalHighScore = allHighScores.length > 0 ? allHighScores[0] : 0;
+    const globalHighScore = allHighScores.length > 0 ? allHighScores[0].score : 0;
 
     if (isNewHigh) {
         playNewHighScoreSound();
@@ -319,6 +397,7 @@ function lockPieceAndContinue() {
     }
     
     spawnNewPieceInternalLogic();
+    if (rewardShowing) { drawGame(); return; }
 
     if (gameOver) {
         drawGame();
@@ -358,6 +437,7 @@ function handleLineClears(linesClearedInfo) {
             }
         }
         if (maxMultiplier > 1) showBonusScoreFeedback(maxMultiplier);
+        queueScoreRewards();
 
         if (linesClearedInfo.count === 4) {
             playTetrisClearSound();
@@ -496,9 +576,11 @@ const gameControlActions = {
      * @brief Resumes the game if it was previously paused.
      */
     onResumeGame: () => {
+        if (rewardShowing) return;
         playButtonClickSound();
         if (gameState !== 'PAUSED') return;
         gameState = 'PLAYING';
+        startPlayClock();
         if (isPieceLanded) {
             // Pause cancels the pending lock; resume starts a fresh full delay.
             isPieceLanded = false;
@@ -527,7 +609,9 @@ const gameControlActions = {
     onGoToMainMenu: () => {
         recordCurrentSessionScore();
         playButtonClickSound();
+        stopPlayClock();
         gameState = 'MENU';
+        resetScoreRewards();
         clearTimeout(lockDelayTimerId);
         lockDelayTimerId = null;
         isPieceLanded = false;

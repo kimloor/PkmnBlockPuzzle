@@ -1,0 +1,32 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', 'TetrisApp', 'www');
+const read = p => fs.readFileSync(path.join(root,p),'utf8');
+test('score records migrate and retain durations without deleting equal-scored runs',()=>{
+  const db = new Map([['scores',JSON.stringify([300,200,200])]]);
+  const sandbox={HIGH_SCORES_KEY:'scores',MAX_HIGH_SCORES:5,localStorage:{getItem:k=>db.get(k)||null,setItem:(k,v)=>db.set(k,v)},console,Date,Number,Math};
+  vm.createContext(sandbox);vm.runInContext(read('js/services/storage.js'),sandbox);
+  let a=sandbox.loadHighScoresFromStorage();assert.deepEqual(Array.from(a,x=>x.score),[300,200,200]);assert.equal(a[0].durationMs,null);
+  sandbox.addScoreToHighScoresList(400,63000,'run-A');
+  sandbox.addScoreToHighScoresList(400,75000,'run-B');
+  sandbox.updateSessionHighScore(400,450,81000,'run-A');
+  a=sandbox.getHighScores();assert.equal(a.find(x=>x.id==='run-A').durationMs,81000);
+  assert.equal(a.find(x=>x.id==='run-B').score,400);
+  assert.equal(a.length,5);
+  assert.equal(JSON.parse(db.get('scores')).length,5);
+});
+test('reward UI labels, buttons, version and game-over cleanup',()=>{
+  const html=read('index.html'),main=read('js/core/main.js');
+  assert.match(html,/id="reward-dialog"/);
+  assert.match(html,/id="reward-continue"/);
+  assert.doesNotMatch(html,/id="continue-after-game-over-button"/);
+  assert.match(html,/id="restart-game-over-button"/);
+  assert.match(html,/id="main-menu-game-over-button"/);
+  for(const points of [10000,20000,30000,100000]) assert.match(main,new RegExp('points: '+points+'\\b'));
+  assert.match(main,/gameState = 'REWARD_PAUSED'/);
+  assert.match(main,/queueScoreRewards\(\)/);
+  assert.match(html,/v0\.6\.2<\/div>/);
+});
