@@ -6,6 +6,13 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.11] — Pikachu speech visible on mobile Safari (2026-10-30)
+- Fixed a CSS stacking and placement regression: v0.7.10 speech bubble was behind the 70px score/next panel because its companion parent had lower z-index and was positioned 33px from layout top.
+- Position speech over the top-left board rows and raise the companion stacking context, preserving bubble hidden/show semantics and all touch controls.
+- Keep approved v0.7.10 board dimensions and no-scroll layout unchanged. Preserve background image assets and cache tokens (faint seams intentionally deferred).
+- Source speech/UI regression and static layout geometry checks added. On-device Safari visual QA still pending. APK not built.
+
+
 ## [0.7.10] — No-scroll, medium-size Safari board (2026-10-30)
 - Owner requested a middle ground between v0.7.5's small board and v0.7.9's oversize scrolling board.
 - Size Pokémon portrait board by both viewport width and Safari dynamic height, cap width at 252 CSS px and reserve 116px for a compact 70px HUD, level header, gaps and padding.
