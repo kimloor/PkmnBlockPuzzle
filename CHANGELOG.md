@@ -6,6 +6,13 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.4] — Safari board alignment, Pikachu overlap and background cleanup (2026-10-30)
+- Align board canvas, level header, and score/next strip to one responsive width on Pokémon Theme portrait Safari.
+- Remove the reserved companion grid gutter that shrank the board; position Pikachu and its non-interactive speech bubble above the board's upper-left rows instead.
+- Remove CSS gradient/tint/background overlay layers, use one mobile wallpaper image; artwork itself is not modified.
+- Bump mobile CSS cache query. Source checks complete; iPhone Safari visual validation remains pending. No APK build.
+
+
 ## [0.7.3] — Mobile Safari Pikachu visibility (web source; 2026-10-30)
 - Removed the legacy companion hide rules on screens <=1050px and in portrait.
 - Used a real responsive grid gutter for the companion at phone and tablet sizes, preventing avatar and speech bubble from overlaying the board or score/next strip.

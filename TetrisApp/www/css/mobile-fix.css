@@ -456,3 +456,113 @@ html.pokemon-theme-active #main-container { position: relative; }
     grid-column: 3; grid-row: 1; width: 100%; max-width: 100%; min-width: 0;
   }
 }
+
+/* v0.7.4 — Safari portrait follow-up: match board, level and HUD widths.
+   Pikachu overlays only the board's upper-left corner; no reserved gutter.
+   Explicitly eliminate translucent full-height background layers. */
+@media (max-width: 768px) and (orientation: portrait) {
+  html.pokemon-theme-active #game-content.active {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100dvh;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 6px 6px max(8px, env(safe-area-inset-bottom));
+  }
+  html.pokemon-theme-active #main-container {
+    --board-fit-width: min(calc(100vw - 24px), calc((100dvh - 185px) / 2), 390px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+  }
+  html.pokemon-theme-active #side-panel {
+    order: 1;
+    width: var(--board-fit-width);
+    max-width: 100%;
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 0;
+    gap: 6px;
+  }
+  html.pokemon-theme-active #game-area {
+    order: 2;
+    align-self: center;
+    width: var(--board-fit-width);
+    max-width: 100%;
+    min-width: 0;
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  html.pokemon-theme-active #level-header-display,
+  html.pokemon-theme-active #tetris-canvas {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  html.pokemon-theme-active #pokemon-side-slot {
+    position: absolute;
+    display: flex;
+    z-index: 4;
+    top: 128px;
+    /* Overlap the board's upper two cells, retaining a visible left margin. */
+    left: max(0px, calc((100% - var(--board-fit-width)) / 2 - 36px));
+    right: auto;
+    width: clamp(62px, 18vw, 78px);
+    height: auto;
+    margin: 0;
+    pointer-events: none;
+    overflow: visible;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pokemon-side-character {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pikachu-speech {
+    position: absolute;
+    top: 0;
+    left: 72%;
+    width: clamp(100px, 32vw, 145px);
+    max-width: none;
+    z-index: 5;
+    font-size: 11px;
+    padding: 5px 7px;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pikachu-speech::before {
+    top: 10px;
+    left: -9px;
+    border: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 9px solid #f5c438;
+  }
+}
+/* One consistent wallpaper image; remove theme tint and overlay panels. */
+html.pokemon-theme-active body {
+  background-image: url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+html.pokemon-theme-active body::before { display: none !important; }
+html.pokemon-theme-active #game-content.active,
+html.pokemon-theme-active #main-container {
+  background: transparent !important;
+  box-shadow: none;
+}
+@media (max-width: 768px) and (orientation: portrait) {
+  html.pokemon-theme-active body {
+    background-image: url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg") !important;
+    background-attachment: scroll !important;
+  }
+}

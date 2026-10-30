@@ -3,6 +3,10 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
+## Safari portrait layout follow-up — v0.7.4 (30 October 2026)
+
+**Status: SOURCE IMPLEMENTED; OWNER SAFARI QA PENDING.** Owner supplied Safari screenshot showing the v0.7.3 board narrower than HUD and a lighter vertical wallpaper stripe. Reclaim reserved Pikachu gutter to enlarge board and align board/header/HUD widths; allow Pikachu + speech bubble to overlap only the top-left portion of the board (noninteractive so board touch remains available). Use a single background image and remove overlaid CSS gradient and body pseudo-element. Existing sprite assets, scoring, and Android build unchanged. Verify iPhone Safari portrait and landscape and watch for any stripe baked into the source wallpaper image.
+
 ## Mobile Safari Pikachu visibility fix — v0.7.3 (30 October 2026)
 
 **Status: SOURCE FIX IMPLEMENTED; OWNER SAFARI DEVICE QA PENDING.** Root cause: the old stylesheet explicitly hid the companion at viewport widths <=1050px and on portrait phones. Source now reserves an in-flow Pikachu column alongside the Tetris board on portrait phones, landscape phones and tablets. The score/next strip remains above the board in portrait; the speech bubble is contained inside the companion gutter. A new stylesheet query version prevents Safari using stale CSS. Standard desktop (>1050px), non-Pokemon themes, all five sprite poses and scoring mechanics remain unchanged. Verify 320/360/390/412px phone portrait, landscape, Safari on-device, Android and desktop. No APK build authorized.
