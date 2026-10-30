@@ -6,6 +6,13 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.6] — Safari portrait board enlargement and wallpaper repair setup (2026-10-30)
+- Replace height-based board shrinking with viewport-width sizing up to 360px on Safari portrait, allowing vertical scrolling.
+- Increase Pikachu presentation to 104–130px, with a nonblocking overlap into upper board rows and its speech bubble.
+- Added deterministic GitHub Actions restoration pipeline: pale vertical stripes are baked into both source JPGs, requiring direct source-image correction; a verified subsequent commit/deploy will deliver the restored files.
+- No new artwork, gameplay change or APK build.
+
+
 ## [0.7.5] — Align responsive regression tests with Safari layout (2026-10-30)
 - Correct stale v0.7.3 grid/version test assumptions; test the new board/HUD alignment, Pikachu overlay, wallpaper and touch pass-through rules.
 - No additional visual or gameplay changes beyond v0.7.4; Safari device QA pending, no APK build.
