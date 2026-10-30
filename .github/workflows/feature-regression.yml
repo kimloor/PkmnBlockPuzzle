@@ -1,0 +1,23 @@
+name: Feature Regression (no APK build)
+on:
+  pull_request:
+    paths:
+      - 'TetrisApp/www/**'
+      - 'tests/**'
+      - '.github/workflows/feature-regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JS syntax checks
+        run: |
+          find TetrisApp/www/js -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Focused regression
+        run: node --test tests/feature-regression.test.cjs
