@@ -7,7 +7,8 @@ Status: planning document; items are proposals until confirmed by the owner.
 - [x] **PASS (owner-reported):** Installed v0.5.1 successfully updated to v0.5.4 using the Update button inside the Android game.
 - [x] **PASS (owner-reported):** Pikachu is visible in the updated v0.5.4 game.
 - [x] **PASS (GitHub Actions reporter):** v0.5.4 signed build, artifact upload and release publication succeeded (run 40817827367).
-- [ ] **NOT YET CONFIRMED:** High-score and settings persistence after this upgrade; error/retry and rejected-checksum paths; portrait/landscape animations and full gameplay regression.
+- [x] **PASS (owner-reported):** High Score and Settings persist after closing and reopening the installed game.
+- [ ] **NOT YET CONFIRMED:** Data preservation specifically across the upgrade (before vs. after v0.5.1→v0.5.4); error/retry and rejected-checksum paths; portrait/landscape animations and full gameplay regression.
 - [ ] **NOT YET CONFIRMED:** Draft PR #11 reward milestones and play-time high scores runtime QA; do not merge/build pending review.
 - Note: Passing update from v0.5.1 to v0.5.4 confirms the user-facing upgrade path, not every failure path or device layout.
 
