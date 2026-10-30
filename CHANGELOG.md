@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.5.7] — Game Over menu cleanup and persistence QA (source only; 2026-10-30)
+- Removed Continue After Game Over button and its inactive click/action wiring; Game Over now offers Restart and Main Menu only.
+- Owner confirmed High Score and Settings survive closing/reopening the app. Preservation specifically during upgrade not separately tested.
+- No Android build requested; runtime QA on amended Game Over menu pending.
+
+
 ## [0.5.6] — Owner Android update QA record (source/docs only; 2026-10-30)
 - Owner confirmed in-app update v0.5.1 to v0.5.4 succeeded and Pikachu appeared in the installed game.
 - Data preservation and failure-path tests remain open; no new APK build or release requested.
