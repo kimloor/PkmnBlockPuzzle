@@ -239,7 +239,7 @@ body { overflow-x: hidden; overflow-y: auto; touch-action: pan-y; }
    Both assets are offline local files; CSS gradients provide a graceful fallback. */
 html.pokemon-theme-active body {
     background-color: #75cb77;
-    background-image: linear-gradient(rgba(10, 28, 53, .15), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg");
+    background-image: linear-gradient(rgba(10, 28, 53, .15), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg?v=0.7.9");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -277,14 +277,14 @@ html.pokemon-theme-active #pokemon-side-slot .pokemon-side-character {
 
 @media (max-width: 768px) and (orientation: portrait) {
     html.pokemon-theme-active body {
-        background-image: linear-gradient(rgba(10, 28, 53, .12), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg");
+        background-image: linear-gradient(rgba(10, 28, 53, .12), rgba(8, 26, 43, .2)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg?v=0.7.9");
         background-attachment: scroll;
     }
 }
 
 /* v0.4.7: reliable background on the menu and playfield; paths resolved relative to CSS. */
 html.pokemon-theme-active body {
-    background-image: linear-gradient(rgba(10, 28, 53, .10), rgba(8, 26, 43, .12)), url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg") !important;
+    background-image: linear-gradient(rgba(10, 28, 53, .10), rgba(8, 26, 43, .12)), url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg?v=0.7.9") !important;
 }
 html.pokemon-theme-active #start-menu.menu-overlay,
 html.pokemon-theme-active #pause-menu.menu-overlay,
@@ -295,7 +295,7 @@ html.pokemon-theme-active #game-over-screen.menu-overlay {
 }
 @media (max-width: 768px) and (orientation: portrait) {
     html.pokemon-theme-active body {
-        background-image: linear-gradient(rgba(10, 28, 53, .08), rgba(8, 26, 43, .10)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg") !important;
+        background-image: linear-gradient(rgba(10, 28, 53, .08), rgba(8, 26, 43, .10)), url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg?v=0.7.9") !important;
         background-position: center center;
         background-size: cover;
     }
@@ -549,7 +549,7 @@ html.pokemon-theme-active #main-container { position: relative; }
 }
 /* One consistent wallpaper image; remove theme tint and overlay panels. */
 html.pokemon-theme-active body {
-  background-image: url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg") !important;
+  background-image: url("../images/pokemon/backgrounds/pokemon_bg_desktop.jpg?v=0.7.9") !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
@@ -562,7 +562,7 @@ html.pokemon-theme-active #main-container {
 }
 @media (max-width: 768px) and (orientation: portrait) {
   html.pokemon-theme-active body {
-    background-image: url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg") !important;
+    background-image: url("../images/pokemon/backgrounds/pokemon_bg_mobile.jpg?v=0.7.9") !important;
     background-attachment: scroll !important;
   }
 }

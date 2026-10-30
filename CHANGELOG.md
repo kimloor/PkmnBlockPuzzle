@@ -6,6 +6,12 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.9] — Embedded wallpaper stripe restoration (2026-10-30)
+- Reverse-alpha corrected the rectangular pale overlay in both JPEG backgrounds without redrawing artwork.
+- Measured reduced edge seam; original JPEG dimensions kept; Safari image URLs cache-busted.
+- Code and web deployment verified separately; Android APK not built.
+
+
 ## [0.7.8] — Wallpaper repair workflow version guard (2026-10-30)
 - Changed the restoration workflow to derive its version and Android code dynamically, preventing previous hard-coded version assertions from aborting binary publication.
 - First restoration run corrected both images in memory but failed test; this source update re-triggers a validated run. No gameplay or art changes yet.
