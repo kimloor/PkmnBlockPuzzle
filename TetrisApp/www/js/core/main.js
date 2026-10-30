@@ -539,10 +539,6 @@ const gameControlActions = {
     /**
      * @brief Allows the player to start a new game after a "Game Over", typically keeping the previous score and level.
      */
-    onContinueAfterGameOver: () => {
-        playButtonClickSound();
-        initializeNewGame(true);
-    },
 
     /**
      * @brief Displays the high scores screen.
