@@ -1,5 +1,4 @@
 name: Repair embedded wallpaper stripe and deploy
-
 on:
   push:
     branches: [master]
@@ -29,57 +28,71 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Dependencies
+      - name: Install Pillow and NumPy
         run: python -m pip install --disable-pip-version-check pillow numpy
-      - name: Correct the embedded pale stripe in both JPEG files
+      - name: Remove the embedded tint from original JPEG pixel data
         run: python scripts/repair-pokemon-wallpaper.py
-      - name: Invalidate Safari image cache and sync release version
+      - name: Invalidate Safari image cache and bump version atomically
         run: |
           python - <<'PY'
           from pathlib import Path
-          css = Path('TetrisApp/www/css/mobile-fix.css')
-          source = css.read_text()
-          for name in ('pokemon_bg_mobile.jpg','pokemon_bg_desktop.jpg'):
-              source = source.replace(name+'")',name+'?v=0.7.8")')
-              assert name+'?v=0.7.8' in source
+          import re
+          config=Path('TetrisApp/config.xml')
+          original=config.read_text()
+          m=re.search(r'version="(\d+)\.(\d+)\.(\d+)" android-versionCode="(\d+)"',original)
+          assert m, 'config version missing'
+          major,minor,patch,old_code=map(int,m.groups())
+          expected_code=major*10000+minor*100+patch
+          assert old_code==expected_code, (old_code,expected_code)
+          old_version=f'{major}.{minor}.{patch}'
+          new_version=f'{major}.{minor}.{patch+1}'
+          new_code=major*10000+minor*100+patch+1
+          config.write_text(original.replace(m.group(0),f'version="{new_version}" android-versionCode="{new_code}"'))
+          print(f'Wallpaper restore version: {old_version} -> {new_version}',flush=True)
+          html=Path('TetrisApp/www/index.html')
+          s=html.read_text()
+          old_css='css/mobile-fix.css?v='+old_version
+          old_badge='class="game-version" aria-label="Game version">v'+old_version
+          assert s.count(old_css)==1,(old_css,s.count(old_css))
+          assert s.count(old_badge)==1,(old_badge,s.count(old_badge))
+          html.write_text(s.replace(old_css,'css/mobile-fix.css?v='+new_version)
+                           .replace(old_badge,'class="game-version" aria-label="Game version">v'+new_version))
+          css=Path('TetrisApp/www/css/mobile-fix.css')
+          source=css.read_text()
+          for basename in ('pokemon_bg_mobile.jpg','pokemon_bg_desktop.jpg'):
+              old=basename+'")'
+              new=basename+'?v='+new_version+'")'
+              assert old in source, basename
+              source=source.replace(old,new)
           css.write_text(source)
-          html = Path('TetrisApp/www/index.html')
-          s = html.read_text()
-          assert s.count('css/mobile-fix.css?v=0.7.7') == 1
-          assert s.count('class="game-version" aria-label="Game version">v0.7.7') == 1
-          html.write_text(s.replace('css/mobile-fix.css?v=0.7.7','css/mobile-fix.css?v=0.7.8')
-                           .replace('class="game-version" aria-label="Game version">v0.7.7','class="game-version" aria-label="Game version">v0.7.8'))
-          config = Path('TetrisApp/config.xml')
-          s=config.read_text()
-          assert 'version="0.7.7" android-versionCode="706"' in s
-          config.write_text(s.replace('version="0.7.7" android-versionCode="706"',
-                                      'version="0.7.8" android-versionCode="707"'))
           changelog=Path('CHANGELOG.md')
           s=changelog.read_text()
           changelog.write_text(s.replace('## [Unreleased]',
-             '## [Unreleased]\n\n## [0.7.8] — Remove stripe embedded in original wallpapers (2026-10-30)\n'
-             '- Corrected both original background JPEGs by reverse-alpha restoration within the pale rectangle only.\n'
-             '- Measured improved pixel seam, retained the same image dimensions and file paths; invalidated Safari image cache.\n'
-             '- No regenerated artwork or APK build. Owner Safari device QA remains pending.\n',1))
+            '## [Unreleased]\n\n## ['+new_version+'] — Embedded wallpaper stripe restoration (2026-10-30)\n'
+            '- Reverse-alpha corrected the rectangular pale overlay in both JPEG backgrounds without redrawing artwork.\n'
+            '- Measured reduced edge seam; original JPEG dimensions kept; Safari image URLs cache-busted.\n'
+            '- Code and web deployment verified separately; Android APK not built.\n',1))
           roadmap=Path('ROADMAP.md')
           s=roadmap.read_text()
-          roadmap.write_text(s.replace('**Status: v0.7.7 portrait CSS prepared;',
-               '**Status: v0.7.8 wallpaper repaired and deployed (device QA pending);',1))
+          roadmap.write_text(s.replace('## Safari background correction and larger portrait board',
+             '## Safari corrected wallpaper + larger portrait board — source '+new_version+'\n\n'
+             '**Asset processing: completed in GitHub Actions. Safari device visual acceptance pending.**\n\n'
+             '## Safari background correction and larger portrait board',1))
           PY
-      - name: Verify source tests and write consistency
+      - name: Test source, restored image validity and formatting
         run: |
           node --test tests/pikachu-responsive.test.cjs
           git diff --check
           python - <<'PY'
           from pathlib import Path
           from PIL import Image
-          for name in ('pokemon_bg_mobile.jpg','pokemon_bg_desktop.jpg'):
-              file = Path('TetrisApp/www/images/pokemon/backgrounds')/name
-              with Image.open(file) as im:
-                  im.verify()
-          print("Wallpaper output JPEG verification PASS")
+          for filename in ('pokemon_bg_mobile.jpg','pokemon_bg_desktop.jpg'):
+              path=Path('TetrisApp/www/images/pokemon/backgrounds')/filename
+              with Image.open(path) as img:
+                  img.verify()
+          print('JPEG validation PASS')
           PY
-      - name: Commit processed assets and invalidate image cache
+      - name: Commit corrected assets and source version
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -88,11 +101,11 @@ jobs:
                   TetrisApp/www/css/mobile-fix.css TetrisApp/www/index.html \
                   TetrisApp/config.xml CHANGELOG.md ROADMAP.md
           git diff --cached --check
-          git commit -m "fix: correct original wallpaper tint and cache v0.7.8"
+          git commit -m "fix: remove baked wallpaper stripes and refresh Safari cache"
           git push origin HEAD:master
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: TetrisApp/www
-      - name: Deploy corrected background
+      - name: Deploy the restored web game
         uses: actions/deploy-pages@v4

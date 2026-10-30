@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.8] — Wallpaper repair workflow version guard (2026-10-30)
+- Changed the restoration workflow to derive its version and Android code dynamically, preventing previous hard-coded version assertions from aborting binary publication.
+- First restoration run corrected both images in memory but failed test; this source update re-triggers a validated run. No gameplay or art changes yet.
+
+
 ## [0.7.7] — Repair pipeline regression check correction (2026-10-30)
 - Corrected Android version-code assertion to treat minor/patch as the 3-digit expected code; no gameplay or art changed in this intermediate source commit.
 - Re-trigger wallpaper correction workflow; processed JPEGs and final image cache update will be recorded in v0.7.8 after validation.
