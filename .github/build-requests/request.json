@@ -1,5 +1,5 @@
 {
-  "version": "0.5.4",
-  "request_id": "v054-owner-build-20261029-statusfix-01",
-  "reason": "Owner authorized check, repair, and rebuild; use latest source version and publish signed release"
+  "version": "0.6.3",
+  "request_id": "v063-owner-release-20261030-01",
+  "reason": "Owner approved build and signed GitHub Release for QA-accepted web v0.6.3; includes score milestones, playtime high scores, rank display and water-bottle prize"
 }
