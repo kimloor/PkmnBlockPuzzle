@@ -81,7 +81,14 @@ function showNextScoreReward() {
     animationFrameId = null;
     if (rewardMessage) rewardMessage.textContent = 'คุณได้รับ' + next.label + '!';
     const prizeVisual = document.getElementById('reward-prize-visual');
-    if (prizeVisual) prizeVisual.textContent = ({10000:'🍦',20000:'🧃',30000:'🎴',100000:'🎮'})[next.points] || '🎁';
+    if (prizeVisual) {
+        if (next.points === 20000) {
+            // Simple, offline SVG water bottle instead of a juice carton.
+            prizeVisual.innerHTML = '<svg viewBox="0 0 72 110" width="78" height="118" aria-label="ขวดน้ำ" role="img" xmlns="http://www.w3.org/2000/svg"><rect x="24" y="5" width="24" height="13" rx="3" fill="#2785d1"/><rect x="28" y="17" width="16" height="13" rx="3" fill="#89cefb"/><path d="M28 27 Q28 33 20 39 Q15 44 15 54 L15 94 Q15 103 24 103 L48 103 Q57 103 57 94 L57 54 Q57 44 52 39 Q44 33 44 27Z" fill="#c7edff" stroke="#2993d4" stroke-width="3"/><path d="M18 66 Q36 60 54 66 L54 89 Q36 84 18 89Z" fill="#72caff" opacity=".75"/><path d="M24 44 Q20 56 23 82" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/></svg>';
+        } else {
+            prizeVisual.textContent = ({10000:'🍦',30000:'🎴',100000:'🎮'})[next.points] || '🎁';
+        }
+    }
     if (rewardDialog) rewardDialog.hidden = false;
     if (window.pokemonCompanion) window.pokemonCompanion.play('celebrate');
     if (rewardContinue) rewardContinue.focus();
@@ -243,6 +250,8 @@ function handleGameOver() {
     sessionRecordedScore = currentScoreVal;
     const allHighScores = getHighScores();
     const globalHighScore = allHighScores.length > 0 ? allHighScores[0].score : 0;
+    const currentRankIndex = allHighScores.findIndex(entry => entry.id === scoreRunId);
+    const currentRank = currentRankIndex >= 0 ? currentRankIndex + 1 : null;
 
     if (isNewHigh) {
         playNewHighScoreSound();
@@ -251,7 +260,7 @@ function handleGameOver() {
     }
 
     if (typeof updateGameOverScreenInfo === 'function') {
-        updateGameOverScreenInfo(currentScoreVal, globalHighScore, isNewHigh);
+        updateGameOverScreenInfo(currentScoreVal, globalHighScore, currentRank);
     }
     if (typeof showScreen === 'function') {
         showScreen('GAMEOVER');
