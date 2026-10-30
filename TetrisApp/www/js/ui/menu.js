@@ -103,14 +103,15 @@ function updateFinalScoreOnMenu(score) {
  * @param {boolean} isNewHigh - True if `currentScore` is a new high score, false otherwise.
  * @returns None.
  */
-function updateGameOverScreenInfo(currentScore, globalHighScore, isNewHigh) {
+function updateGameOverScreenInfo(currentScore, globalHighScore, currentRank) {
     if (currentGameScoreValueElement) currentGameScoreValueElement.textContent = currentScore;
     if (allTimeHighScoreValueElement) allTimeHighScoreValueElement.textContent = globalHighScore;
     
     if (newHighScoreMessageElement) {
         newHighScoreMessageElement.classList.remove('animate-flash');
 
-        if (isNewHigh) {
+        if (Number.isInteger(currentRank) && currentRank >= 1 && currentRank <= MAX_HIGH_SCORES) {
+            newHighScoreMessageElement.textContent = 'คะแนนนี้อยู่อันดับที่ ' + currentRank + ' ของตารางคะแนนสูงสุด';
             newHighScoreMessageElement.style.display = 'block';
             void newHighScoreMessageElement.offsetWidth;
             newHighScoreMessageElement.classList.add('animate-flash');
