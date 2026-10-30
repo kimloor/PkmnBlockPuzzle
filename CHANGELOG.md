@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.5] — Align responsive regression tests with Safari layout (2026-10-30)
+- Correct stale v0.7.3 grid/version test assumptions; test the new board/HUD alignment, Pikachu overlay, wallpaper and touch pass-through rules.
+- No additional visual or gameplay changes beyond v0.7.4; Safari device QA pending, no APK build.
+
+
 ## [0.7.4] — Safari board alignment, Pikachu overlap and background cleanup (2026-10-30)
 - Align board canvas, level header, and score/next strip to one responsive width on Pokémon Theme portrait Safari.
 - Remove the reserved companion grid gutter that shrank the board; position Pikachu and its non-interactive speech bubble above the board's upper-left rows instead.

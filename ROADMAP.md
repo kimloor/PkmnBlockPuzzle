@@ -3,7 +3,7 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
-## Safari portrait layout follow-up — v0.7.4 (30 October 2026)
+## Safari portrait layout follow-up — v0.7.4 / regression maintenance v0.7.5 (30 October 2026)
 
 **Status: SOURCE IMPLEMENTED; OWNER SAFARI QA PENDING.** Owner supplied Safari screenshot showing the v0.7.3 board narrower than HUD and a lighter vertical wallpaper stripe. Reclaim reserved Pikachu gutter to enlarge board and align board/header/HUD widths; allow Pikachu + speech bubble to overlap only the top-left portion of the board (noninteractive so board touch remains available). Use a single background image and remove overlaid CSS gradient and body pseudo-element. Existing sprite assets, scoring, and Android build unchanged. Verify iPhone Safari portrait and landscape and watch for any stripe baked into the source wallpaper image.
 
