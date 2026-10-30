@@ -40,31 +40,31 @@ jobs:
           css = Path('TetrisApp/www/css/mobile-fix.css')
           source = css.read_text()
           for name in ('pokemon_bg_mobile.jpg','pokemon_bg_desktop.jpg'):
-              source = source.replace(name+'")',name+'?v=0.7.7")')
-              assert name+'?v=0.7.7' in source
+              source = source.replace(name+'")',name+'?v=0.7.8")')
+              assert name+'?v=0.7.8' in source
           css.write_text(source)
           html = Path('TetrisApp/www/index.html')
           s = html.read_text()
-          assert s.count('css/mobile-fix.css?v=0.7.6') == 1
-          assert s.count('class="game-version" aria-label="Game version">v0.7.6') == 1
-          html.write_text(s.replace('css/mobile-fix.css?v=0.7.6','css/mobile-fix.css?v=0.7.7')
-                           .replace('class="game-version" aria-label="Game version">v0.7.6','class="game-version" aria-label="Game version">v0.7.7'))
+          assert s.count('css/mobile-fix.css?v=0.7.7') == 1
+          assert s.count('class="game-version" aria-label="Game version">v0.7.7') == 1
+          html.write_text(s.replace('css/mobile-fix.css?v=0.7.7','css/mobile-fix.css?v=0.7.8')
+                           .replace('class="game-version" aria-label="Game version">v0.7.7','class="game-version" aria-label="Game version">v0.7.8'))
           config = Path('TetrisApp/config.xml')
           s=config.read_text()
-          assert 'version="0.7.6" android-versionCode="706"' in s
-          config.write_text(s.replace('version="0.7.6" android-versionCode="706"',
-                                      'version="0.7.7" android-versionCode="707"'))
+          assert 'version="0.7.7" android-versionCode="706"' in s
+          config.write_text(s.replace('version="0.7.7" android-versionCode="706"',
+                                      'version="0.7.8" android-versionCode="707"'))
           changelog=Path('CHANGELOG.md')
           s=changelog.read_text()
           changelog.write_text(s.replace('## [Unreleased]',
-             '## [Unreleased]\n\n## [0.7.7] — Remove stripe embedded in original wallpapers (2026-10-30)\n'
+             '## [Unreleased]\n\n## [0.7.8] — Remove stripe embedded in original wallpapers (2026-10-30)\n'
              '- Corrected both original background JPEGs by reverse-alpha restoration within the pale rectangle only.\n'
              '- Measured improved pixel seam, retained the same image dimensions and file paths; invalidated Safari image cache.\n'
              '- No regenerated artwork or APK build. Owner Safari device QA remains pending.\n',1))
           roadmap=Path('ROADMAP.md')
           s=roadmap.read_text()
-          roadmap.write_text(s.replace('**Status: v0.7.6 portrait CSS prepared;',
-               '**Status: v0.7.7 wallpaper repaired and deployed (device QA pending);',1))
+          roadmap.write_text(s.replace('**Status: v0.7.7 portrait CSS prepared;',
+               '**Status: v0.7.8 wallpaper repaired and deployed (device QA pending);',1))
           PY
       - name: Verify source tests and write consistency
         run: |
@@ -88,7 +88,7 @@ jobs:
                   TetrisApp/www/css/mobile-fix.css TetrisApp/www/index.html \
                   TetrisApp/config.xml CHANGELOG.md ROADMAP.md
           git diff --cached --check
-          git commit -m "fix: correct original wallpaper tint and cache v0.7.7"
+          git commit -m "fix: correct original wallpaper tint and cache v0.7.8"
           git push origin HEAD:master
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

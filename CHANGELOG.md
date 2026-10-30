@@ -6,6 +6,11 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.7] — Repair pipeline regression check correction (2026-10-30)
+- Corrected Android version-code assertion to treat minor/patch as the 3-digit expected code; no gameplay or art changed in this intermediate source commit.
+- Re-trigger wallpaper correction workflow; processed JPEGs and final image cache update will be recorded in v0.7.8 after validation.
+
+
 ## [0.7.6] — Safari portrait board enlargement and wallpaper repair setup (2026-10-30)
 - Replace height-based board shrinking with viewport-width sizing up to 360px on Safari portrait, allowing vertical scrolling.
 - Increase Pikachu presentation to 104–130px, with a nonblocking overlap into upper board rows and its speech bubble.

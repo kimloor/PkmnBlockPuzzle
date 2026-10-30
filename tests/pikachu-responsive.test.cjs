@@ -31,7 +31,7 @@ test('source version, android code and Safari stylesheet cache stay aligned',()=
  const version=config.match(/version="([0-9]+\.[0-9]+\.[0-9]+)"/)?.[1];
  assert.ok(version);
  const code=config.match(/android-versionCode="([0-9]+)"/)?.[1];
- assert.equal(Number(code),Number(version.split('.').slice(1).join(''))*1 || Number(code));
+ assert.equal(Number(code),Number(version.split('.')[1])*100+Number(version.split('.')[2]));
  assert.ok(html.includes('class="game-version" aria-label="Game version">v'+version));
  assert.ok(html.includes('mobile-fix.css?v='+version));
 });
