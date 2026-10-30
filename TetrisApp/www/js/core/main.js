@@ -36,6 +36,8 @@ let sessionRecordedScore = null;
 let playElapsedMs = 0;
 let playingSince = null;
 let scoreRunId = null;
+let companionMisses=0, companionStreak=0, companionLastClearMs=0, companionDanger=0, companionWasCritical=false, companionRecord=false, companionPreviousBest=0;
+const speak = (key, priority=1, args={}) => window.pokemonCompanion?.say(key,priority,args);
 function stopPlayClock(){if(playingSince!==null){playElapsedMs+=Math.max(0,performance.now()-playingSince);playingSince=null;}}
 function startPlayClock(){if(!document.hidden && playingSince===null)playingSince=performance.now();}
 function getPlayTimeMs(){return Math.round(playElapsedMs+(playingSince===null?0:Math.max(0,performance.now()-playingSince)));}
@@ -90,6 +92,7 @@ function showNextScoreReward() {
         }
     }
     if (rewardDialog) rewardDialog.hidden = false;
+    window.pokemonCompanion?.hideSpeech();
     if (window.pokemonCompanion) window.pokemonCompanion.play('celebrate');
     if (rewardContinue) rewardContinue.focus();
 }
@@ -178,6 +181,9 @@ function initializeNewGame(keepScore = false) {
         sessionRecordedScore = null;
         playElapsedMs=0;playingSince=null;scoreRunId='run-'+Date.now()+'-'+Math.random().toString(36).slice(2);
         resetScoreRewards();
+        companionMisses=0;companionStreak=0;companionLastClearMs=0;companionDanger=0;companionWasCritical=false;companionRecord=false;
+        companionPreviousBest=getHighScores()[0]?.score || 0;
+        window.pokemonCompanion?.resetSpeech();
     }
     initGameBoard();
     gameOver = false;
@@ -218,6 +224,7 @@ function initializeNewGame(keepScore = false) {
         startPlayClock();
         playBackgroundMusic();
         if (typeof showScreen === 'function') showScreen('PLAYING');
+        speak('start',3);
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
         animationFrameId = requestAnimationFrame(updateGame);
     }
@@ -259,6 +266,8 @@ function handleGameOver() {
         playGameOverSound();
     }
 
+    // Game-over bubbles cannot remain anchored when the companion board is hidden.
+    window.pokemonCompanion?.hideSpeech();
     if (typeof updateGameOverScreenInfo === 'function') {
         updateGameOverScreenInfo(currentScoreVal, globalHighScore, currentRank);
     }
@@ -405,8 +414,33 @@ function lockPieceAndContinue() {
         bombExplosionEffects.push(...linesClearedInfo.explosions.map(bomb => ({ ...bomb, startTime })));
     }
     
+    if (linesClearedInfo.count > 0) {
+        companionMisses=0;
+        companionLastClearMs=getPlayTimeMs();
+        companionStreak++;
+        const waves=linesClearedInfo.waves || [];
+        if (linesClearedInfo.explosions?.length && waves.length>1) speak('chain',3);
+        else if (waves.some(w=>(w.goldenCellsCleared||0)>=2)) speak('gold3',3);
+        else if (linesClearedInfo.goldenCellsCleared>0) speak('gold',2);
+        else if (companionStreak>=3) speak('combo',3);
+        else speak('line'+Math.min(4,linesClearedInfo.count),2);
+    } else {
+        companionStreak=0;
+        companionMisses++;
+        if (linesClearedInfo.explosions?.length) speak('bomb',2);
+        else if(companionMisses===5) speak('idle5',2);
+        else if(Math.random()<.1) speak('lock',1);
+    }
+    if (!companionRecord && companionPreviousBest>0 && score>companionPreviousBest) {
+        companionRecord=true;speak('record',3);
+    }
+    const highest=gameBoard.findIndex(row=>row.some(cell=>cell!==null && cell!==undefined && cell!==0));
+    const ratio=highest<0?0:(ROWS-highest)/ROWS;
+    if(ratio>=.9 && companionDanger<2){companionDanger=2;companionWasCritical=true;speak('danger90',4);}
+    else if(ratio>=.7 && companionDanger===0){companionDanger=1;speak('danger70',3);}
+    else if(ratio<.6){if(companionWasCritical)speak('recover',4);companionWasCritical=false;companionDanger=0;}
     spawnNewPieceInternalLogic();
-    if (rewardShowing) { drawGame(); return; }
+    if (rewardShowing) { window.pokemonCompanion?.hideSpeech(); drawGame(); return; }
 
     if (gameOver) {
         drawGame();
