@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "workflow": "Android Release APK",
-  "run_id": "40817827367",
+  "run_id": "40998438741",
   "run_attempt": "1",
-  "run_url": "https://github.com/kimloor/PkmnBlockPuzzle/actions/runs/40817827367",
-  "source_sha": "bcf694b7bbf620793cf32775de9a81384c398762",
+  "run_url": "https://github.com/kimloor/PkmnBlockPuzzle/actions/runs/40998438741",
+  "source_sha": "4c6e7fcb475859973fd24fd793f1eea3fe1ad108",
   "source_ref": "refs/heads/master",
-  "version": "0.5.4",
-  "reported_at_utc": "2026-10-29T04:29:42.901139+00:00",
+  "version": "0.6.3",
+  "reported_at_utc": "2026-10-30T03:40:25.241654+00:00",
   "steps": {
     "version_validation": "success",
     "apk_build_and_signing": "success",
@@ -15,5 +15,5 @@
     "release_publish": "success"
   },
   "result": "success",
-  "release_url": "https://github.com/kimloor/PkmnBlockPuzzle/releases/tag/v0.5.4"
+  "release_url": "https://github.com/kimloor/PkmnBlockPuzzle/releases/tag/v0.6.3"
 }
