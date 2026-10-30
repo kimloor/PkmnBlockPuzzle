@@ -6,6 +6,15 @@ This file tracks verified releases. Historical release details should be filled 
 
 ## [Unreleased]
 
+## [0.7.10] — No-scroll, medium-size Safari board (2026-10-30)
+- Owner requested a middle ground between v0.7.5's small board and v0.7.9's oversize scrolling board.
+- Size Pokémon portrait board by both viewport width and Safari dynamic height, cap width at 252 CSS px and reserve 116px for a compact 70px HUD, level header, gaps and padding.
+- Prevent page scrolling while playing Pokemon Theme portrait; preserve canvas swipes/touch actions and accessible menu overlays.
+- Keep the board, header and score-next panel aligned; Pikachu and dialogue remain noninteractive over the board's upper-left area.
+- Leave restored JPEG background images and remaining faint seams unchanged per Owner.
+- Source/viewport tests recorded, Safari device QA pending, no APK built.
+
+
 ## [0.7.9] — Embedded wallpaper stripe restoration (2026-10-30)
 - Reverse-alpha corrected the rectangular pale overlay in both JPEG backgrounds without redrawing artwork.
 - Measured reduced edge seam; original JPEG dimensions kept; Safari image URLs cache-busted.

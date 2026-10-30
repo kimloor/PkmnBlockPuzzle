@@ -670,3 +670,167 @@ html.pokemon-theme-active #main-container {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* v0.7.10 — Safari portrait no-scroll gameplay: medium, height-aware board.
+   Reserve 116px for the compact HUD, level bar, padding and spare space.
+   Old 360px width-only sizing caused scrolling; original 153px felt small.
+   All restored wallpaper JPEG files and image cache queries remain untouched. */
+@media (max-width: 768px) and (orientation: portrait) {
+  html.pokemon-theme-active {
+    height: 100%;
+    overflow: hidden;
+  }
+  html.pokemon-theme-active body {
+    height: 100dvh;
+    min-height: 0;
+    max-height: 100dvh;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+  }
+  html.pokemon-theme-active #game-content.active {
+    display: flex;
+    height: 100dvh;
+    min-height: 0;
+    max-height: 100dvh;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 4px 5px;
+    align-items: center;
+    justify-content: center;
+  }
+  html.pokemon-theme-active #main-container {
+    --board-fit-width: max(0px, min(calc(100vw - 20px), calc((100dvh - 116px) / 2), 252px));
+    display: flex;
+    width: 100%;
+    max-width: 420px;
+    max-height: 100%;
+    min-height: 0;
+    margin: 0 auto;
+    padding: 0;
+    gap: 4px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  html.pokemon-theme-active #side-panel,
+  html.pokemon-theme-active #game-area {
+    width: var(--board-fit-width);
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    align-self: center;
+  }
+  html.pokemon-theme-active #side-panel {
+    order: 1;
+    height: 70px;
+    max-height: 70px;
+    padding: 0;
+    margin: 0;
+    gap: 4px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    position: relative;
+    z-index: 5;
+  }
+  html.pokemon-theme-active #score-container,
+  html.pokemon-theme-active #next-piece-preview {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 70px;
+    min-height: 0;
+    max-height: 70px;
+    box-sizing: border-box;
+    padding: 3px 4px;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  html.pokemon-theme-active #score-container h4,
+  html.pokemon-theme-active #next-piece-preview h4 {
+    font-size: 10px;
+    line-height: 1.1;
+    letter-spacing: 0;
+    margin: 0 0 2px;
+    width: 100%;
+  }
+  html.pokemon-theme-active #score-value {
+    font-size: 1.3rem;
+    line-height: 1.1;
+    margin: 1px 0;
+  }
+  html.pokemon-theme-active #next-piece-canvas {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    margin: 1px auto 0;
+  }
+  html.pokemon-theme-active #game-area {
+    order: 2;
+    position: relative;
+    z-index: 1;
+  }
+  html.pokemon-theme-active #level-header-display,
+  html.pokemon-theme-active #tetris-canvas {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  html.pokemon-theme-active #level-header-display {
+    display: flex;
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    padding: 2px 5px;
+    margin-bottom: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  html.pokemon-theme-active #level-header-display h4,
+  html.pokemon-theme-active #level-value-header {
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+  html.pokemon-theme-active #tetris-canvas {
+    display: block;
+    aspect-ratio: 1 / 2;
+    height: auto;
+    touch-action: none;
+  }
+  /* Pikachu sits mainly left of the board, overlaps its top cells only.
+     HUD is above it in stacking order; touches always reach the canvas. */
+  html.pokemon-theme-active #pokemon-side-slot {
+    display: flex;
+    position: absolute;
+    top: 33px;
+    left: max(2px, calc((100% - var(--board-fit-width)) / 2 - 70px));
+    right: auto;
+    width: clamp(94px, 27vw, 112px);
+    height: auto;
+    z-index: 4;
+    overflow: visible;
+    pointer-events: none;
+    margin: 0;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pokemon-side-character {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    pointer-events: none;
+  }
+  html.pokemon-theme-active #pokemon-side-slot .pikachu-speech {
+    position: absolute;
+    left: 76%;
+    top: 6px;
+    width: clamp(112px, 35vw, 152px);
+    max-width: none;
+    font-size: 11px;
+    padding: 6px 7px;
+    pointer-events: none;
+  }
+}

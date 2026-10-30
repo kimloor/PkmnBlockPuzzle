@@ -3,6 +3,10 @@
 Repository: https://github.com/kimloor/PkmnBlockPuzzle
 Status: planning document; items are proposals until confirmed by the owner.
 
+## Safari portrait no-scroll fit — v0.7.10 (30 October 2026)
+
+**Status: SOURCE IMPLEMENTED; OWNER SAFARI QA PENDING.** Owner rejected the large v0.7.9 portrait board because scrolling makes gameplay inconvenient. Use a medium-sized board constrained by Safari dynamic viewport: width min(100vw - 20px, (100dvh - 116px)/2, 252px), compact 70px score/next HUD and 24px level header. Keep board/header/HUD aligned and body/game scroll locked in Pokemon portrait. At 375px viewport width and 495px available height, target board is about 189.5×379 CSS px (vs ~153×306 in v0.7.5). Pikachu/balloon stay tap-through; mobile landscape and standard desktop unchanged. Leave wallpaper's remaining faint rectangular seams for later, per Owner. No APK build; require Safari on-device screenshot and touch QA.
+
 ## Safari corrected wallpaper + larger portrait board — source 0.7.9
 
 **Asset processing: completed in GitHub Actions. Safari device visual acceptance pending.**
