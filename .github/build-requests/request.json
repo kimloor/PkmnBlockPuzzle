@@ -1,5 +1,5 @@
 {
-  "version": "0.6.3",
-  "request_id": "v063-owner-release-20261030-01",
-  "reason": "Owner approved build and signed GitHub Release for QA-accepted web v0.6.3; includes score milestones, playtime high scores, rank display and water-bottle prize"
+  "version": "0.7.12",
+  "request_id": "v0712-owner-release-20261031-01",
+  "reason": "Owner explicitly authorized signed Android APK build and GitHub Release of QA-checked source v0.7.12. No changes to gameplay or assets."
 }
